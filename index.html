@@ -3,37 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Diego Teran's personal website">
-    <title>Diego Teran</title>
+    <meta name="description" content="Personal Portfolio of Diego - Developer & Game Creator">
+    <title>Diego | Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Preconnect for fonts if we add Google Fonts later -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Diego Teran</h1>
-            <p class="tagline">Welcome to my website</p>
-        </header>
-        
-        <main>
-            <section class="about">
-                <h2>About</h2>
-                <p>This is a simple personal website that automatically deploys to diegote.dev.</p>
-            </section>
-            
-            <section class="projects">
-                <h2>Projects</h2>
-                <p>Coming soon...</p>
-            </section>
-            
-            <section class="contact">
-                <h2>Contact</h2>
-                <p>Feel free to reach out!</p>
-            </section>
-        </main>
-        
-        <footer>
-            <p>&copy; 2025 Diego Teran. All rights reserved.</p>
-        </footer>
-    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Diego.</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Hi, I'm Diego.</h1>
+                <p>I build immersive web experiences and creative games. Welcome to my digital playground.</p>
+                <a href="#projects" class="btn">View My Work</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p style="max-width: 800px; color: var(--text-secondary);">
+                    I am a passionate developer with a knack for creating clean, efficient, and visually stunning applications. 
+                    Whether it's a responsive website or an engaging video game, I love bringing ideas to life through code.
+                </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="container">
+                <h2>Web Projects</h2>
+                <div class="grid">
+                    <!-- Project Card 1 -->
+                    <article class="card">
+                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+1" alt="Project 1 Thumbnail">
+                        <h3>E-Commerce Dashboard</h3>
+                        <p>A responsive dashboard for managing online stores, built with vanilla JS and CSS Grid.</p>
+                    </article>
+                    <!-- Project Card 2 -->
+                    <article class="card">
+                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+2" alt="Project 2 Thumbnail">
+                        <h3>Task Manager</h3>
+                        <p>A productivity tool to organize daily tasks with local storage persistence.</p>
+                    </article>
+                    <!-- Project Card 3 -->
+                    <article class="card">
+                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+3" alt="Project 3 Thumbnail">
+                        <h3>Weather App</h3>
+                        <p>Real-time weather updates using the OpenWeatherMap API.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Gallery Section -->
+        <section id="games">
+            <div class="container">
+                <h2>Game Gallery</h2>
+                <div class="grid">
+                    <!-- Game Card 1 -->
+                    <article class="card">
+                        <img src="https://placehold.co/600x400/262626/FFF?text=Game+1" alt="Game 1 Thumbnail">
+                        <h3>Space Explorer</h3>
+                        <p>A 2D shooter game where you defend the galaxy from alien invaders.</p>
+                    </article>
+                    <!-- Game Card 2 -->
+                    <article class="card">
+                        <img src="https://placehold.co/600x400/262626/FFF?text=Game+2" alt="Game 2 Thumbnail">
+                        <h3>Dungeon Crawler</h3>
+                        <p>A rogue-like adventure game with procedural generation.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Diego. Built with Vanilla HTML, CSS & JS.</p>
+            <div style="margin-top: var(--spacing-sm);">
+                <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> • 
+                <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a> • 
+                <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
