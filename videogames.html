@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Diego's Video Game Projects">
+	<title>Diego | Video Games</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+
+	<header>
+		<div class="container">
+			<nav>
+				<a href="index.html" class="logo">Diego.</a>
+				<ul class="nav-links">
+					<li><a href="index.html#about">About</a></li>
+					<li><a href="index.html#projects">Projects</a></li>
+					<li><a href="videogames.html" class="active">Video Games</a></li>
+					<li><a href="boardgames.html">Board Games</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero" style="min-height: 50vh;">
+			<div class="container">
+				<h1>Video Games</h1>
+				<p>Interactive worlds and digital adventures I've crafted.</p>
+			</div>
+		</section>
+
+		<section id="videogames">
+			<div class="container">
+				<div class="grid">
+					<!-- Space Explorer -->
+					<article class="card">
+						<img src="https://placehold.co/600x400/262626/FFF?text=Space+Explorer"
+							alt="Space Explorer Gameplay">
+						<h3>Space Explorer</h3>
+						<p>A 2D shooter game where you defend the galaxy from alien invaders. Built with HTML5 Canvas.
+						</p>
+					</article>
+					<!-- Dungeon Crawler -->
+					<article class="card">
+						<img src="https://placehold.co/600x400/262626/FFF?text=Dungeon+Crawler"
+							alt="Dungeon Crawler Gameplay">
+						<h3>Dungeon Crawler</h3>
+						<p>A rogue-like adventure game with procedural generation and turn-based combat.</p>
+					</article>
+					<!-- Platformer -->
+					<article class="card">
+						<img src="https://placehold.co/600x400/262626/FFF?text=Platformer+Pro"
+							alt="Platformer Pro Gameplay">
+						<h3>Platformer Pro</h3>
+						<p>A fast-paced precision platformer featuring wall-jumps and dash mechanics.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer id="contact">
+		<div class="container">
+			<p>&copy; <span id="current-year"></span> Diego. Built with Vanilla HTML, CSS & JS.</p>
+			<div style="margin-top: var(--spacing-sm);">
+				<a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> •
+				<a href="#" target="_blank" rel="noopener noreferrer">Twitter</a> •
+				<a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
