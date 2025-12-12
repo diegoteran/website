@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="About Diego">
+	<title>Diego | About Me</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+
+	<header>
+		<div class="container">
+			<nav>
+				<a href="index.html" class="logo">Diego.</a>
+				<ul class="nav-links">
+					<li><a href="index.html#projects">Projects</a></li>
+					<li><a href="videogames.html">Video Games</a></li>
+					<li><a href="boardgames.html">Board Games</a></li>
+					<li><a href="#contact">Contact</a></li>
+					<li><a href="about.html" class="active">About</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero" style="min-height: 40vh;">
+			<div class="container">
+				<h1>About Me</h1>
+			</div>
+		</section>
+
+		<section id="about-content">
+			<div class="container">
+				<div class="grid" style="align-items: center;">
+					<!-- Bio Text -->
+					<div class="about-text">
+						<p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+							I am a passionate developer with a knack for creating clean, efficient, and visually
+							stunning applications.
+							Whether it's a responsive website or an engaging video game, I love bringing ideas to life
+							through code.
+						</p>
+						<p style="font-size: 1.1rem; color: var(--text-secondary);">
+							My journey began with a curiosity for how things work, leading me to explore various
+							technologies and frameworks.
+							I believe in continuous learning and always strive to build experiences that are not just
+							functional but also memorable.
+						</p>
+					</div>
+
+					<!-- Profile Image -->
+					<div class="about-image">
+						<img src="images/profile.jpg" alt="Diego's Profile Picture"
+							style="width: 100%; max-width: 400px; height: auto; border: 4px solid var(--surface-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+						<p
+							style="text-align: center; margin-top: var(--spacing-sm); color: var(--text-secondary); font-size: 0.9rem;">
+							(Replace 'images/profile.jpg' with your photo)</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer id="contact">
+		<div class="container">
+			<p>&copy; <span id="current-year"></span> Diego. Built with Vanilla HTML, CSS & JS.</p>
+			<div style="margin-top: var(--spacing-sm);">
+				<a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> •
+				<a href="#" target="_blank" rel="noopener noreferrer">Twitter</a> •
+				<a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
