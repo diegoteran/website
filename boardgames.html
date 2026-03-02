@@ -6,17 +6,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Diego's Board Game Projects">
 	<title>Diego | Board Games</title>
-	<link rel="stylesheet" href="styles.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+
+	<div class="nav-overlay"></div>
 
 	<header>
 		<div class="container">
 			<nav>
 				<a href="index.html" class="logo">Diego.</a>
+				<button class="menu-toggle" aria-label="Toggle navigation menu">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
 				<ul class="nav-links">
 					<li><a href="index.html#projects">Projects</a></li>
 					<li><a href="videogames.html">Video Games</a></li>
@@ -29,7 +37,7 @@
 	</header>
 
 	<main>
-		<section class="hero" style="min-height: 50vh;">
+		<section class="hero page-hero">
 			<div class="container">
 				<h1>Board Games</h1>
 				<p>Tabletop experiences designed for social fun and strategy.</p>
@@ -40,18 +48,22 @@
 			<div class="container">
 				<div class="grid">
 					<!-- Kingdom Builder -->
-					<article class="card">
-						<img src="https://placehold.co/600x400/262626/FFF?text=Kingdom+Builder"
+					<article class="card fade-in-up">
+						<img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Kingdom+Builder"
 							alt="Kingdom Builder Board">
-						<h3>Kingdom Builder</h3>
-						<p>A resource management game where players build empires and trade resources.</p>
+						<div class="card-body">
+							<h3>Kingdom Builder</h3>
+							<p>A resource management game where players build empires and trade resources.</p>
+						</div>
 					</article>
 					<!-- Mystery Manor -->
-					<article class="card">
-						<img src="https://placehold.co/600x400/262626/FFF?text=Mystery+Manor"
+					<article class="card fade-in-up">
+						<img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Mystery+Manor"
 							alt="Mystery Manor Box Art">
-						<h3>Mystery Manor</h3>
-						<p>A cooperative deduction game where players solve a crime in a haunted mansion.</p>
+						<div class="card-body">
+							<h3>Mystery Manor</h3>
+							<p>A cooperative deduction game where players solve a crime in a haunted mansion.</p>
+						</div>
 					</article>
 				</div>
 			</div>
@@ -61,9 +73,9 @@
 	<footer id="contact">
 		<div class="container">
 			<p>&copy; <span id="current-year"></span> Diego. Built with Vanilla HTML, CSS & JS.</p>
-			<div style="margin-top: var(--spacing-sm);">
-				<a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> •
-				<a href="#" target="_blank" rel="noopener noreferrer">Twitter</a> •
+			<div class="footer-links">
+				<a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<a href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
 				<a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 			</div>
 		</div>

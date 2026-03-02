@@ -6,18 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Personal Portfolio of Diego - Developer & Game Creator">
     <title>Diego | Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Preconnect for fonts if we add Google Fonts later -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+
+    <div class="nav-overlay"></div>
 
     <header>
         <div class="container">
             <nav>
                 <a href="#" class="logo">Diego.</a>
+                <button class="menu-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <ul class="nav-links">
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="videogames.html">Video Games</a></li>
@@ -39,56 +46,64 @@
             </div>
         </section>
 
-
-
         <!-- Projects Section -->
         <section id="projects">
             <div class="container">
-                <h2>Web Projects</h2>
+                <h2 class="fade-in-up">Web Projects</h2>
                 <div class="grid">
                     <!-- Project Card 1 -->
-                    <article class="card">
-                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+1" alt="Project 1 Thumbnail">
-                        <h3>E-Commerce Dashboard</h3>
-                        <p>A responsive dashboard for managing online stores, built with vanilla JS and CSS Grid.</p>
+                    <article class="card fade-in-up">
+                        <img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Project+1" alt="Project 1 Thumbnail">
+                        <div class="card-body">
+                            <h3>E-Commerce Dashboard</h3>
+                            <p>A responsive dashboard for managing online stores, built with vanilla JS and CSS Grid.
+                            </p>
+                        </div>
                     </article>
                     <!-- Project Card 2 -->
-                    <article class="card">
-                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+2" alt="Project 2 Thumbnail">
-                        <h3>Task Manager</h3>
-                        <p>A productivity tool to organize daily tasks with local storage persistence.</p>
+                    <article class="card fade-in-up">
+                        <img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Project+2" alt="Project 2 Thumbnail">
+                        <div class="card-body">
+                            <h3>Task Manager</h3>
+                            <p>A productivity tool to organize daily tasks with local storage persistence.</p>
+                        </div>
                     </article>
                     <!-- Project Card 3 -->
-                    <article class="card">
-                        <img src="https://placehold.co/600x400/262626/FFF?text=Project+3" alt="Project 3 Thumbnail">
-                        <h3>Weather App</h3>
-                        <p>Real-time weather updates using the OpenWeatherMap API.</p>
+                    <article class="card fade-in-up">
+                        <img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Project+3" alt="Project 3 Thumbnail">
+                        <div class="card-body">
+                            <h3>Weather App</h3>
+                            <p>Real-time weather updates using the OpenWeatherMap API.</p>
+                        </div>
                     </article>
                 </div>
             </div>
         </section>
 
         <!-- Game Gallery Section -->
-        <!-- Game Gallery Section -->
         <section id="games">
             <div class="container">
-                <h2>Game Gallery</h2>
+                <h2 class="fade-in-up">Game Gallery</h2>
                 <div class="grid">
                     <!-- Video Games Link -->
-                    <article class="card">
-                        <img src="https://placehold.co/600x400/262626/FFF?text=Video+Games" alt="Video Games Thumbnail">
-                        <h3>Video Games</h3>
-                        <p>Explore my collection of digital adventures and interactive experiences.</p>
-                        <a href="videogames.html" class="btn" style="margin-top: var(--spacing-sm);">View Video
-                            Games</a>
+                    <article class="card fade-in-up">
+                        <img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Video+Games"
+                            alt="Video Games Thumbnail">
+                        <div class="card-body">
+                            <h3>Video Games</h3>
+                            <p>Explore my collection of digital adventures and interactive experiences.</p>
+                            <a href="videogames.html" class="btn btn-secondary">View Video Games</a>
+                        </div>
                     </article>
                     <!-- Board Games Link -->
-                    <article class="card">
-                        <img src="https://placehold.co/600x400/262626/FFF?text=Board+Games" alt="Board Games Thumbnail">
-                        <h3>Board Games</h3>
-                        <p>Discover my tabletop designs for social strategy and fun.</p>
-                        <a href="boardgames.html" class="btn" style="margin-top: var(--spacing-sm);">View Board
-                            Games</a>
+                    <article class="card fade-in-up">
+                        <img src="https://placehold.co/600x400/1a1a2e/6366f1?text=Board+Games"
+                            alt="Board Games Thumbnail">
+                        <div class="card-body">
+                            <h3>Board Games</h3>
+                            <p>Discover my tabletop designs for social strategy and fun.</p>
+                            <a href="boardgames.html" class="btn btn-secondary">View Board Games</a>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -98,9 +113,9 @@
     <footer id="contact">
         <div class="container">
             <p>&copy; <span id="current-year"></span> Diego. Built with Vanilla HTML, CSS & JS.</p>
-            <div style="margin-top: var(--spacing-sm);">
-                <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> •
-                <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a> •
+            <div class="footer-links">
+                <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
                 <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
         </div>
