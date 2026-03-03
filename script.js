@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// --- Card Slideshow (Game Gallery hover cycling) ---
-	const galleryCards = document.querySelectorAll('.card-gallery');
+	const galleryCards = document.querySelectorAll('.card-gallery, .showcase-card');
 
 	galleryCards.forEach(card => {
 		const slides = card.querySelectorAll('.card-slideshow .slide');
