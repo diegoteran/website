@@ -414,10 +414,9 @@ nav {
    GAME SHOWCASE (Homepage)
    ============================================ */
 .game-showcase {
-	min-height: calc(100vh - 80px);
 	display: flex;
-	align-items: center;
-	padding: var(--spacing-xl) 0;
+	align-items: flex-start;
+	padding: var(--spacing-xl) 0 var(--spacing-2xl);
 }
 
 .showcase-grid {
