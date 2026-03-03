@@ -66,4 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		revealElements.forEach(el => observer.observe(el));
 	}
+
+	// --- Card Slideshow (Game Gallery hover cycling) ---
+	const galleryCards = document.querySelectorAll('.card-gallery');
+
+	galleryCards.forEach(card => {
+		const slides = card.querySelectorAll('.card-slideshow .slide');
+		if (slides.length <= 1) return;
+
+		let currentIndex = 0;
+		let intervalId = null;
+
+		card.addEventListener('mouseenter', () => {
+			intervalId = setInterval(() => {
+				slides[currentIndex].classList.remove('active');
+				currentIndex = (currentIndex + 1) % slides.length;
+				slides[currentIndex].classList.add('active');
+			}, 1800);
+		});
+
+		card.addEventListener('mouseleave', () => {
+			clearInterval(intervalId);
+			intervalId = null;
+			// Reset to first slide
+			slides[currentIndex].classList.remove('active');
+			currentIndex = 0;
+			slides[0].classList.add('active');
+		});
+	});
 });
