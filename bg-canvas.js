@@ -15,6 +15,14 @@
 	let animationId;
 	let mouseX = -1000;
 	let mouseY = -1000;
+	let lastWidth = 0;
+	let resizeTimer = null;
+	let scrollY = 0;
+
+	// --- Scroll tracking for parallax ---
+	window.addEventListener('scroll', () => {
+		scrollY = window.pageYOffset || document.documentElement.scrollTop;
+	}, { passive: true });
 
 	// --- Resize to viewport ---
 	function resize() {
@@ -22,9 +30,20 @@
 		height = canvas.height = window.innerHeight;
 	}
 	window.addEventListener('resize', () => {
+		const newWidth = window.innerWidth;
+		// Always update canvas dimensions so it renders correctly
 		resize();
-		initStars();
-		initHexagons();
+		// Only regenerate elements when the width actually changes.
+		// Mobile browsers fire resize when the address bar hides/shows
+		// on scroll, which only changes height — ignore those.
+		if (newWidth !== lastWidth) {
+			lastWidth = newWidth;
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				initStars();
+				initHexagons();
+			}, 150);
+		}
 	});
 
 	// --- Mouse tracking ---
@@ -40,6 +59,8 @@
 	// ============================
 	// STARS
 	// ============================
+	const STAR_PARALLAX = 0.05;  // stars drift very slightly
+
 	function createStar() {
 		return {
 			x: Math.random() * width,
@@ -61,6 +82,7 @@
 	}
 
 	function drawStars(time) {
+		const starOffsetY = scrollY * STAR_PARALLAX;
 		for (const star of stars) {
 			const twinkle = 0.3 + 0.7 * ((Math.sin(time * star.twinkleSpeed + star.twinkleOffset) + 1) / 2);
 			const opacity = star.baseOpacity * twinkle;
@@ -69,8 +91,11 @@
 			if (star.x < -5) star.x = width + 5;
 			if (star.x > width + 5) star.x = -5;
 
+			// Apply parallax offset — wrap vertically so stars cycle
+			let drawY = ((star.y - starOffsetY) % height + height) % height;
+
 			ctx.beginPath();
-			ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+			ctx.arc(star.x, drawY, star.size, 0, Math.PI * 2);
 			ctx.fillStyle = `rgba(200, 205, 255, ${opacity})`;
 			ctx.fill();
 		}
@@ -100,8 +125,9 @@
 			vy: (Math.random() - 0.5) * 0.25,
 			baseOpacity: 0.06 + Math.random() * 0.1,
 			pulseOffset: Math.random() * Math.PI * 2,
-			pulseSpeed: 0.005 + Math.random() * 0.008,
+			pulseSpeed: 0.002 + Math.random() * 0.004,
 			color,
+			depth: 0.1 + Math.random() * 0.25, // parallax depth per hexagon
 		};
 	}
 
@@ -137,35 +163,42 @@
 			if (hex.y < -m) hex.y = height + m;
 			if (hex.y > height + m) hex.y = -m;
 
+			// Parallax offset — each hex drifts at its own depth rate
+			const drawY = ((hex.y - scrollY * hex.depth) % height + height) % height;
+
 			const pulse = 0.5 + 0.5 * Math.sin(time * hex.pulseSpeed + hex.pulseOffset);
 			let opacity = hex.baseOpacity * (0.6 + 0.4 * pulse);
 
 			const dx = hex.x - mouseX;
-			const dy = hex.y - mouseY;
+			const dy = drawY - mouseY;
 			const dist = Math.sqrt(dx * dx + dy * dy);
 			const mouseInfluence = dist < 250 ? (1 - dist / 250) : 0;
 			opacity += mouseInfluence * 0.25;
 
 			// Cluster glow: more connections = brighter hex
-			const clusterBoost = Math.min(hex.connections || 0, 5) * 0.025;
+			const clusterBoost = Math.min(hex.connections || 0, 5) * 0.06;
 			opacity += clusterBoost;
 
 			opacity = Math.min(opacity, 0.45);
 
 			const { r, g, b } = hex.color;
 
-			drawHex(hex.x, hex.y, hex.size, hex.rotation);
+			// Store the draw position for connections to use
+			hex.drawX = hex.x;
+			hex.drawY = drawY;
+
+			drawHex(hex.x, drawY, hex.size, hex.rotation);
 			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
 			ctx.lineWidth = 1.2;
 			ctx.stroke();
 
 			if (mouseInfluence > 0.1) {
-				drawHex(hex.x, hex.y, hex.size * 0.85, hex.rotation);
+				drawHex(hex.x, drawY, hex.size * 0.85, hex.rotation);
 				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${mouseInfluence * 0.12})`;
 				ctx.lineWidth = 0.6;
 				ctx.stroke();
 
-				drawHex(hex.x, hex.y, hex.size, hex.rotation);
+				drawHex(hex.x, drawY, hex.size, hex.rotation);
 				ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${mouseInfluence * 0.04})`;
 				ctx.fill();
 			}
@@ -178,22 +211,22 @@
 	function drawConnections() {
 		const maxDist = 140;
 
-		// Count connections per hex
+		// Use parallax-offset positions for distance checks
 		const connectionCount = new Array(hexagons.length).fill(0);
 		const pairs = [];
 
 		for (let i = 0; i < hexagons.length; i++) {
+			const aY = ((hexagons[i].y - scrollY * hexagons[i].depth) % height + height) % height;
 			for (let j = i + 1; j < hexagons.length; j++) {
-				const a = hexagons[i];
-				const b = hexagons[j];
-				const dx = a.x - b.x;
-				const dy = a.y - b.y;
+				const bY = ((hexagons[j].y - scrollY * hexagons[j].depth) % height + height) % height;
+				const dx = hexagons[i].x - hexagons[j].x;
+				const dy = aY - bY;
 				const dist = Math.sqrt(dx * dx + dy * dy);
 
 				if (dist < maxDist) {
 					connectionCount[i]++;
 					connectionCount[j]++;
-					pairs.push({ i, j, dist });
+					pairs.push({ i, j, dist, aY, bY });
 				}
 			}
 		}
@@ -203,20 +236,20 @@
 			hexagons[i].connections = connectionCount[i];
 		}
 
-		// Draw lines
+		// Draw lines using parallax positions
 		for (const pair of pairs) {
 			const a = hexagons[pair.i];
 			const b = hexagons[pair.j];
 			const clusterStrength = Math.min(connectionCount[pair.i] + connectionCount[pair.j], 8) / 8;
-			const baseOpacity = 0.08 + clusterStrength * 0.14;
+			const baseOpacity = 0.15 + clusterStrength * 0.35;
 			const opacity = baseOpacity * (1 - pair.dist / maxDist);
 
 			const mr = Math.round((a.color.r + b.color.r) / 2);
 			const mg = Math.round((a.color.g + b.color.g) / 2);
 			const mb = Math.round((a.color.b + b.color.b) / 2);
 			ctx.beginPath();
-			ctx.moveTo(a.x, a.y);
-			ctx.lineTo(b.x, b.y);
+			ctx.moveTo(a.x, pair.aY);
+			ctx.lineTo(b.x, pair.bY);
 			ctx.strokeStyle = `rgba(${mr}, ${mg}, ${mb}, ${opacity})`;
 			ctx.lineWidth = 0.5 + clusterStrength * 0.6;
 			ctx.stroke();
@@ -244,6 +277,7 @@
 
 	// --- Init ---
 	resize();
+	lastWidth = window.innerWidth;
 	initStars();
 	initHexagons();
 	animationId = requestAnimationFrame(animate);
