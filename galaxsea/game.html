@@ -269,15 +269,67 @@
             pointer-events: none;
         }
 
-        /* Deal & Swap Animations */
+        /* Step 1 (Shuffle Deck Pile): All 5 cards gathered in a deck stack waiting to be shuffled,
+           then animated flying into the vertical column! */
+        .physical-action-card.overlap-deck {
+            margin-bottom: -186px;
+            transform: translateX(110px) rotate(var(--deck-tilt, 0deg));
+            border-color: var(--brass-bright);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.9), 0 0 16px rgba(245, 208, 118, 0.35);
+        }
+        .physical-action-card.overlap-deck:hover {
+            transform: translateX(110px) translateY(-5px) scale(1.04) rotate(var(--deck-tilt, 0deg));
+            box-shadow: 0 0 28px rgba(245, 208, 118, 0.75), 0 14px 32px rgba(0, 0, 0, 0.95);
+        }
+
+        @keyframes riffleShuffleEven {
+            0%   { transform: translateX(110px) rotate(0deg); }
+            20%  { transform: translateX(35px) translateY(-14px) rotate(-14deg) scale(1.04); }
+            45%  { transform: translateX(175px) translateY(10px) rotate(12deg) scale(1.04); }
+            72%  { transform: translateX(52px) translateY(-8px) rotate(-8deg); }
+            100% { transform: translateX(110px) rotate(0deg); }
+        }
+        @keyframes riffleShuffleOdd {
+            0%   { transform: translateX(110px) rotate(0deg); }
+            20%  { transform: translateX(185px) translateY(14px) rotate(14deg) scale(1.04); }
+            45%  { transform: translateX(42px) translateY(-10px) rotate(-12deg) scale(1.04); }
+            72%  { transform: translateX(165px) translateY(8px) rotate(8deg); }
+            100% { transform: translateX(110px) rotate(0deg); }
+        }
+        .physical-action-card.shuffling-even {
+            animation: riffleShuffleEven 0.64s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+        }
+        .physical-action-card.shuffling-odd {
+            animation: riffleShuffleOdd 0.64s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+        }
+
+        .deck-shuffle-overlay-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.96), rgba(21, 128, 61, 0.98));
+            border: 2px solid #86efac;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 8px 13px;
+            border-radius: 999px;
+            white-space: nowrap;
+            z-index: 30;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.92), 0 0 18px rgba(74, 222, 128, 0.65);
+            pointer-events: none;
+        }
+
+        /* Deal & Swap Animations: Cards fly from the shuffled deck pile into their column slots */
         @keyframes dealCardFlyIn {
             0% {
-                opacity: 0;
-                transform: translate(-90px, -60px) rotate(-14deg) scale(0.75);
+                opacity: 0.35;
+                transform: translate(110px, var(--deal-from-y, 0px)) rotate(-12deg) scale(0.9);
             }
-            70% {
+            72% {
                 opacity: 1;
-                transform: translate(6px, 3px) rotate(2deg) scale(1.03);
+                transform: translate(-5px, 2px) rotate(1.5deg) scale(1.02);
             }
             100% {
                 opacity: 1;
@@ -285,7 +337,7 @@
             }
         }
         .physical-action-card.deal-anim {
-            animation: dealCardFlyIn 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+            animation: dealCardFlyIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
         }
 
         @keyframes swapCardBounce {
@@ -1007,12 +1059,9 @@
             margin-bottom: 12px;
             font-size: 20px;
         }
-        @media (max-width: 650px) {
-            .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
-        }
         .tier-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin: 14px 0;
         }
@@ -1060,6 +1109,7 @@
     <!-- ── Minimal Top Bar ──────────────────────────────────────────────── -->
     <header class="top-bar">
         <div class="brand-group">
+            <a href="../boardgames.html" class="icon-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-size:12px; padding:5px 10px; margin-right:4px;" title="Back to Portfolio">← Portfolio</a>
             <span style="font-family:'Cinzel',serif; font-weight:800; font-size:22px; color:var(--brass-bright); letter-spacing:1px;">GalaxSea</span>
             <div class="round-stepper-bar" id="roundStepperBar">
                 <div class="stepper-pill" data-step="1">① Deal</div>
@@ -1141,31 +1191,22 @@
             <h2>New Expedition</h2>
             <div class="tier-grid" id="tierSelectorGrid">
                 <div class="tier-option" data-tier="moon">
-                    <div style="font-size:22px;">🌙</div>
-                    <div style="font-weight:800; margin-top:4px;">Local Tier</div>
-                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Moons</div>
-                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Tutorial / Easy</div>
+                    <div style="font-size:20px;">🌙</div>
+                    <div style="font-weight:800; margin-top:4px;">3 Moons</div>
+                    <div style="font-size:11px; opacity:0.75;">Standard</div>
                 </div>
                 <div class="tier-option selected" data-tier="planet">
-                    <div style="font-size:22px;">🪐</div>
-                    <div style="font-weight:800; margin-top:4px;">System Tier</div>
-                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Planets</div>
-                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Standard</div>
+                    <div style="font-size:20px;">🪐</div>
+                    <div style="font-weight:800; margin-top:4px;">3 Planets</div>
+                    <div style="font-size:11px; opacity:0.75;">Challenging</div>
                 </div>
                 <div class="tier-option" data-tier="star">
-                    <div style="font-size:22px;">⭐</div>
-                    <div style="font-weight:800; margin-top:4px;">Stellar Tier</div>
-                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Stars</div>
-                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Challenging</div>
-                </div>
-                <div class="tier-option" data-tier="galaxy">
-                    <div style="font-size:22px;">🌀</div>
-                    <div style="font-weight:800; margin-top:4px;">Galactic Tier</div>
-                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Galaxies</div>
-                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Expert</div>
+                    <div style="font-size:20px;">☀️</div>
+                    <div style="font-weight:800; margin-top:4px;">2 Stars</div>
+                    <div style="font-size:11px; opacity:0.75;">Expert</div>
                 </div>
             </div>
-            <label<label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
                 <input type="checkbox" id="chkExp1"> Include Expansion 1 (6th Action Card + 8 Sectors)
             </label>
             <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
@@ -1394,7 +1435,8 @@
         spaceCards: [],
         actionCards: [],
 
-        // Step 2 Swap
+        // Step 1 Shuffle & Step 2 Swap
+        isShufflingDeck: false,
         firstSelectedSlot: null,
         lastSwapPair: null,
         playDealAnimation: false,
@@ -1458,7 +1500,7 @@
     }
 
     function getRequiredCatchCount(tier) {
-        return 3;
+        return tier === 'star' ? 2 : 3;
     }
 
     function getTierPlural(tier) {
@@ -1466,7 +1508,7 @@
         if (tier === 'planet') return 'Planets';
         if (tier === 'star') return 'Stars';
         if (tier === 'galaxy') return 'Galaxies';
-        return 'Catches';
+        return 'Stars';
     }
 
     let toastTimer = null;
@@ -1516,12 +1558,8 @@
         resetBoardInteractiveModes();
         document.getElementById('cardUpgradeOverlay').classList.remove('active');
 
-        G.actionCards = shuffleArray(G.actionCards).map(c => ({
-            ...c,
-            chosenHalf: Math.random() < 0.5 ? 'top' : 'bottom'
-        }));
-
-        G.phase = 'swap';
+        G.phase = 'shuffle';
+        G.isShufflingDeck = false;
         G.firstSelectedSlot = null;
         G.lastSwapPair = null;
         G.programmingIndex = 0;
@@ -1531,15 +1569,46 @@
         G.activeFuelPool = 0;
         G.bonusFuel = 0;
         G.autoStepping = false;
-        G.playDealAnimation = true;
+        G.playDealAnimation = false;
 
         updateHeaderStats();
-        updateRoundStepper(2);
+        updateRoundStepper(1);
         renderGalaxyBoard();
         renderActionColumn();
         renderRewardsTray();
         updateTabletopHud();
-        G.playDealAnimation = false;
+    }
+
+    function triggerShuffleAndDeal() {
+        if (G.phase !== 'shuffle' || G.isShufflingDeck) return;
+        G.isShufflingDeck = true;
+        renderActionColumn();
+        updateTabletopHud();
+
+        // Play rapid riffle shuffle sounds
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => playSound(i % 2 === 0 ? 'rotate' : 'click'), i * 110);
+        }
+
+        setTimeout(() => {
+            G.isShufflingDeck = false;
+            G.actionCards = shuffleArray(G.actionCards).map(c => ({
+                ...c,
+                chosenHalf: Math.random() < 0.5 ? 'top' : 'bottom'
+            }));
+            G.phase = 'swap';
+            G.playDealAnimation = true;
+
+            // Play staggered card-deal sounds as each card flies into the column
+            G.actionCards.forEach((_, idx) => {
+                setTimeout(() => playSound('click'), idx * 80);
+            });
+
+            updateRoundStepper(2);
+            renderActionColumn();
+            updateTabletopHud();
+            G.playDealAnimation = false;
+        }, 640);
     }
 
     function resetBoardInteractiveModes() {
@@ -1603,7 +1672,10 @@
         const stackBar = document.getElementById('stackActionBar');
         stackBar.innerHTML = '';
 
-        if (G.phase === 'swap') {
+        if (G.phase === 'shuffle') {
+            updateRoundStepper(1);
+            setTabletopPrompt('', []);
+        } else if (G.phase === 'swap') {
             updateRoundStepper(2);
             if (G.lastSwapPair) {
                 const undoBtn = document.createElement('button');
@@ -1675,7 +1747,14 @@
             if (isLast && G.phase !== 'program') classes.push('is-last-card');
 
             // Overlapping behavior per phase
-            if (G.phase === 'swap') {
+            if (G.phase === 'shuffle') {
+                classes.push('overlap-deck');
+                const tilts = [-6, 4, -3, 5, -1.5, 2.5];
+                cardEl.style.setProperty('--deck-tilt', `${tilts[idx % tilts.length]}deg`);
+                if (G.isShufflingDeck) {
+                    classes.push(idx % 2 === 0 ? 'shuffling-even' : 'shuffling-odd');
+                }
+            } else if (G.phase === 'swap') {
                 classes.push('overlap-swap');
                 if (G.firstSelectedSlot === idx) classes.push('selected-for-swap');
                 if (G.lastSwapPair && (G.lastSwapPair[0] === idx || G.lastSwapPair[1] === idx)) {
@@ -1683,7 +1762,10 @@
                 }
                 if (G.playDealAnimation) {
                     classes.push('deal-anim');
-                    cardEl.style.animationDelay = `${idx * 75}ms`;
+                    const midIdx = (G.actionCards.length - 1) / 2;
+                    const fromY = Math.round((midIdx - idx) * 116);
+                    cardEl.style.setProperty('--deal-from-y', `${fromY}px`);
+                    cardEl.style.animationDelay = `${idx * 85}ms`;
                 }
             } else if (G.phase === 'program') {
                 if (G.programmingIndex === idx) {
@@ -1759,6 +1841,14 @@
                 cardEl.appendChild(botZone);
             }
 
+            // In Step 1 (Shuffle): Interactive Shuffle badge on the top card of the deck
+            if (G.phase === 'shuffle' && isLast) {
+                const badge = document.createElement('div');
+                badge.className = 'deck-shuffle-overlay-badge';
+                badge.innerHTML = G.isShufflingDeck ? '🔀 Shuffling...' : `🔀 Shuffle (Round ${G.round})`;
+                cardEl.appendChild(badge);
+            }
+
             // In Step 4 (Execute): Physical Purple Star Token sitting on the active card half!
             if (G.phase === 'execute' && idx === G.executionIndex) {
                 const star = document.createElement('div');
@@ -1774,6 +1864,10 @@
     }
 
     function handlePhysicalCardClick(idx) {
+        if (G.phase === 'shuffle') {
+            triggerShuffleAndDeal();
+            return;
+        }
         if (G.phase === 'swap') {
             playSound('click');
             if (G.firstSelectedSlot === null) {
@@ -2706,6 +2800,20 @@
                     row.appendChild(b1);
                     row.appendChild(b2);
                     widget.appendChild(row);
+                } else if (ent.rewardType === 'rotate_plus_swap') {
+                    const row = document.createElement('div');
+                    row.className = 'reward-choice-row';
+                    const b1 = document.createElement('button');
+                    b1.className = 'reward-use-btn';
+                    b1.textContent = '🔄 Rotate 1st';
+                    b1.onclick = () => executeCaughtReward(sector, 'rotate_then_swap');
+                    const b2 = document.createElement('button');
+                    b2.className = 'reward-use-btn';
+                    b2.textContent = '⇄ Swap 1st';
+                    b2.onclick = () => executeCaughtReward(sector, 'swap_then_rotate');
+                    row.appendChild(b1);
+                    row.appendChild(b2);
+                    widget.appendChild(row);
                 } else {
                     const btn = document.createElement('button');
                     btn.className = 'reward-use-btn';
@@ -2740,6 +2848,12 @@
             setTabletopPrompt(`Use <b>${ent.name}</b> Reward (tucks card behind Hook):`, [
                 { label: '🔄 Rotate Any', primary: true, action: () => executeCaughtReward(sector, 'rotate_any') },
                 { label: '⇄ Swap Cards', primary: true, action: () => executeCaughtReward(sector, 'swap') },
+                { label: 'Cancel', action: () => updateTabletopHud() }
+            ]);
+        } else if (ent.rewardType === 'rotate_plus_swap') {
+            setTabletopPrompt(`Use <b>${ent.name}</b> Reward (do BOTH in any order):`, [
+                { label: '🔄 Rotate First, Then Swap', primary: true, action: () => executeCaughtReward(sector, 'rotate_then_swap') },
+                { label: '⇄ Swap First, Then Rotate', primary: true, action: () => executeCaughtReward(sector, 'swap_then_rotate') },
                 { label: 'Cancel', action: () => updateTabletopHud() }
             ]);
         } else {
@@ -2794,9 +2908,13 @@
                 renderGalaxyBoard();
                 updateTabletopHud();
             });
-        } else if (chosenRewardType === 'rotate_plus_swap') {
+        } else if (chosenRewardType === 'rotate_plus_swap' || chosenRewardType === 'rotate_then_swap') {
             promptRotateAnyDirection(1, () => {
                 startShipSwapMode(() => updateTabletopHud());
+            });
+        } else if (chosenRewardType === 'swap_then_rotate') {
+            startShipSwapMode(() => {
+                promptRotateAnyDirection(1, () => updateTabletopHud());
             });
         }
     }
@@ -2807,18 +2925,20 @@
         G.activeFuelPool = 0;
         G.bonusFuel = 0;
 
-        // Step 5: Release catches that do not match target tier
+        // Step 5: Release ALL catches at the end of every round (cards stay observed pointing inward)
+        let releasedCount = 0;
         G.spaceCards.forEach((sp, idx) => {
             if (sp.isCaught) {
-                const ent = sp.observedEnd === 'top' ? sp.top : sp.bottom;
-                if (ent.type !== G.tier) {
-                    sp.isCaught = false;
-                    sp.rewardTucked = false;
-                    G.shipCards[idx].anchored = false;
-                    G.shipCards[idx].holdingCatch = null;
-                }
+                sp.isCaught = false;
+                sp.rewardTucked = false;
+                G.shipCards[idx].anchored = false;
+                G.shipCards[idx].holdingCatch = null;
+                releasedCount++;
             }
         });
+        if (releasedCount > 0) {
+            showToast(`Round end: Released ${releasedCount} catch${releasedCount > 1 ? 'es' : ''} back to outer orbit!`);
+        }
 
         updateHeaderStats();
         renderGalaxyBoard();
@@ -2889,7 +3009,6 @@
     // Start game on load
     window.addEventListener('DOMContentLoaded', () => {
         initExpedition();
-        // Immediately show the Tier selection modal so player can choose their tier before starting!
         document.getElementById('newGameModal').classList.add('active');
     });
     </script>
