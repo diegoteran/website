@@ -18,7 +18,7 @@
 
 
 
-    <title>GalaxSea — Complete Rulebook & Cards (18-Card Mint Tin) | Diego Teran</title>
+    <title>GalaxSea — Complete Rulebook & Cards (Reader Edition) | Diego Teran</title>
 
 
 
@@ -1292,14 +1292,14 @@
 
 
         
-        /* ── Reader / Booklet View ──────────────── */
+        /* ── Reader View ────────────────────────── */
         .booklet-nav {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 24px;
+            margin: 16px 0 24px 0;
         }
         .booklet-cards-container {
             display: flex;
@@ -1307,17 +1307,6 @@
             gap: 28px;
             flex-wrap: wrap;
             margin: 0 auto;
-        }
-        .view-toggle {
-            display: inline-flex;
-            border: 2px solid var(--ink-dark);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .view-toggle .btn {
-            border: none;
-            border-radius: 0;
-            padding: 7px 14px;
         }
         @media (max-width: 900px) {
             header .inner {
@@ -1385,65 +1374,13 @@
             <div class="controls">
                 <a href="../boardgames.html" class="btn btn-ink" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">← Board Games</a>
                 <a href="game.html" class="btn btn-export" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🎮 Play Game</a>
-                <div class="view-toggle">
-                    <button class="btn btn-ink" id="btnGridView">Grid View</button>
-                    <button class="btn btn-parchment" id="btnBookletView">📖 Reader View</button>
+                <div class="zoom-info" style="margin-left: 8px;">
+                    Zoom: <span id="zoomLabel">50%</span>
                 </div>
-
-
-
-                <button class="btn btn-parchment" id="toggleGuides">Show Guides</button>
-
-
-
-                <button class="btn btn-parchment" id="toggleTemplate">Overlay TGC Template</button>
-
-
-
-                <button class="btn btn-verify" id="btnVerifySafeZone">✓ Verify Safe Zone</button>
-
-
-
-                <div class="status-badge" id="safeZoneBadge">✓ All text 100% inside safe zone</div>
-
-
-
-                <div class="zoom-info">
-
-
-
-                    Zoom: <span id="zoomLabel">33%</span>
-
-
-
-                </div>
-
-
-
-                <button class="btn btn-parchment" id="zoomOut">−</button>
-
-
-
-                <button class="btn btn-parchment" id="zoomIn">+</button>
-
-
-
-                <button class="btn btn-export" id="exportAll">⬇ Export All 16 PNGs (TheGameCrafter Format)</button>
-
-
-
-                <button class="btn btn-ink" id="exportSingle" style="display:none">⬇ Export Selected Card</button>
-
-
-
+                <button class="btn btn-parchment" id="zoomOut" title="Zoom Out">−</button>
+                <button class="btn btn-parchment" id="zoomIn" title="Zoom In">+</button>
             </div>
-
-
-
         </div>
-
-
-
     </header>
 
 
@@ -1549,27 +1486,27 @@
 
 
     
-    <!-- ── Reader / Booklet View Container ── -->
-    <div id="bookletView" style="display:none; max-width: 1750px; margin: 0 auto; padding: 24px 12px; text-align: center;">
+    <!-- ── Reader View Container (The Sole Interactive Display) ── -->
+    <div id="bookletView" style="max-width: 1750px; margin: 0 auto; padding: 20px 12px; text-align: center;">
         <div class="booklet-nav">
-            <button class="btn btn-parchment" id="prevCard">← Previous Card</button>
-            <span id="cardIndicator" style="font-weight: 700; font-size: 15px; color: var(--ink-dark); min-width: 130px;">Card 1 of 8</span>
-            <button class="btn btn-parchment" id="nextCard">Next Card →</button>
-            <select id="cardSelect" class="btn btn-parchment" style="padding: 7px 12px; font-weight: 600; cursor: pointer;">
-                <option value="0">Card 1: Intro & Setup (Base)</option>
-                <option value="1">Card 2: Round Overview (Base)</option>
-                <option value="2">Card 3: Sequences & Movement (Base)</option>
-                <option value="3">Card 4: Observe & Hook (Base)</option>
+            <button class="btn btn-parchment" id="prevCard" style="padding: 8px 16px; font-size: 13px;">← Previous Card</button>
+            <span id="cardIndicator" style="font-weight: 700; font-size: 16px; color: var(--ink-dark); min-width: 130px;">Card 1 of 8</span>
+            <button class="btn btn-parchment" id="nextCard" style="padding: 8px 16px; font-size: 13px;">Next Card →</button>
+            <select id="cardSelect" class="btn btn-parchment" style="padding: 8px 14px; font-weight: 600; cursor: pointer; font-size: 13px;">
+                <option value="0">Card 1: Introduction & Setup (Base)</option>
+                <option value="1">Card 2: Round Overview & Action Stack (Base)</option>
+                <option value="2">Card 3: Action Sequences & Ship Movement (Base)</option>
+                <option value="3">Card 4: Observing & Capturing (Base)</option>
                 <option value="4">Card 5: End Game & Glossary (Base)</option>
                 <option value="5">Card 6: Edge of the Universe (Expansion 1)</option>
                 <option value="6">Card 7: Cosmic Hazards (Expansion 2)</option>
-                <option value="7">Card 8: Clarifications & Lore</option>
+                <option value="7">Card 8: Clarifications & The Origin of GalaxSea</option>
             </select>
         </div>
         <div id="bookletCards" class="booklet-cards-container"></div>
     </div>
 
-    <main>
+    <main id="rawCardStore" style="display:none !important;">
 
 
 
@@ -2856,1080 +2793,82 @@
 
 
     <script>
-
-
-
     (function() {
-
-
-
-        // ── Inject SVG Guide and Template Image onto each card ──
-
-
-
-        const guideTemplate = document.getElementById('guideSvgTemplate');
-
-
-
-        document.querySelectorAll('.mint-card').forEach(card => {
-
-
-
-            const clone = guideTemplate.content.cloneNode(true);
-
-
-
-            card.insertBefore(clone, card.firstChild);
-
-
-
-        });
-
-
-
-
-
-
-
-        // ── Zoom Controls ─────────────────────────
-
-
-
-        const zoomSteps = [0.25, 0.33, 0.38, 0.5, 0.66, 0.75, 1.0];
-        let zoomIndex = 2; // start at 38% for ideal 4-card desktop layout
-        const grid = document.getElementById('cardGrid');
-        const zoomLabel = document.getElementById('zoomLabel');
-
-        function applyZoom() {
-            const s = zoomSteps[zoomIndex];
-            grid.style.zoom = s;
-            if (!grid.style.zoom) {
-                grid.style.transform = `scale(${s})`;
-                grid.style.transformOrigin = 'top center';
-            }
-            zoomLabel.textContent = Math.round(s * 100) + '%';
-        }
-        applyZoom();
-
-
-
-
-
-
-
-        document.getElementById('zoomIn').addEventListener('click', () => {
-
-
-
-            if (zoomIndex < zoomSteps.length - 1) { zoomIndex++; applyZoom(); }
-
-
-
-        });
-
-
-
-        document.getElementById('zoomOut').addEventListener('click', () => {
-
-
-
-            if (zoomIndex > 0) { zoomIndex--; applyZoom(); }
-
-
-
-        });
-
-
-
-
-
-
-
-        // ── Guide Toggle ──────────────────────────
-
-
-
-        const guideBtn = document.getElementById('toggleGuides');
-
-
-
-        let showGuides = false;
-
-
-
-        guideBtn.addEventListener('click', () => {
-
-
-
-            showGuides = !showGuides;
-
-
-
-            document.querySelectorAll('.mint-card').forEach(c => {
-
-
-
-                c.classList.toggle('show-guides', showGuides);
-
-
-
-            });
-
-
-
-            guideBtn.textContent = showGuides ? 'Hide Guides' : 'Show Guides';
-
-
-
-            guideBtn.classList.toggle('btn-ink', showGuides);
-
-
-
-            guideBtn.classList.toggle('btn-parchment', !showGuides);
-
-
-
-        });
-
-
-
-
-
-
-
-        // ── Template Image Overlay Toggle ─────────
-
-
-
-        const templateBtn = document.getElementById('toggleTemplate');
-
-
-
-        let showTemplate = false;
-
-
-
-        templateBtn.addEventListener('click', () => {
-
-
-
-            showTemplate = !showTemplate;
-
-
-
-            document.querySelectorAll('.mint-card').forEach(c => {
-
-
-
-                c.classList.toggle('show-template', showTemplate);
-
-
-
-            });
-
-
-
-            templateBtn.textContent = showTemplate ? 'Hide TGC Template' : 'Overlay TGC Template';
-
-
-
-            templateBtn.classList.toggle('btn-ink', showTemplate);
-
-
-
-            templateBtn.classList.toggle('btn-parchment', !showTemplate);
-
-
-
-        });
-
-
-
-
-
-
-
-        // ── Safe Zone Mathematical Verifier ───────
-
-
-
-        function isPointInSafeZone(x, y) {
-
-
-
-            const XL = 103, XR = 647, YT = 84, YB = 1041, R = 99;
-
-
-
-            if (x < XL || x > XR || y < YT || y > YB) return false;
-
-
-
-            // Top-Left corner arc
-
-
-
-            if (x < XL + R && y < YT + R) {
-
-
-
-                const dx = x - (XL + R), dy = y - (YT + R);
-
-
-
-                return (dx * dx + dy * dy) <= (R * R);
-
-
-
-            }
-
-
-
-            // Top-Right corner arc
-
-
-
-            if (x > XR - R && y < YT + R) {
-
-
-
-                const dx = x - (XR - R), dy = y - (YT + R);
-
-
-
-                return (dx * dx + dy * dy) <= (R * R);
-
-
-
-            }
-
-
-
-            // Bottom-Left corner arc
-
-
-
-            if (x < XL + R && y > YB - R) {
-
-
-
-                const dx = x - (XL + R), dy = y - (YB - R);
-
-
-
-                return (dx * dx + dy * dy) <= (R * R);
-
-
-
-            }
-
-
-
-            // Bottom-Right corner arc
-
-
-
-            if (x > XR - R && y > YB - R) {
-
-
-
-                const dx = x - (XR - R), dy = y - (YB - R);
-
-
-
-                return (dx * dx + dy * dy) <= (R * R);
-
-
-
-            }
-
-
-
-            return true;
-
-
-
-        }
-
-
-
-
-
-
-
-        function isRectInSafeZone(rect, cardRect) {
-
-
-
-            const x1 = rect.left - cardRect.left;
-
-
-
-            const x2 = rect.right - cardRect.left;
-
-
-
-            const y1 = rect.top - cardRect.top;
-
-
-
-            const y2 = rect.bottom - cardRect.top;
-
-
-
-
-
-
-
-            return isPointInSafeZone(x1, y1) &&
-
-
-
-                   isPointInSafeZone(x2, y1) &&
-
-
-
-                   isPointInSafeZone(x1, y2) &&
-
-
-
-                   isPointInSafeZone(x2, y2);
-
-
-
-        }
-
-
-
-
-
-
-
-        const verifyBtn = document.getElementById('btnVerifySafeZone');
-
-
-
-        const badge = document.getElementById('safeZoneBadge');
-
-
-
-
-
-
-
-        verifyBtn.addEventListener('click', () => {
-
-
-
-            const prevTransform = grid.style.transform;
-
-
-
-            grid.style.transform = 'scale(1)';
-
-
-
-
-
-
-
-            let allPass = true;
-
-
-
-            let checkedCount = 0;
-
-
-
-            let violations = [];
-
-
-
-
-
-
-
-            const cards = document.querySelectorAll('.mint-card');
-
-
-
-            cards.forEach(card => {
-
-
-
-                const cardRect = card.getBoundingClientRect();
-
-
-
-                const content = card.querySelector('.card-content');
-
-
-
-                const elements = content.querySelectorAll('h1, h2, h3, p, li, span, svg, img, .page-footer, .divider, .callout, .callout-box');
-
-
-
-                elements.forEach(el => {
-
-
-
-                    const rect = el.getBoundingClientRect();
-
-
-
-                    if (rect.width > 0 && rect.height > 0) {
-
-
-
-                        checkedCount++;
-
-
-
-                        if (!isRectInSafeZone(rect, cardRect)) {
-
-
-
-                            allPass = false;
-
-
-
-                            violations.push({ card: card.getAttribute('data-filename'), tag: el.tagName, text: (el.textContent || el.alt || '').slice(0, 20) });
-
-
-
-                            el.style.outline = '2px solid red';
-
-
-
-                        } else {
-
-
-
-                            el.style.outline = 'none';
-
-
-
-                        }
-
-
-
-                    }
-
-
-
-                });
-
-
-
-            });
-
-
-
-
-
-
-
-            grid.style.transform = prevTransform;
-
-
-
-
-
-
-
-            badge.style.display = 'inline-flex';
-
-
-
-            if (allPass) {
-
-
-
-                badge.style.background = '#e6f4ea';
-
-
-
-                badge.style.color = '#137333';
-
-
-
-                badge.style.borderColor = '#1e5627';
-
-
-
-                badge.textContent = `✓ All ${checkedCount} elements across 16 pages are 100% inside safe zone!`;
-
-
-
-            } else {
-
-
-
-                badge.style.background = '#fce8e6';
-
-
-
-                badge.style.color = '#c5221f';
-
-
-
-                badge.style.borderColor = '#c5221f';
-
-
-
-                badge.textContent = `⚠ ${violations.length} elements outside safe zone`;
-
-
-
-                console.warn('Safe zone violations:', violations);
-
-
-
-            }
-
-
-
-        });
-
-
-
-
-
-
-
-        // ── Card Export ───────────────────────────
-
-
-
-        async function exportCard(cardEl) {
-
-
-
-            const hadGuides = cardEl.classList.contains('show-guides');
-
-
-
-            const hadTemplate = cardEl.classList.contains('show-template');
-
-
-
-            cardEl.classList.remove('show-guides');
-
-
-
-            cardEl.classList.remove('show-template');
-
-
-
-
-
-
-
-            const prevTransform = grid.style.transform;
-
-
-
-            grid.style.transform = 'scale(1)';
-
-
-
-
-
-
-
-            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-
-
-
-
-
-
-
-            const canvas = await html2canvas(cardEl, {
-
-
-
-                width: 750,
-
-
-
-                height: 1125,
-
-
-
-                scale: 1, // native 300 DPI canvas
-
-
-
-                useCORS: true,
-
-
-
-                backgroundColor: '#eace9f',
-
-
-
-                logging: false,
-
-
-
-            });
-
-
-
-
-
-
-
-            grid.style.transform = prevTransform;
-
-
-
-            if (hadGuides) cardEl.classList.add('show-guides');
-
-
-
-            if (hadTemplate) cardEl.classList.add('show-template');
-
-
-
-
-
-
-
-            return canvas;
-
-
-
-        }
-
-
-
-        window.exportCard = exportCard;
-
-
-
-
-
-
-
-        function downloadCanvas(canvas, filename) {
-
-
-
-            const link = document.createElement('a');
-
-
-
-            link.download = filename + '.png';
-
-
-
-            link.href = canvas.toDataURL('image/png');
-
-
-
-            link.click();
-
-
-
-        }
-
-
-
-
-
-
-
-        // Export All 16 Cards
-
-
-
-        document.getElementById('exportAll').addEventListener('click', async () => {
-
-
-
-            const overlay = document.getElementById('exportOverlay');
-
-
-
-            const bar = document.getElementById('exportBar');
-
-
-
-            const barContainer = document.getElementById('exportBarContainer');
-
-
-
-            const text = document.getElementById('exportText');
-
-
-
-            const errorMsg = document.getElementById('exportErrorMsg');
-
-
-
-            const closeBtn = document.getElementById('exportCloseBtn');
-
-
-
-
-
-
-
-            overlay.classList.add('active');
-
-
-
-            errorMsg.style.display = 'none';
-
-
-
-            closeBtn.style.display = 'none';
-
-
-
-            barContainer.style.display = 'block';
-
-
-
-
-
-
-
-            const cards = document.querySelectorAll('.mint-card[data-filename]');
-
-
-
-            try {
-
-
-
-                for (let i = 0; i < cards.length; i++) {
-
-
-
-                    const card = cards[i];
-
-
-
-                    const filename = card.getAttribute('data-filename');
-
-
-
-                    text.textContent = `Exporting ${filename} (${i + 1}/${cards.length})...`;
-
-
-
-                    bar.style.width = ((i + 1) / cards.length * 100) + '%';
-
-
-
-
-
-
-
-                    const canvas = await exportCard(card);
-
-
-
-                    downloadCanvas(canvas, filename);
-
-
-
-
-
-
-
-                    await new Promise(r => setTimeout(r, 350));
-
-
-
-                }
-
-
-
-
-
-
-
-                text.textContent = `Done! All ${cards.length} card faces exported.`;
-
-
-
-                setTimeout(() => overlay.classList.remove('active'), 1800);
-
-
-
-            } catch (err) {
-
-
-
-                console.error('Export error:', err);
-
-
-
-                text.textContent = 'Export Notice';
-
-
-
-                barContainer.style.display = 'none';
-
-
-
-                errorMsg.style.display = 'block';
-
-
-
-                closeBtn.style.display = 'inline-block';
-
-
-
-                closeBtn.onclick = () => overlay.classList.remove('active');
-
-
-
-
-
-
-
-                if (window.location.protocol === 'file:') {
-
-
-
-                    errorMsg.innerHTML = `
-
-
-
-                        <div style="background: #fce8e6; border: 1.5px solid #c5221f; border-radius: 8px; padding: 12px; color: #50341f;">
-
-
-
-                            <div style="font-weight: 700; color: #c5221f; margin-bottom: 6px;">⚠️ Local File Security (file://)</div>
-
-
-
-                            Modern browsers block web pages from directly downloading canvas images with local assets due to origin security policies.<br><br>
-
-
-
-                            <b>Instant Solution:</b><br>
-
-
-
-                            Double-click the included <b><code>export_cards.bat</code></b> (or run <code>python export_all_cards.py</code>) in your project directory. It renders and saves all 16 PNGs at native 300 DPI directly into the <b><code>Rulebook_Cards/</code></b> folder in 3 seconds!
-
-
-
-                        </div>
-
-
-
-                    `;
-
-
-
-                } else {
-
-
-
-                    errorMsg.innerHTML = `
-
-
-
-                        <div style="background: #fce8e6; border: 1.5px solid #c5221f; border-radius: 8px; padding: 12px; color: #50341f;">
-
-
-
-                            <b>Error:</b> ${err.message || err.toString()}<br><br>
-
-
-
-                            Please run <code>python export_all_cards.py</code> to export all cards directly.
-
-
-
-                        </div>
-
-
-
-                    `;
-
-
-
-                }
-
-
-
-            }
-
-
-
-        });
-
-
-
-
-
-
-
-        // Click any card to select for single export
-
-
-
-        document.querySelectorAll('.mint-card').forEach(card => {
-
-
-
-            card.addEventListener('click', () => {
-
-
-
-                document.querySelectorAll('.mint-card').forEach(c => c.style.outline = 'none');
-
-
-
-                card.style.outline = '4px solid #2d7d3a';
-
-
-
-
-
-
-
-                const btn = document.getElementById('exportSingle');
-
-
-
-                btn.style.display = 'inline-block';
-
-
-
-                const filename = card.getAttribute('data-filename');
-
-
-
-                btn.textContent = `⬇ Export ${filename}.png`;
-
-
-
-                btn.onclick = async () => {
-
-
-
-                    try {
-
-
-
-                        const canvas = await exportCard(card);
-
-
-
-                        downloadCanvas(canvas, filename);
-
-
-
-                    } catch (err) {
-
-
-
-                        alert(`Browser security blocked direct export on file:// protocol.
-
-
-
-Please run 'export_cards.bat' or 'python export_all_cards.py' to export all 16 cards cleanly!`);
-
-
-
-                    }
-
-
-
-                };
-
-
-
-            });
-
-
-
-        });
-        // ── Reader / Booklet View Controller ──────
-        const btnGridView = document.getElementById('btnGridView');
-        const btnBookletView = document.getElementById('btnBookletView');
-        const mainGrid = document.querySelector('main');
-        const bookletView = document.getElementById('bookletView');
+        // ── Reader View Controller ────────────────
         const bookletCards = document.getElementById('bookletCards');
         const prevCardBtn = document.getElementById('prevCard');
         const nextCardBtn = document.getElementById('nextCard');
         const cardIndicator = document.getElementById('cardIndicator');
         const cardSelect = document.getElementById('cardSelect');
+        const zoomLabel = document.getElementById('zoomLabel');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
 
         let currentCardIdx = 0;
         const totalCards = 8;
-        const cardWrappers = document.querySelectorAll('.card-grid > .card-wrapper');
+        const cardWrappers = document.querySelectorAll('#rawCardStore .card-grid > .card-wrapper');
 
-        function showBooklet(idx) {
+        // Zoom steps for reader cards
+        const zoomSteps = [0.35, 0.42, 0.50, 0.60, 0.75, 1.0];
+        let zoomIndex = 2; // start at 50%
+
+        function applyZoom() {
+            const s = zoomSteps[zoomIndex];
+            const cards = bookletCards.querySelectorAll('.card-wrapper');
+            cards.forEach(c => {
+                c.style.zoom = s;
+                if (!c.style.zoom) {
+                    c.style.transform = `scale(${s})`;
+                    c.style.transformOrigin = 'top center';
+                }
+            });
+            zoomLabel.textContent = Math.round(s * 100) + '%';
+        }
+
+        function showCard(idx) {
             currentCardIdx = Math.max(0, Math.min(totalCards - 1, idx));
             bookletCards.innerHTML = '';
-            
+
             const sideA = cardWrappers[currentCardIdx * 2].cloneNode(true);
             const sideB = cardWrappers[currentCardIdx * 2 + 1].cloneNode(true);
-            
-            sideA.style.zoom = '0.48';
-            sideB.style.zoom = '0.48';
-            if (!sideA.style.zoom) {
-                sideA.style.transform = 'scale(0.48)';
-                sideA.style.transformOrigin = 'top center';
-                sideB.style.transform = 'scale(0.48)';
-                sideB.style.transformOrigin = 'top center';
-            }
-            
+
             bookletCards.appendChild(sideA);
             bookletCards.appendChild(sideB);
-            
+
+            applyZoom();
+
             cardIndicator.textContent = `Card ${currentCardIdx + 1} of ${totalCards}`;
             cardSelect.value = currentCardIdx;
             prevCardBtn.disabled = currentCardIdx === 0;
             nextCardBtn.disabled = currentCardIdx === totalCards - 1;
         }
 
-        btnGridView.addEventListener('click', () => {
-            mainGrid.style.display = 'block';
-            bookletView.style.display = 'none';
-            btnGridView.className = 'btn btn-ink';
-            btnBookletView.className = 'btn btn-parchment';
-        });
+        prevCardBtn.addEventListener('click', () => showCard(currentCardIdx - 1));
+        nextCardBtn.addEventListener('click', () => showCard(currentCardIdx + 1));
+        cardSelect.addEventListener('change', (e) => showCard(parseInt(e.target.value)));
 
-        btnBookletView.addEventListener('click', () => {
-            mainGrid.style.display = 'none';
-            bookletView.style.display = 'block';
-            btnBookletView.className = 'btn btn-ink';
-            btnGridView.className = 'btn btn-parchment';
-            showBooklet(currentCardIdx);
-        });
-
-        prevCardBtn.addEventListener('click', () => showBooklet(currentCardIdx - 1));
-        nextCardBtn.addEventListener('click', () => showBooklet(currentCardIdx + 1));
-        cardSelect.addEventListener('change', (e) => showBooklet(parseInt(e.target.value)));
-
-        window.addEventListener('keydown', (e) => {
-            if (bookletView.style.display === 'block') {
-                if (e.key === 'ArrowLeft') showBooklet(currentCardIdx - 1);
-                if (e.key === 'ArrowRight') showBooklet(currentCardIdx + 1);
+        zoomInBtn.addEventListener('click', () => {
+            if (zoomIndex < zoomSteps.length - 1) {
+                zoomIndex++;
+                applyZoom();
             }
         });
 
+        zoomOutBtn.addEventListener('click', () => {
+            if (zoomIndex > 0) {
+                zoomIndex--;
+                applyZoom();
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') showCard(currentCardIdx - 1);
+            if (e.key === 'ArrowRight') showCard(currentCardIdx + 1);
+        });
+
+        // Initialize display with Card 1
+        showCard(0);
     })();
     </script>
-
-
-
 </body>
-
-
-
 </html>
-
-
-

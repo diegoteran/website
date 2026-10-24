@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GalaxSea — Play Interactive Tabletop Edition | Diego Teran</title>
+    <title>GalaxSea — Tabletop Card Edition</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1007,9 +1007,12 @@
             margin-bottom: 12px;
             font-size: 20px;
         }
+        @media (max-width: 650px) {
+            .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
         .tier-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin: 14px 0;
         }
@@ -1138,22 +1141,31 @@
             <h2>New Expedition</h2>
             <div class="tier-grid" id="tierSelectorGrid">
                 <div class="tier-option" data-tier="moon">
-                    <div style="font-size:20px;">🌙</div>
-                    <div style="font-weight:800; margin-top:4px;">3 Moons</div>
-                    <div style="font-size:11px; opacity:0.75;">Standard</div>
+                    <div style="font-size:22px;">🌙</div>
+                    <div style="font-weight:800; margin-top:4px;">Local Tier</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Moons</div>
+                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Tutorial / Easy</div>
                 </div>
                 <div class="tier-option selected" data-tier="planet">
-                    <div style="font-size:20px;">🪐</div>
-                    <div style="font-weight:800; margin-top:4px;">3 Planets</div>
-                    <div style="font-size:11px; opacity:0.75;">Challenging</div>
+                    <div style="font-size:22px;">🪐</div>
+                    <div style="font-weight:800; margin-top:4px;">System Tier</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Planets</div>
+                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Standard</div>
                 </div>
                 <div class="tier-option" data-tier="star">
-                    <div style="font-size:20px;">☀️</div>
-                    <div style="font-weight:800; margin-top:4px;">2 Stars</div>
-                    <div style="font-size:11px; opacity:0.75;">Expert</div>
+                    <div style="font-size:22px;">⭐</div>
+                    <div style="font-weight:800; margin-top:4px;">Stellar Tier</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Stars</div>
+                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Challenging</div>
+                </div>
+                <div class="tier-option" data-tier="galaxy">
+                    <div style="font-size:22px;">🌀</div>
+                    <div style="font-weight:800; margin-top:4px;">Galactic Tier</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--brass-bright);">3 Galaxies</div>
+                    <div style="font-size:10px; opacity:0.75; margin-top:2px;">Expert</div>
                 </div>
             </div>
-            <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
+            <label<label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
                 <input type="checkbox" id="chkExp1"> Include Expansion 1 (6th Action Card + 8 Sectors)
             </label>
             <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
@@ -1446,13 +1458,15 @@
     }
 
     function getRequiredCatchCount(tier) {
-        return tier === 'star' ? 2 : 3;
+        return 3;
     }
 
     function getTierPlural(tier) {
         if (tier === 'moon') return 'Moons';
         if (tier === 'planet') return 'Planets';
-        return 'Stars';
+        if (tier === 'star') return 'Stars';
+        if (tier === 'galaxy') return 'Galaxies';
+        return 'Catches';
     }
 
     let toastTimer = null;
@@ -2843,6 +2857,12 @@
     // ── Modal Wiring ─────────────────────────────────────────────────────
     document.getElementById('btnOpenRules').onclick = () => document.getElementById('rulesModal').classList.add('active');
     document.getElementById('btnCloseRules').onclick = () => document.getElementById('rulesModal').classList.remove('active');
+    const chipCatchesEl = document.getElementById('chipCatches');
+    if (chipCatchesEl) {
+        chipCatchesEl.style.cursor = 'pointer';
+        chipCatchesEl.title = 'Click to choose Target Tier or start new game';
+        chipCatchesEl.onclick = () => document.getElementById('newGameModal').classList.add('active');
+    }
     document.getElementById('btnOpenNewGame').onclick = () => document.getElementById('newGameModal').classList.add('active');
     document.getElementById('btnCancelNewGame').onclick = () => document.getElementById('newGameModal').classList.remove('active');
 
@@ -2869,6 +2889,8 @@
     // Start game on load
     window.addEventListener('DOMContentLoaded', () => {
         initExpedition();
+        // Immediately show the Tier selection modal so player can choose their tier before starting!
+        document.getElementById('newGameModal').classList.add('active');
     });
     </script>
 </body>
