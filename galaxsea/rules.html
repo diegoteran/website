@@ -86,19 +86,19 @@
 
 
 
-            --content-top: 135px;
+            --content-top: 94px;
 
 
 
-            --content-bottom: 100px;
+            --content-bottom: 86px;
 
 
 
-            --content-left: 135px;
+            --content-left: 108px;
 
 
 
-            --content-right: 135px;
+            --content-right: 108px;
 
 
 
@@ -578,182 +578,82 @@
 
 
 
+        /* Header container constrained to flat safe zone between corner arcs */
         .card-title {
-
-
-
             font-family: 'Seaweed Script', cursive;
-
-
-
-            font-size: 54px;
-
-
-
+            font-size: 56px;
             line-height: 1;
-
-
-
             color: var(--ink-dark);
-
-
-
             text-align: center;
-
-
-
+            width: 380px;
+            margin: 0 auto;
         }
-
-
-
         .section-title {
-
-
-
             font-family: 'Seaweed Script', cursive;
-
-
-
-            font-size: 42px;
-
-
-
+            font-size: 46px;
             line-height: 1.05;
-
-
-
             color: var(--ink-dark);
-
-
-
             border-bottom: 2.5px solid var(--ink-dark);
-
-
-
             padding-bottom: 3px;
-
-
-
-            margin-top: 12px;
-
-
-
-            margin-bottom: 6px;
-
-
-
+            margin: 0 auto 8px auto;
+            width: 380px;
+            text-align: center;
         }
-
-
-
-        .section-title:first-child { margin-top: 0; }
-
-
+        .section-title-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid var(--ink-dark);
+            padding-bottom: 4px;
+            margin: 0 auto 8px auto;
+            width: 380px;
+        }
+        .section-title-flex .section-title {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            width: auto !important;
+            text-align: left !important;
+        }
 
         .step-title {
-
-
-
-            font-size: 22px;
-
-
-
+            font-size: 24.5px;
             font-weight: 700;
-
-
-
-            margin-top: 12px;
-
-
-
-            margin-bottom: 3px;
-
-
-
+            margin-top: 14px;
+            margin-bottom: 4px;
         }
 
 
 
         .body-text {
-
-
-
-            font-size: 21px;
-
-
-
-            line-height: 1.34;
-
-
-
+            font-size: 23px;
+            line-height: 1.36;
             font-weight: 500;
-
-
-
         }
 
 
 
         .body-sm {
-
-
-
-            font-size: 20px;
-
-
-
-            line-height: 1.34;
-
-
-
+            font-size: 22.5px;
+            line-height: 1.35;
             font-weight: 500;
-
-
-
         }
 
 
 
         .body-xs {
-
-
-
-            font-size: 18.5px;
-
-
-
-            line-height: 1.3;
-
-
-
+            font-size: 20px;
+            line-height: 1.32;
             font-weight: 500;
-
-
-
         }
 
 
 
         .intro-text {
-
-
-
-            font-size: 21px;
-
-
-
-            line-height: 1.34;
-
-
-
+            font-size: 23px;
+            line-height: 1.36;
             font-weight: 500;
-
-
-
             text-align: justify;
-
-
-
         }
 
 
@@ -1203,41 +1103,14 @@
 
 
         .page-footer {
-
-
-
             align-self: center;
-
-
-
             text-align: center;
-
-
-
-            font-size: 18px;
-
-
-
+            font-size: 20px;
             font-weight: 700;
-
-
-
             letter-spacing: 2px;
-
-
-
             border-top: 2px solid var(--ink-dark);
-
-
-
             padding: 5px 36px 0;
-
-
-
             margin-top: 6px;
-
-
-
         }
 
 
@@ -1511,6 +1384,7 @@
 
             <div class="controls">
                 <a href="../boardgames.html" class="btn btn-ink" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">← Board Games</a>
+                <a href="game.html" class="btn btn-export" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🎮 Play Game</a>
                 <div class="view-toggle">
                     <button class="btn btn-ink" id="btnGridView">Grid View</button>
                     <button class="btn btn-parchment" id="btnBookletView">📖 Reader View</button>
@@ -1590,7 +1464,7 @@
 
 
 
-            <div id="exportText" style="margin-bottom: 12px;">Exporting cards...</div>
+            <div id="exportText" style="margin-bottom: 6px;">Exporting cards...</div>
 
 
 
@@ -1700,26 +1574,7 @@
 
 
         <div class="card-grid scale-container" id="cardGrid">
-
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 1 — FACE A: Cover + Overview       -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -1736,234 +1591,63 @@
 
 
                         <div>
-
-
-
-                            <div style="text-align:center; margin-bottom: 6px;">
-
-
-
-                                <h1 class="card-title card-title-lg" style="margin-top: 2px;">GalaxSea</h1>
-
-
-
-                                <div class="divider"></div>
-
-
-
-                            </div>
-
-
-
-                            <p class="intro-text" style="margin-bottom: 8px; margin-top: 6px;">
-
-
-
-                                Welcome to GalaxSea! Strategically program your actions, align your ship parts, and catch celestial entities in deep space.
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <!-- Direct Goal Statement -->
-
-
-
-                            <p class="body-sm" style="margin-top: 6px; margin-bottom: 10px; line-height: 1.35;">
-
-
-
-                                <b>Object of the Game:</b> Hook 3 celestial entities of your chosen Target Tier in a single round before Round 6 ends!
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <!-- Target Tiers: Clean Ranking Directly on Parchment -->
-
-
-
-                            <h2 class="section-title">Target Tiers</h2>
-
-
-
-                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-
-
-
-                                <div style="display: flex; align-items: center; gap: 16px;">
-
-
-
-                                    <img src="assets/entity_moon_clean.png" alt="Moon" style="width: 76px; height: 50px; object-fit: contain; flex-shrink: 0;">
-
-
-
-                                    <div style="font-weight: 700; font-size: 20px;">Local Tier &bull; Catch 3 Moons</div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 16px;">
-
-
-
-                                    <img src="assets/entity_planet_clean.png" alt="Planet" style="width: 76px; height: 50px; object-fit: contain; flex-shrink: 0;">
-
-
-
-                                    <div style="font-weight: 700; font-size: 20px;">System Tier &bull; Catch 3 Planets</div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 16px;">
-
-
-
-                                    <img src="assets/entity_star_clean.png" alt="Star" style="width: 76px; height: 50px; object-fit: contain; flex-shrink: 0;">
-
-
-
-                                    <div style="font-weight: 700; font-size: 20px;">Stellar Tier &bull; Catch 3 Stars</div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 16px;">
-
-
-
-                                    <img src="assets/entity_galaxy_clean.png" alt="Galaxy" style="width: 76px; height: 50px; object-fit: contain; flex-shrink: 0;">
-
-
-
-                                    <div style="font-weight: 700; font-size: 20px;">Galactic Tier &bull; Catch 3 Galaxies</div>
-
-
-
-                                </div>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <!-- Components with Generous Space & Larger Thumbnails -->
-
-
-
-                            <h2 class="section-title" style="margin-top:14px;">Components</h2>
-
-
-
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; margin-top: 8px;">
-
-
-
-                                <div style="display: flex; align-items: center; gap: 10px;">
-
-
-
-                                    <img src="cards/ShipCards_Telescope1.png" alt="Telescope" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <img src="cards/ShipCards_Hook1.png" alt="Hook" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <div class="body-sm" style="line-height: 1.25;"><b>6 Ship Cards</b><br><span style="font-size:16px; opacity:0.85;">(3 Telescopes, 3 Hooks)</span></div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 10px;">
-
-
-
-                                    <img src="cards/Card_Design_Pointer.png" alt="Pointer" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <div class="body-sm" style="line-height: 1.25;"><b>1 Direction Card</b><br><span style="font-size:16px; opacity:0.85;">(Pelican pointer)</span></div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 10px;">
-
-
-
-                                    <img src="cards/Card_Design_Action1A.png" alt="Action" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <div class="body-sm" style="line-height: 1.25;"><b>5 Action Cards</b><br><span style="font-size:16px; opacity:0.85;">(Level 1 / Level 2)</span></div>
-
-
-
-                                </div>
-
-
-
-                                <div style="display: flex; align-items: center; gap: 10px;">
-
-
-
-                                    <img src="cards/Card_Design_Entity1.png" alt="Space Front" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <img src="cards/Card_Design_Entity_BACK.png" alt="Space Back" style="width: 36px; height: 54px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
-
-
-
-                                    <div class="body-sm" style="line-height: 1.25;"><b>6 Space Cards</b><br><span style="font-size:16px; opacity:0.85;">(Dual-ended entities)</span></div>
-
-
-
-                                </div>
-
-
-
-                            </div>
-
-
-
-                        </div>
+    <div style="text-align:center; margin-bottom: 6px;">
+        <h1 class="card-title card-title-lg" style="margin-top: 2px;">GalaxSea</h1>
+        <div class="divider"></div>
+    </div>
+    <p class="intro-text" style="margin-bottom: 10px; margin-top: 6px;">
+        Welcome to GalaxSea! Strategically program your actions, align your Ship Cards, and catch celestial entities in deep space.
+    </p>
+
+    <!-- Direct Goal Statement -->
+    <p class="body-sm" style="margin-top: 8px; margin-bottom: 12px; font-size: 22.5px; line-height: 1.35;">
+        <b>Object of the Game:</b> Catch 3 celestial entities of your chosen Target Tier in a single round before Round 6 ends!
+    </p>
+
+    <!-- Target Tiers: Clean Ranking Directly on Parchment -->
+    <h2 class="section-title">Target Tiers</h2>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <img src="assets/entity_moon_clean.png" alt="Moon" style="width: 88px; height: 58px; object-fit: contain; flex-shrink: 0;">
+            <div style="font-weight: 700; font-size: 22.5px;">Local Tier &bull; Catch 3 Moons</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <img src="assets/entity_planet_clean.png" alt="Planet" style="width: 88px; height: 58px; object-fit: contain; flex-shrink: 0;">
+            <div style="font-weight: 700; font-size: 22.5px;">System Tier &bull; Catch 3 Planets</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <img src="assets/entity_star_clean.png" alt="Star" style="width: 88px; height: 58px; object-fit: contain; flex-shrink: 0;">
+            <div style="font-weight: 700; font-size: 22.5px;">Stellar Tier &bull; Catch 3 Stars</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <img src="assets/entity_galaxy_clean.png" alt="Galaxy" style="width: 88px; height: 58px; object-fit: contain; flex-shrink: 0;">
+            <div style="font-weight: 700; font-size: 22.5px;">Galactic Tier &bull; Catch 3 Galaxies</div>
+        </div>
+    </div>
+
+    <!-- Components with Generous Space & Larger Thumbnails -->
+    <h2 class="section-title" style="margin-top: 14px;">Components</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-top: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="cards/ShipCards_Telescope1.png" alt="Telescope" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <img src="cards/ShipCards_Hook1.png" alt="Hook" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <div class="body-sm" style="line-height: 1.25; font-size: 21.5px;"><b>6 Ship Cards</b><br><span style="font-size:17.5px; opacity:0.85;">(3 Telescopes, 3 Hooks)</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="cards/Card_Design_Pointer.png" alt="Pointer" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <div class="body-sm" style="line-height: 1.25; font-size: 21.5px;"><b>1 Direction Pointer</b><br><span style="font-size:17.5px; opacity:0.85;">(Center pelican card)</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="cards/Card_Design_Action1A.png" alt="Action" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <div class="body-sm" style="line-height: 1.25; font-size: 21.5px;"><b>5 Action Cards</b><br><span style="font-size:17.5px; opacity:0.85;">(Level 1 / Level 2)</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="cards/Card_Design_Entity1.png" alt="Space Front" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <img src="cards/Card_Design_Entity_BACK.png" alt="Space Back" style="width: 44px; height: 66px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover;">
+            <div class="body-sm" style="line-height: 1.25; font-size: 21.5px;"><b>6 Space Cards</b><br><span style="font-size:17.5px; opacity:0.85;">(Dual-ended entities)</span></div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -1981,25 +1665,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 1 — FACE B: Setup                  -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2016,19 +1682,19 @@
 
 
                         <div>
-                            <h2 class="section-title" style="margin-top:0; margin-bottom: 6px;">Setup</h2>
-                            <ol class="list-styled body-sm" style="margin-top: 0; margin-bottom: 8px; font-size: 19px; line-height: 1.34; display: flex; flex-direction: column; gap: 7px;">
-                                <li><b>Choose Target Tier:</b> Pick your challenge tier from Page 1 <i>(3 Moons recommended for your first game)</i>.</li>
-                                <li><b>Ship Hexagon:</b> Shuffle the 6 Ship Cards (3 Telescopes, 3 Hooks) face-down in a center hexagon.</li>
-                                <li><b>Direction Pointer:</b> Place in center pointing North. <b>Flip North Ship Card face-up</b>.</li>
-                                <li><b>Space Hexagon:</b> Shuffle the 6 Space Cards face-down in an outer ring matching Ship Cards.</li>
-                                <li><b>Action Hand:</b> Take the 5 Action Cards (all start at Level 1).</li>
-                            </ol>
+    <h2 class="section-title">Setup</h2>
+    <ol class="list-styled body-sm" style="margin-top: 4px; margin-bottom: 10px; font-size: 23px; line-height: 1.36; display: flex; flex-direction: column; gap: 8px;">
+        <li><b>Choose Target Tier:</b> Pick your challenge tier from Page 1 <i>(3 Moons recommended for your first game)</i>.</li>
+        <li><b>Ship Hexagon:</b> Shuffle the 6 Ship Cards (3 Telescopes, 3 Hooks) face-down in a center hexagon.</li>
+        <li><b>Direction Pointer:</b> Place in center pointing North. <b>Flip North Ship Card face-up</b>.</li>
+        <li><b>Space Hexagon:</b> Shuffle the 6 Space Cards face-down (sideways/parallel) in an outer ring.</li>
+        <li><b>Action Cards:</b> Take the 5 Action Cards (all start at Level 1).</li>
+    </ol>
 
-                            <div class="diagram-container" style="margin-top: 6px;">
-                                <img src="assets/setup_hexagon_cards.png" alt="Tabletop Setup Diagram" class="diagram-img" style="width: 480px; max-width: 100%;">
-                            </div>
-                        </div>
+    <div class="diagram-container" style="margin-top: 6px;">
+        <img src="assets/setup_hexagon_cards.png" alt="Tabletop Setup Diagram" class="diagram-img" style="width: 470px; max-width: 100%;">
+    </div>
+</div>
 
 
 
@@ -2046,25 +1712,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 2 — FACE A: Round Overview (1-3)   -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2081,130 +1729,43 @@
 
 
                         <div>
-
-
-
-                            <h2 class="section-title" style="margin-top:0;">Round Overview</h2>
-
-
-
-                            <p class="body-sm" style="margin-bottom: 8px;">
-
-
-
-                                The game is played over up to <b>6 rounds</b>. Each round proceeds through the following steps:
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <h3 class="step-title">Step 1: Shuffle &amp; Place in Column</h3>
-
-
-
-                            <p class="body-sm" style="margin-bottom: 6px;">
-
-
-
-                                Shuffle all 5 Action Cards and place them face-up in a vertical column (for Round 1, all cards start at Level 1).
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <h3 class="step-title">Step 2: Optional Swap</h3>
-
-
-
-                            <p class="body-sm" style="margin-bottom: 8px;">
-
-
-
-                                You may swap the positions of any 2 cards in your column.
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <!-- Side-by-Side: Step 3 Text + Action Stack Diagram -->
-
-
-
-                            <div style="display: flex; gap: 14px; align-items: flex-start; margin-top: 4px;">
-
-
-
-                                <div style="flex: 1;">
-
-
-
-                                    <h3 class="step-title" style="margin-top:0;">Step 3: Program Actions</h3>
-
-
-
-                                    <p class="body-sm" style="margin-bottom: 8px;">
-
-
-
-                                        Each Action Card has two action halves. For each of the <b>top 4 cards</b>, choose one action by rotating the card so the chosen action faces up (the unused half is tucked and covered by the card below it).
-
-
-
-                                    </p>
-
-
-
-                                    <p class="body-sm" style="margin-bottom: 6px;">
-
-
-
-                                        The <b>bottom (5th) card</b> grants <b>both printed actions in the order you set it</b> (top action first, then bottom action).
-
-
-
-                                    </p>
-
-
-
-                                </div>
-
-
-
-                                <div style="width: 175px; flex-shrink: 0; text-align: center;">
-
-
-
-                                    <img src="assets/diagram_action_stack.png" alt="Action Programming Stack" class="diagram-img" style="width: 170px; height: auto;">
-
-
-
-                                </div>
-
-
-
-                            </div>
-
-
-
-                        </div>
+    <h2 class="section-title">Round Overview</h2>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        The game is played over up to <b>6 rounds</b>. Each round proceeds through the following steps:
+    </p>
+
+    <h3 class="step-title">Step 1: Shuffle &amp; Place in Column</h3>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        Shuffle all 5 Action Cards and place them face-up in a vertical column (for Round 1, all cards start at Level 1).
+    </p>
+
+    <h3 class="step-title">Step 2: Optional Swap</h3>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        You may swap the positions of any 2 cards in your column.
+    </p>
+
+    <!-- Side-by-Side: Step 3 Text + Action Stack Diagram -->
+    <div style="display: flex; gap: 14px; align-items: flex-start; margin-top: 4px;">
+        <div style="flex: 1;">
+            <h3 class="step-title" style="margin-top:0;">Step 3: Program Actions</h3>
+            <p class="body-sm" style="margin-bottom: 10px; font-size: 22px;">
+                Each Action Card has two action halves. For each of the <b>top 4 cards</b>, choose one action by rotating the card so the chosen action faces up (the unused half is tucked and covered by the card below it).
+            </p>
+            <p class="body-sm" style="margin-bottom: 6px; font-size: 22px;">
+                The <b>bottom (5th) card</b> grants <b>both printed actions in the order you set it</b> (top action first, then bottom action).
+            </p>
+            <div class="callout-box" style="margin-top: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 10px;">
+                <img src="assets/purple_star_token.png" alt="Purple Star Token" style="width: 38px; height: 38px; object-fit: contain; flex-shrink: 0;">
+                <p class="body-sm" style="font-size: 19px; line-height: 1.28; margin: 0;">
+                    <b>Star Token (Optional):</b> Slide the purple star token down your column to track your current action!
+                </p>
+            </div>
+        </div>
+        <div style="width: 180px; flex-shrink: 0; text-align: center; margin-right: 6px;">
+            <img src="assets/diagram_action_stack.png" alt="Action Programming Stack" class="diagram-img" style="width: 175px; height: auto;">
+        </div>
+    </div>
+</div>
 
 
 
@@ -2222,25 +1783,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 2 — FACE B: Round Overview (4-6)   -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2257,43 +1800,43 @@
 
 
                         <div>
-                            <h2 class="section-title" style="margin-top:0; margin-bottom: 6px;">Round Overview (cont.)</h2>
+    <h2 class="section-title">Round Overview (cont.)</h2>
 
-                            <h3 class="step-title" style="font-size: 22px; margin-bottom: 3px;">Step 4: Execute Programmed Actions</h3>
-                            <p class="body-sm" style="margin-bottom: 6px; font-size: 19.5px; line-height: 1.32;">
-                                Execute your 6 programmed actions strictly from top to bottom. Actions are: <b>Rotate</b> (p. 5), <b>Swap</b> (p. 6), and <b>Spend Fuel</b> (p. 7–8).
-                            </p>
-                            <p class="body-sm" style="margin-bottom: 10px; font-size: 19px; line-height: 1.32;">
-                                <b>Caught Rewards (Optional Anytime):</b> At any time while executing actions, you may also activate bonus actions from newly caught entities (p. 8–9).
-                            </p>
+    <h3 class="step-title" style="margin-bottom: 4px;">Step 4: Execute Programmed Actions</h3>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        Execute your 6 programmed actions from top to bottom (mandatory; skip if impossible): <b>Rotate</b> (p. 5), <b>Swap</b> (p. 6), and <b>Spend Fuel</b> (p. 7–8).
+    </p>
+    <p class="body-sm" style="margin-bottom: 12px;">
+        <b>Caught Rewards (Optional Anytime):</b> At any time while executing actions, you may also activate bonus actions from newly caught entities (p. 8–9).
+    </p>
 
-                            <h3 class="step-title" style="font-size: 22px; margin-bottom: 3px;">Step 5: Release Catches</h3>
-                            <p class="body-sm" style="margin-bottom: 10px; font-size: 19.5px; line-height: 1.32;">
-                                Return all caught Space Cards to their outer positions. Each stays observed, pointing inward toward the ship. <i>(Catches reset every round—hook all 3 in a single round to win!)</i>
-                            </p>
+    <h3 class="step-title" style="margin-bottom: 4px;">Step 5: Release Catches</h3>
+    <p class="body-sm" style="margin-bottom: 12px;">
+        Return all caught Space Cards to their outer positions. Each stays observed, pointing inward toward the ship. <i>(Catches reset every round—hook all 3 in a single round to win!)</i>
+    </p>
 
-                            <h3 class="step-title" style="font-size: 22px; margin-bottom: 3px;">Step 6: Level Up</h3>
-                            <p class="body-sm" style="margin-bottom: 10px; font-size: 19.5px; line-height: 1.32;">
-                                At round end, <b>flip 1 Action Card to Level 2</b>. If all 5 cards are already Level 2 and you have not achieved victory, the game ends in defeat.
-                            </p>
+    <h3 class="step-title" style="margin-bottom: 4px;">Step 6: Level Up</h3>
+    <p class="body-sm" style="margin-bottom: 14px;">
+        If all 5 cards are already Level 2 and you have not achieved victory, the game ends in defeat. Otherwise, <b>choose any Action Card to flip to Level 2</b>.
+    </p>
 
-                            <!-- Level 1 / Level 2 cards comparison diagram -->
-                            <div class="diagram-container" style="margin-top: 6px;">
-                                <div style="display: flex; justify-content: center; align-items: center; gap: 14px;">
-                                    <div style="text-align: center;">
-                                        <img src="cards/Card_Design_Action1A.png" alt="Action Card Level 1" style="width: 140px; height: 210px; border-radius: 8px; border: 2px solid var(--ink-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 4px;">Level 1 Face</div>
-                                    </div>
-                                    <div style="font-weight: 700; font-size: 19px; color: var(--ink-dark); text-align: center; line-height: 1.2;">
-                                        End of<br>Round<br>&rarr;<br><span style="font-size: 16px; opacity: 0.85;">Flip to Level 2</span>
-                                    </div>
-                                    <div style="text-align: center;">
-                                        <img src="cards/Card_Design_Action1B.png" alt="Action Card Level 2" style="width: 140px; height: 210px; border-radius: 8px; border: 2px solid var(--ink-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 4px;">Level 2 Face</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Level 1 / Level 2 cards comparison diagram -->
+    <div class="diagram-container" style="margin-top: 10px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 16px;">
+            <div style="text-align: center;">
+                <img src="cards/Card_Design_Action1A.png" alt="Action Card Level 1" style="width: 160px; height: 240px; border-radius: 8px; border: 2px solid var(--ink-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                <div style="font-weight: 700; font-size: 19px; margin-top: 6px;">Level 1 Face</div>
+            </div>
+            <div style="font-weight: 700; font-size: 21px; color: var(--ink-dark); text-align: center; line-height: 1.25;">
+                End of<br>Round<br>&rarr;<br><span style="font-size: 17.5px; opacity: 0.85;">Flip to Level 2</span>
+            </div>
+            <div style="text-align: center;">
+                <img src="cards/Card_Design_Action1B.png" alt="Action Card Level 2" style="width: 160px; height: 240px; border-radius: 8px; border: 2px solid var(--ink-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                <div style="font-weight: 700; font-size: 19px; margin-top: 6px;">Level 2 Face</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -2311,25 +1854,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 3 — FACE A: Action: Rotate         -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2346,154 +1871,42 @@
 
 
                         <div>
-
-
-
-                            <!-- Section Title with Full Underline & Icon to the Right -->
-
-
-
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-
-
-
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Action: Rotate</h2>
-
-
-
-                                <img src="assets/dial_turn_general.png" alt="Rotate Dial" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 2px;">
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <p class="body-sm" style="margin-bottom: 8px;">
-
-
-
-                                The Direction Card in the center indicates your ship's active section. Each Rotate action turns the pointer 1 position around the hexagon:
-
-
-
-                            </p>
-
-
-
-
-
-
-
-                            <ul class="list-none body-sm" style="margin-bottom: 8px; display: flex; flex-direction: column; gap: 6px;">
-
-
-
-                                <li style="display: flex; align-items: center; gap: 8px;">
-
-
-
-                                    <img src="assets/dial_turn_cw.png" alt="Clockwise" style="width: 24px; height: 24px; object-fit: contain;">
-
-
-
-                                    <span><b>Clockwise:</b> Turn pointer 1 position clockwise.</span>
-
-
-
-                                </li>
-
-
-
-                                <li style="display: flex; align-items: center; gap: 8px;">
-
-
-
-                                    <img src="assets/dial_turn_ccw.png" alt="Counter-Clockwise" style="width: 24px; height: 24px; object-fit: contain;">
-
-
-
-                                    <span><b>Counter-Clockwise:</b> Turn pointer 1 position counter-clockwise.</span>
-
-
-
-                                </li>
-
-
-
-                                <li style="display: flex; align-items: center; gap: 8px;">
-
-
-
-                                    <img src="assets/dial_turn_general.png" alt="Any Direction" style="width: 24px; height: 24px; object-fit: contain;">
-
-
-
-                                    <span><b>Any Direction:</b> Choose to turn pointer 1 position either clockwise or counter-clockwise.</span>
-
-
-
-                                </li>
-
-
-
-                            </ul>
-
-
-
-
-
-
-
-                            <div class="callout-box" style="margin-top: 6px; padding: 8px 12px;">
-
-
-
-                                <div style="font-weight: 700; font-size: 16.5px; margin-bottom: 2px;">Immediate Ship Reveal</div>
-
-
-
-                                <p class="body-sm" style="line-height: 1.32; font-size: 19px;">
-
-
-
-                                    Whenever the Direction Pointer turns to face a face-down Ship Card, <b>immediately flip that Ship Card face-up</b> so its ship part (Telescope or Hook) is revealed!
-
-
-
-                                </p>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <!-- Dedicated Rotate Diagram (Pointer turning in hexagon layout, no shadows) -->
-
-
-
-                            <div class="diagram-container" style="margin: 8px 0;">
-
-
-
-                                <img src="assets/diagram_action_rotate.png" alt="Rotate Pointer in Hexagon" class="diagram-img" style="width: 460px;">
-
-
-
-                            </div>
-
-
-
-                        </div>
+    <!-- Section Title with Full Underline & Icon to the Right -->
+    <div class="section-title-flex">
+        <h2 class="section-title" >Action: Rotate</h2>
+        <img src="assets/dial_turn_general.png" alt="Rotate Dial" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 2px;">
+    </div>
+
+    <p class="body-sm" style="margin-bottom: 12px; font-size: 22.5px;">
+        The Direction Pointer in the center indicates your active Ship Card. Each Rotate action turns the pointer 1 position around the hexagon:
+    </p>
+
+    <ul class="list-none body-sm" style="margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;">
+        <li style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/dial_turn_cw.png" alt="Clockwise" style="width: 34px; height: 34px; object-fit: contain;">
+            <span style="font-size: 22.5px;"><b>Clockwise:</b> Turn pointer 1 position clockwise.</span>
+        </li>
+        <li style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/dial_turn_ccw.png" alt="Counter-Clockwise" style="width: 34px; height: 34px; object-fit: contain;">
+            <span style="font-size: 22.5px;"><b>Counter-Clockwise:</b> Turn pointer 1 position counter-clockwise.</span>
+        </li>
+        <li style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/dial_turn_general.png" alt="Any Direction" style="width: 34px; height: 34px; object-fit: contain;">
+            <span style="font-size: 22.5px;"><b>Any Direction:</b> Choose to turn pointer 1 position either clockwise or counter-clockwise.</span>
+        </li>
+    </ul>
+
+    <div class="callout-box" style="margin-top: 12px; padding: 12px 16px;">
+        <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 4px;">Immediate Ship Reveal</div>
+        <p class="body-sm" style="line-height: 1.35; font-size: 22px;">
+            Whenever the Direction Pointer turns to face a face-down Ship Card, <b>immediately flip that Ship Card face-up</b> so its Ship Card face (Telescope or Hook) is revealed!
+        </p>
+    </div>
+
+    <div class="diagram-container" style="margin-top: 14px;">
+        <img src="assets/diagram_action_rotate.png" alt="Rotate Pointer in Hexagon" class="diagram-img" style="width: 535px;">
+    </div>
+</div>
 
 
 
@@ -2511,25 +1924,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 3 — FACE B: Action: Swap           -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2546,50 +1941,50 @@
 
 
                         <div>
-                            <!-- Action: Swap -->
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 6px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Action: Swap</h2>
-                                <img src="assets/dial_swap.png" alt="Swap Dial" style="height: 36px; width: auto; object-fit: contain; margin-bottom: 2px;">
-                            </div>
+    <!-- Action: Swap -->
+    <div class="section-title-flex">
+        <h2 class="section-title" >Action: Swap</h2>
+        <img src="assets/dial_swap.png" alt="Swap Dial" style="height: 40px; width: auto; object-fit: contain; margin-bottom: 2px;">
+    </div>
 
-                            <p class="body-sm" style="margin-bottom: 6px; font-size: 18.5px; line-height: 1.32;">
-                                Exchange any two adjacent Ship Cards (face-up or face-down). The pointer's direction does not limit which cards you swap.
-                            </p>
+    <p class="body-sm" style="margin-bottom: 6px; font-size: 21.5px;">
+        Exchange any two adjacent Ship Cards (unless Anchored, p. 8). The pointer's direction does not limit which cards you swap.
+    </p>
 
-                            <!-- Swap Diagram -->
-                            <div class="diagram-container" style="margin: 4px 0;">
-                                <img src="assets/diagram_action_swap.png" alt="Adjacent Swap in Hexagon Layout" class="diagram-img" style="width: 450px;">
-                            </div>
+    <!-- Swap Diagram -->
+    <div class="diagram-container" style="margin: 4px 0;">
+        <img src="assets/diagram_action_swap.png" alt="Adjacent Swap in Hexagon Layout" class="diagram-img" style="width: 485px;">
+    </div>
 
-                            <div class="callout-box" style="margin-top: 4px; margin-bottom: 6px; padding: 6px 12px;">
-                                <div style="font-weight: 700; font-size: 18px; margin-bottom: 2px;">Immediate Ship Reveal</div>
-                                <p class="body-sm" style="line-height: 1.32; font-size: 18px;">
-                                    If the pointer faces a face-down Ship Card after a swap, <b>flip it face-up immediately</b>.
-                                </p>
-                            </div>
+    <div class="callout-box" style="margin-top: 4px; margin-bottom: 8px; padding: 6px 12px;">
+        <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">Immediate Ship Reveal</div>
+        <p class="body-sm" style="line-height: 1.32; font-size: 20px;">
+            If the pointer faces a face-down Ship Card after a swap, <b>flip it face-up immediately</b>.
+        </p>
+    </div>
 
-                            <!-- Overarching Action: Spend Fuel -->
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-top: 6px; margin-bottom: 6px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Action: Spend Fuel</h2>
-                                <img src="assets/dial_fuel.png" alt="Fuel Dial" style="height: 36px; width: auto; object-fit: contain; margin-bottom: 2px;">
-                            </div>
+    <!-- Overarching Action: Spend Fuel -->
+    <div class="section-title-flex">
+        <h2 class="section-title" >Action: Spend Fuel</h2>
+        <img src="assets/dial_fuel.png" alt="Fuel Dial" style="height: 40px; width: auto; object-fit: contain; margin-bottom: 2px;">
+    </div>
 
-                            <p class="body-sm" style="margin-bottom: 6px; font-size: 18.5px; line-height: 1.32;">
-                                <b>1 Fuel</b> <img src="assets/dial_fuel.png" alt="Fuel" style="height: 18px; vertical-align: middle;"> = <b>1 Power</b> on the aimed facility: <b>Telescope</b> to Observe (p. 7) or <b>Hook</b> to Hook (p. 8).
-                            </p>
+    <p class="body-sm" style="margin-bottom: 6px; font-size: 21.5px;">
+        <b>1 Fuel</b> <img src="assets/dial_fuel.png" alt="Fuel" style="height: 20px; vertical-align: middle;"> = <b>1 Power</b> on your aimed Ship Card: <b>Telescope</b> to Observe (p. 7) or <b>Hook</b> to Capture (p. 8).
+    </p>
 
-                            <!-- Fuel Chaining Box + Diagram -->
-                            <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 12px; margin-bottom: 4px;">
-                                <div style="font-weight: 700; font-size: 18px; margin-bottom: 2px;">Combining Fuel (Chaining)</div>
-                                <p class="body-sm" style="line-height: 1.32; font-size: 18px;">
-                                    Adjacent Fuel actions in your column can combine into a single shared pool for extra power!
-                                </p>
-                            </div>
+    <!-- Fuel Chaining Box + Diagram -->
+    <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 12px; margin-bottom: 4px;">
+        <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">Combining Fuel (Chaining)</div>
+        <p class="body-sm" style="line-height: 1.32; font-size: 20px;">
+            Consecutive Fuel actions (column or rewards) can combine into a single shared pool for extra power!
+        </p>
+    </div>
 
-                            <div class="diagram-container" style="margin: 2px 0;">
-                                <img src="assets/diagram_fuel_chain.png" alt="Combining Fuel Chaining" class="diagram-img" style="width: 440px;">
-                            </div>
-                        </div>
+    <div class="diagram-container" style="margin: 2px 0;">
+        <img src="assets/diagram_fuel_chain.png" alt="Combining Fuel Chaining" class="diagram-img" style="width: 465px;">
+    </div>
+</div>
 
 
 
@@ -2607,25 +2002,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 4 — FACE A: Spend Fuel (Observing) -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2642,42 +2019,42 @@
 
 
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Spend Fuel: Observing</h2>
-                                <img src="assets/dial_fuel.png" alt="Fuel" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 2px;">
-                            </div>
+    <div class="section-title-flex">
+        <h2 class="section-title" >Spend Fuel: Observing</h2>
+        <img src="assets/dial_fuel.png" alt="Fuel" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 2px;">
+    </div>
 
-                            <p class="body-sm" style="margin-bottom: 8px; line-height: 1.34; font-size: 19px;">
-                                When the Direction Pointer aims at a <b>Telescope</b>, spend Fuel to observe the Space Card directly opposite:
-                            </p>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        When the Direction Pointer aims at a <b>Telescope</b>, spend Fuel to observe the Space Card directly opposite:
+    </p>
 
-                            <div style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px;">
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">1. Reveal Face-Up</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        If the Space Card is face-down, flip it face-up. Once revealed, Space Cards remain face-up for the rest of the game!
-                                    </p>
-                                </div>
+    <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 10px;">
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">1. Reveal Face-Up</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                If the Space Card is face-down, flip it face-up. Once revealed, Space Cards remain face-up for the rest of the game!
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">2. Sensor Power: 1 Fuel = 1 Telescope</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Each 1 Fuel spent generates 1 Telescope Power <img src="assets/icon_telescope.png" alt="Telescope" style="height: 17px; vertical-align: middle;">. Compare your total power to the entity costs printed on the card.
-                                    </p>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">2. Telescope Power: 1 Fuel = 1 Telescope</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Each 1 Fuel spent generates 1 Telescope Power <img src="assets/icon_telescope.png" alt="Telescope" style="height: 20px; vertical-align: middle;">. Compare your total power to the entity costs printed on the card.
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">3. Rotate to Observe</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Rotate the card so an entity you can afford faces inward toward your ship. If your power meets both costs, you choose which one to observe!
-                                    </p>
-                                </div>
-                            </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">3. Turn Inward to Observe</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Turn the card so an entity you can afford points inward (if you afford both, choose one; if neither, leave it sideways &amp; unobserved).
+            </p>
+        </div>
+    </div>
 
-                            <div class="diagram-container" style="margin: 2px 0;">
-                                <img src="assets/diagram_observe_clean.png" alt="Observing Walkthrough" class="diagram-img" style="width: 450px;">
-                            </div>
-                        </div>
+    <div class="diagram-container" style="margin-top: 6px;">
+        <img src="assets/diagram_observe_clean.png" alt="Observing Walkthrough" class="diagram-img" style="width: 535px;">
+    </div>
+</div>
 
 
 
@@ -2695,25 +2072,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 4 — FACE B: Spend Fuel (Capturing) -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2730,42 +2089,42 @@
 
 
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Spend Fuel: Capturing</h2>
-                                <img src="assets/dial_fuel.png" alt="Fuel" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 2px;">
-                            </div>
+    <div class="section-title-flex">
+        <h2 class="section-title" >Spend Fuel: Capturing</h2>
+        <img src="assets/dial_fuel.png" alt="Fuel" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 2px;">
+    </div>
 
-                            <p class="body-sm" style="margin-bottom: 8px; line-height: 1.34; font-size: 19px;">
-                                When the Direction Pointer aims at a <b>Hook</b>, spend Fuel to capture an observed celestial entity:
-                            </p>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        When the Direction Pointer aims at a <b>Hook</b>, spend Fuel to capture an observed celestial entity:
+    </p>
 
-                            <div style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px;">
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">1. Target Must Be Observed</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Hooks cannot catch face-down or sideways entities. The entity you want to catch must already be observed (facing inward toward your ship).
-                                    </p>
-                                </div>
+    <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 10px;">
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">1. Target Must Be Observed</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Hooks cannot catch face-down or sideways entities. The entity must already be observed (pointing inward toward your ship).
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">2. Reeling Power: 1 Fuel = 1 Hook</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Each 1 Fuel spent generates 1 Hook Power <img src="assets/icon_hook.png" alt="Hook" style="height: 17px; vertical-align: middle;">. If your power meets or exceeds the entity's Hook cost, you catch it!
-                                    </p>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">2. Hook Power: 1 Fuel = 1 Hook</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Each 1 Fuel spent generates 1 Hook Power <img src="assets/icon_hook.png" alt="Hook" style="height: 20px; vertical-align: middle;">. Your total power must meet or exceed the entity's Hook cost.
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 2px;">3. Pull &amp; Anchor Hook</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Slide the Space Card over your Hook. That Hook is now <b>Anchored</b> (cannot be swapped) until released, and its caught reward unlocks immediately!
-                                    </p>
-                                </div>
-                            </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">3. Pull &amp; Anchor Hook</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Slide the Space Card over your Hook. That Hook is now <b>Anchored</b> (cannot be swapped) until released, and its caught reward unlocks immediately!
+            </p>
+        </div>
+    </div>
 
-                            <div class="diagram-container" style="margin: 2px 0;">
-                                <img src="assets/diagram_capture_clean.png" alt="Capture Walkthrough" class="diagram-img" style="width: 450px;">
-                            </div>
-                        </div>
+    <div class="diagram-container" style="margin-top: 6px;">
+        <img src="assets/diagram_capture_clean.png" alt="Capture Walkthrough" class="diagram-img" style="width: 535px;">
+    </div>
+</div>
 
 
 
@@ -2783,25 +2142,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 5 — FACE A: Caught Rewards & End   -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2818,48 +2159,46 @@
 
 
                         <div>
-                            <div style="border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Caught Rewards Guide</h2>
-                            </div>
+    <h2 class="section-title" style="margin-bottom: 8px;">Caught Rewards Guide</h2>
 
-                            <p class="body-sm" style="margin-bottom: 8px; line-height: 1.34; font-size: 19px;">
-                                Every caught Space Card features a powerful bonus action along its outer banner:
-                            </p>
+    <p class="body-sm" style="margin-bottom: 8px;">
+        Every caught entity grants a bonus action on its banner (<b>/</b> = choose 1; <b>+</b> = do both in any order):
+    </p>
 
-                            <div class="diagram-container" style="margin: 4px 0 8px 0;">
-                                <img src="assets/diagram_caught_reward.png" alt="Caught Entity Reward Banner" class="diagram-img" style="width: 440px;">
-                            </div>
+    <div class="diagram-container" style="margin: 4px 0 8px 0;">
+        <img src="assets/diagram_caught_reward.png" alt="Caught Entity Reward Banner" class="diagram-img" style="width: 455px;">
+    </div>
 
-                            <div style="display: flex; flex-direction: column; gap: 7px;">
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">Activate Anytime During Your Turn</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        You may trigger a caught entity's reward at any time while executing your programmed actions—even between Action Cards!
-                                    </p>
-                                </div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21px; margin-bottom: 3px;">Activate Anytime During Your Turn</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                You may trigger a caught entity's reward at any time while executing your programmed actions—even between Action Cards!
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">Combining Reward Fuel</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        If a reward grants Fuel, you can combine it directly with Fuel from your Action Cards to power high-cost Telescopes or Hooks!
-                                    </p>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21px; margin-bottom: 3px;">Combining Reward Fuel</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                If a reward grants Fuel, you can combine it directly with Fuel from your Action Cards to power high-cost Telescopes or Hooks!
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">Tucking Card After Use</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Once activated, slide the Space Card slightly under your Hook to indicate its reward has been spent for the current round.
-                                    </p>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21px; margin-bottom: 3px;">Tucking Card After Use</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Once activated, slide the Space Card slightly under your Hook to indicate its reward has been spent for the current round.
+            </p>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px;">
-                                    <div style="font-weight: 700; font-size: 19px; margin-bottom: 2px;">One Reward Per Round</div>
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                        Each catch provides its bonus reward once per round. When catches are released at round end, their rewards reset.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 9px 14px;">
+            <div style="font-weight: 700; font-size: 21px; margin-bottom: 3px;">One Reward Per Round</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Each catch provides its bonus reward once per round. When catches are released at round end, their rewards reset.
+            </p>
+        </div>
+    </div>
+</div>
 
 
 
@@ -2877,25 +2216,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 5 — FACE B: Quick Reference       -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -2912,66 +2233,77 @@
 
 
                         <div>
-                            <div style="border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Action &amp; Icon Glossary</h2>
-                            </div>
+    <h2 class="section-title" style="margin-bottom: 10px;">Action &amp; Icon Glossary</h2>
 
-                            <!-- Glossary Grid with 19px Font -->
-                            <div style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/dial_fuel.png" alt="Fuel" style="width: 38px; height: 30px; object-fit: contain; flex-shrink: 0;">
-                                    <p class="body-sm" style="line-height: 1.28; font-size: 19px;">
-                                        <b>Fuel:</b> Energy to power active Telescope or Hook.
-                                    </p>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/icon_telescope.png" alt="Telescope" style="width: 32px; height: 32px; object-fit: contain; flex-shrink: 0;">
-                                    <p class="body-sm" style="line-height: 1.28; font-size: 19px;">
-                                        <b>Telescope:</b> Sensor facility. Reveals and observes Space Cards.
-                                    </p>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/icon_hook.png" alt="Hook" style="width: 32px; height: 32px; object-fit: contain; flex-shrink: 0;">
-                                    <p class="body-sm" style="line-height: 1.28; font-size: 19px;">
-                                        <b>Hook:</b> Fishing arm. Captures observed celestial entities.
-                                    </p>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/dial_turn_general.png" alt="Rotate" style="width: 38px; height: 30px; object-fit: contain; flex-shrink: 0;">
-                                    <p class="body-sm" style="line-height: 1.28; font-size: 19px;">
-                                        <b>Rotate:</b> Turn Direction Pointer 1 space (CW, CCW, or Any).
-                                    </p>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/dial_swap.png" alt="Swap" style="width: 38px; height: 30px; object-fit: contain; flex-shrink: 0;">
-                                    <p class="body-sm" style="line-height: 1.28; font-size: 19px;">
-                                        <b>Swap:</b> Exchange 2 adjacent Ship Cards (unless anchored).
-                                    </p>
-                                </div>
-                            </div>
+        <!-- Glossary Grid with Enlarged Icons and Text -->
+    <div style="display: flex; flex-direction: column; gap: 11px; margin-bottom: 12px;">
+        <!-- Core Actions in Order -->
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="assets/dial_fuel.png" alt="Fuel" style="width: 50px; height: 38px; object-fit: contain; flex-shrink: 0;">
+            <p class="body-sm" style="line-height: 1.32; font-size: 22px;">
+                <b>Fuel:</b> Energy to power active Telescope or Hook Card.
+            </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="assets/dial_turn_general.png" alt="Rotate" style="width: 50px; height: 38px; object-fit: contain; flex-shrink: 0;">
+            <p class="body-sm" style="line-height: 1.32; font-size: 22px;">
+                <b>Rotate:</b> Turn Direction Pointer 1 space (CW, CCW, or Any).
+            </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="assets/dial_swap.png" alt="Swap" style="width: 50px; height: 38px; object-fit: contain; flex-shrink: 0;">
+            <p class="body-sm" style="line-height: 1.32; font-size: 22px;">
+                <b>Swap:</b> Exchange 2 adjacent Ship Cards (unless anchored).
+            </p>
+        </div>
 
-                            <!-- Slash & Plus Callout -->
-                            <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 7px 12px; margin-bottom: 8px;">
-                                <div style="font-weight: 700; font-size: 18.5px; margin-bottom: 2px;">Slash (/) and Plus (+) Symbols</div>
-                                <p class="body-sm" style="line-height: 1.32; font-size: 18.5px;">
-                                    <b>Slash (/):</b> Choose exactly ONE of the two printed actions.<br>
-                                    <b>Plus (+):</b> Execute BOTH linked actions in either order.
-                                </p>
-                            </div>
+        <!-- Subtle separator -->
+        <div style="height: 1.5px; background: rgba(80, 52, 31, 0.25); margin: 2px 0;"></div>
 
-                            <!-- Round Sequence Summary with ALL 6 STEPS -->
-                            <div class="callout-box" style="padding: 8px 12px;">
-                                <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px; text-align: center;">Round Sequence Summary</div>
-                                <ol class="list-styled body-sm" style="margin: 0; padding-left: 22px; line-height: 1.32; font-size: 17.5px; display: flex; flex-direction: column; gap: 2px;">
-                                    <li><b>Shuffle:</b> Place 5 Action Cards in a vertical column.</li>
-                                    <li><b>Swap:</b> Optional swap of any 2 cards in your column.</li>
-                                    <li><b>Program:</b> Top 4 cards pick one action; 5th card gets both!</li>
-                                    <li><b>Execute:</b> Top to bottom. Use caught rewards anytime.</li>
-                                    <li><b>Release Catches:</b> Return catches (cards stay observed).</li>
-                                    <li><b>Level Up:</b> Flip 1 Action Card to its Level 2 face.</li>
-                                </ol>
-                            </div>
-                        </div>
+        <!-- Powers in Order -->
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="assets/icon_telescope.png" alt="Telescope Power" style="width: 44px; height: 44px; object-fit: contain; flex-shrink: 0;">
+            <p class="body-sm" style="line-height: 1.32; font-size: 22px;">
+                <b>Telescope Power:</b> Powered by Telescope Card to reveal and observe Space Cards.
+            </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="assets/icon_hook.png" alt="Hook Power" style="width: 44px; height: 44px; object-fit: contain; flex-shrink: 0;">
+            <p class="body-sm" style="line-height: 1.32; font-size: 22px;">
+                <b>Hook Power:</b> Powered by Hook Card to capture observed celestial entities.
+            </p>
+        </div>
+
+        <!-- Symbols Side-by-Side as compact icon entries -->
+        <div style="display: flex; gap: 12px; margin-top: 3px;">
+            <div style="flex: 1; background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--ink-dark); color: #eace9f; border-radius: 6px; font-weight: 900; font-size: 22px; flex-shrink: 0;">/</span>
+                <p class="body-sm" style="line-height: 1.25; font-size: 20px; margin: 0;">
+                    <b>Slash (/):</b> Choose 1 of 2 printed actions.
+                </p>
+            </div>
+            <div style="flex: 1; background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: var(--ink-dark); color: #eace9f; border-radius: 6px; font-weight: 900; font-size: 22px; flex-shrink: 0;">+</span>
+                <p class="body-sm" style="line-height: 1.25; font-size: 20px; margin: 0;">
+                    <b>Plus (+):</b> Execute BOTH actions in any order.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Round Sequence Summary with ALL 6 STEPS -->
+    <div class="callout-box" style="padding: 12px 16px;">
+        <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 6px; text-align: center;">Round Sequence Summary</div>
+        <ol class="list-styled body-sm" style="margin: 0; padding-left: 24px; line-height: 1.34; font-size: 20px; display: flex; flex-direction: column; gap: 4px;">
+            <li><b>Shuffle:</b> Place 5 Action Cards in a vertical column.</li>
+            <li><b>Swap:</b> Optional swap of any 2 cards in your column.</li>
+            <li><b>Program:</b> Top 4 cards pick one action; 5th card gets both!</li>
+            <li><b>Execute:</b> Top to bottom. Use caught rewards anytime.</li>
+            <li><b>Release Catches:</b> Return catches (cards stay observed).</li>
+            <li><b>Level Up:</b> Choose any Action Card to flip to Level 2.</li>
+        </ol>
+    </div>
+</div>
 
 
 
@@ -2989,25 +2321,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 6 — FACE A: Edge of the Universe   -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3064,77 +2378,24 @@
 
 
                             <!-- Watermark Identification Callout WITH COMPLETE WHITE PART -->
-
-
-
-                            <div class="callout-box" style="display: flex; align-items: center; gap: 12px; margin-top: 4px; margin-bottom: 6px; padding: 6px 10px;">
-
-
-
-                                <img src="assets/watermark_whale_complete.png" alt="Black Hole Whale Symbol" style="width: 54px; height: 44px; object-fit: contain; flex-shrink: 0;">
-
-
-
+                            <div class="callout-box" style="display: flex; align-items: center; gap: 12px; margin-top: 6px; margin-bottom: 10px; padding: 8px 12px;">
+                                <img src="assets/watermark_whale_complete.png" alt="Black Hole Whale Symbol" style="width: 56px; height: 46px; object-fit: contain; flex-shrink: 0;">
                                 <div>
-
-
-
-                                    <div style="font-weight: 700; font-size: 16.5px; color: var(--ink-dark);">Expansion Watermark</div>
-
-
-
-                                    <p class="body-xs" style="line-height: 1.24; font-size: 17.5px;">All expansion cards feature this mini <b>Black Hole Whale symbol</b> (1 Telescope, 1 Hook, 2 Space Cards, 1 Action Card) to easily sort them from the base game.</p>
-
-
-
+                                    <div style="font-weight: 700; font-size: 20px; color: var(--ink-dark); margin-bottom: 2px;">Expansion Watermark</div>
+                                    <p class="body-xs" style="line-height: 1.3; font-size: 19.5px;">All expansion cards feature this mini <b>Black Hole Whale symbol</b> (1 Telescope, 1 Hook, 2 Space Cards, 1 Action Card) to easily sort them from the base game.</p>
                                 </div>
-
-
-
                             </div>
 
+                            <h2 class="section-title" style="width: 100%; margin-bottom: 8px;">Octagon Setup (8 Cards)</h2>
 
-
-
-
-
-
-                            <h2 class="section-title">Octagon Setup (8 Cards)</h2>
-
-
-
-                            <ol class="list-styled body-xs" style="margin-bottom: 6px; line-height: 1.25;">
-
-
-
-                                <li>Shuffle the 8 Ship Cards (4 Telescopes, 4 Hooks); arrange in an <b>Octagon</b>. Point direction pointer north; flip north card face-up.</li>
-
-
-
+                            <ol class="list-styled body-xs" style="margin-bottom: 8px; font-size: 21px; line-height: 1.32;">
+                                <li>Shuffle the 8 Ship Cards (4 Telescopes, 4 Hooks); arrange in an <b>Octagon</b>. Point Direction Pointer North; flip North card face-up.</li>
                                 <li>Shuffle 8 Space Cards; arrange in an outer matching Octagon.</li>
-
-
-
                                 <li>Take all <b>6 Action Cards</b> (all start at Level 1).</li>
-
-
-
                             </ol>
 
-
-
-
-
-
-
                             <div class="diagram-container" style="margin: 6px 0;">
-
-
-
-                                <img src="assets/diagram_octagon_setup.png" alt="Octagon Setup Diagram" class="diagram-img" style="width: 400px;">
-
-
-
+                                <img src="assets/diagram_octagon_setup.png" alt="Octagon Setup Diagram" class="diagram-img" style="width: 425px;">
                             </div>
 
 
@@ -3157,25 +2418,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 6 — FACE B: Deep Space Rules       -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3192,50 +2435,50 @@
 
 
                         <div>
-                            <div style="border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Deep Space Rules</h2>
-                            </div>
+    <h2 class="section-title" style="margin-bottom: 8px;">Deep Space Rules</h2>
 
-                            <p class="body-sm" style="margin-bottom: 8px; font-size: 19px; line-height: 1.34;">
-                                <b>7-Round Expedition:</b> With 6 Action Cards in your hand, play extends up to <b>7 rounds</b>! This extra turn provides the momentum needed to reach the deep cosmos.
-                            </p>
+    <p class="body-sm" style="margin-bottom: 10px;">
+        <b>7-Round Expedition:</b> With 6 Action Cards in play, the game extends up to <b>7 rounds</b>! Program the top 5 cards (1 action each) plus both actions on the 6th card.
+    </p>
 
-                            <!-- Target Boxes: Supernova & Black Hole -->
-                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                                <div style="flex: 1; background: #2a201c; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px;">
-                                    <img src="assets/supernova_squid.png" alt="Supernova" style="width: 44px; height: 44px; border-radius: 6px; border: 1.5px solid #d4af37;">
-                                    <div>
-                                        <div style="font-weight: 700; font-size: 18.5px; color: #fff;">Supernova</div>
-                                        <div style="font-size: 16.5px; color: #dfc092; font-weight: 600;">Catch 2 in 1 Round</div>
-                                    </div>
-                                </div>
-                                <div style="flex: 1; background: #2a201c; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px;">
-                                    <img src="assets/blackhole_whale.png" alt="Black Hole" style="width: 44px; height: 44px; border-radius: 6px; border: 1.5px solid #d4af37;">
-                                    <div>
-                                        <div style="font-weight: 700; font-size: 18.5px; color: #fff;">Black Hole</div>
-                                        <div style="font-size: 16.5px; color: #dfc092; font-weight: 600;">Catch 2 in 1 Round</div>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Target Boxes: Supernova & Black Hole -->
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <div style="flex: 1; background: #2a201c; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 12px;">
+            <img src="assets/supernova_squid.png" alt="Supernova" style="width: 58px; height: 58px; border-radius: 6px; border: 1.5px solid #d4af37;">
+            <div>
+                <div style="font-weight: 700; font-size: 21.5px; color: #fff;">Supernova</div>
+                <div style="font-size: 18px; color: #dfc092; font-weight: 600;">Catch 2 in 1 Round</div>
+            </div>
+        </div>
+        <div style="flex: 1; background: #2a201c; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 12px;">
+            <img src="assets/blackhole_whale.png" alt="Black Hole" style="width: 58px; height: 58px; border-radius: 6px; border: 1.5px solid #d4af37;">
+            <div>
+                <div style="font-weight: 700; font-size: 21.5px; color: #fff;">Black Hole</div>
+                <div style="font-size: 18px; color: #dfc092; font-weight: 600;">Catch 2 in 1 Round</div>
+            </div>
+        </div>
+    </div>
 
-                            <p class="body-sm" style="margin-bottom: 8px; font-size: 18px; line-height: 1.3;">
-                                <i>(Base game tiers: Moons, Planets, Stars, Galaxies are also fully playable with the Octagon!)</i>
-                            </p>
+    <p class="body-sm" style="margin-bottom: 10px; font-size: 20px;">
+        <i>(Base game tiers: Moons, Planets, Stars, Galaxies are also fully playable with the Octagon!)</i>
+    </p>
 
-                            <!-- Parallel Rule Callout Box -->
-                            <div class="callout-box" style="padding: 10px 14px;">
-                                <div style="font-weight: 700; font-size: 19.5px; margin-bottom: 4px;">Deep Space Observing &amp; The Parallel Rule</div>
-                                <p class="body-sm" style="line-height: 1.34; font-size: 18.5px; margin-bottom: 6px;">
-                                    Supernovas and Black Holes are massive cosmic forces located far out in deep space, requiring higher sensor output (<b>3–4 Telescopes</b>) to observe.
-                                </p>
-                                <p class="body-sm" style="line-height: 1.34; font-size: 18.5px; margin-bottom: 6px;">
-                                    During setup, Space Cards start lying <b>parallel (sideways)</b> to the ship's edge.
-                                </p>
-                                <p class="body-sm" style="line-height: 1.34; font-size: 18.5px;">
-                                    <b>Parallel = Unobserved:</b> If you spend Fuel on a face-down Deep Space card but do not meet either entity's Telescope cost, flip it face-up but leave it sideways. The card is revealed, but neither entity is locked in yet! It cannot be hooked until a future Telescope action generates enough power to rotate it inward.
-                                </p>
-                            </div>
-                        </div>
+    <!-- Parallel Rule Callout Box -->
+    <div class="callout-box" style="padding: 10px 14px; margin-bottom: 10px;">
+        <div style="font-weight: 700; font-size: 21px; margin-bottom: 4px;">Deep Space Observing &amp; The Parallel Rule</div>
+        <p class="body-sm" style="line-height: 1.34; font-size: 20.5px;">
+            Supernovas and Black Holes require higher Telescope Power (<b>3–4 Telescopes</b>) to observe. Space Cards start lying <b>parallel (sideways)</b> to the ship's edge.
+        </p>
+        <p class="body-sm" style="line-height: 1.34; font-size: 20.5px; margin-top: 6px;">
+            <b>Parallel = Unobserved:</b> If Fuel spent falls short of both costs, flip the card face-up but leave it sideways. It is revealed, but unobserved until future power turns it inward!
+        </p>
+    </div>
+
+    <!-- Parallel Rule Diagram -->
+    <div class="diagram-container" style="margin-top: 6px;">
+        <img src="assets/diagram_parallel_rule.png" alt="Parallel Rule Diagram" class="diagram-img" style="width: 510px;">
+    </div>
+</div>
 
 
 
@@ -3253,25 +2496,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 7 — FACE A: Cosmic Hazards         -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3328,121 +2553,36 @@
 
 
                             <!-- Red Card Identification Callout -->
-
-
-
-                            <div class="callout-box" style="display: flex; align-items: center; gap: 12px; margin-top: 6px; margin-bottom: 6px;">
-
-
-
-                                <div style="width: 28px; height: 42px; background: #8c2a2a; border-radius: 4px; border: 2px solid #501414; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.25);"></div>
-
-
-
+                            <div class="callout-box" style="display: flex; align-items: center; gap: 12px; margin-top: 6px; margin-bottom: 10px; padding: 8px 12px;">
+                                <div style="width: 30px; height: 45px; background: #8c2a2a; border-radius: 4px; border: 2px solid #501414; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.25);"></div>
                                 <div>
-
-
-
-                                    <div style="font-weight: 700; font-size: 16.5px; margin-bottom: 2px;">Red Card Identification</div>
-
-
-
-                                    <p class="body-xs" style="line-height: 1.24;">Cosmic Hazards are the <b>Red Cards</b>! All 4 Hazard cards have distinctive crimson faces, separating them immediately from the parchment base game cards.</p>
-
-
-
+                                    <div style="font-weight: 700; font-size: 20px; margin-bottom: 2px;">Red Card Identification</div>
+                                    <p class="body-xs" style="line-height: 1.3; font-size: 19.5px;">Cosmic Hazards are the <b>Red Cards</b>! All 4 Hazard cards have distinctive crimson faces, separating them immediately from the parchment base game cards.</p>
                                 </div>
-
-
-
                             </div>
 
+                            <h2 class="section-title" style="width: 100%; margin-bottom: 8px;">Components &amp; Setup</h2>
 
-
-
-
-
-
-                            <h2 class="section-title">Components &amp; Setup</h2>
-
-
-
-                            <ul class="list-styled body-sm" style="margin-bottom: 6px;">
-
-
-
+                            <ul class="list-styled body-sm" style="margin-bottom: 10px; font-size: 21.5px; line-height: 1.32;">
                                 <li><b>4 Cosmic Hazard Cards:</b> Environmental challenges with red faces.</li>
-
-
-
-                                <li><b>Setup:</b> Shuffle the 4 red Hazard cards. Draw <b>1 Hazard card face-up</b> beside the galaxy. Return the other 3 to the tin.</li>
-
-
-
+                                <li><b>Setup:</b> Shuffle the 4 red Hazard cards. Draw <b>1 Hazard card face-up</b> beside the board. Return the other 3 to the tin.</li>
                             </ul>
 
+                            <h2 class="section-title" style="width: 100%; margin-bottom: 8px;">Hazard Win Requirement</h2>
 
-
-
-
-
-
-                            <h2 class="section-title">Hazard Win Requirement</h2>
-
-
-
-                            <div class="callout-box" style="margin-top: 4px; padding: 8px 12px;">
-
-
-
-                                <p class="body-sm" style="font-weight: 700; line-height: 1.3;">
-
-
-
+                            <div class="callout-box" style="margin-top: 4px; padding: 9px 14px;">
+                                <p class="body-sm" style="font-weight: 700; line-height: 1.32; font-size: 21px;">
                                     To win the game, you MUST complete your active Hazard's challenge requirement during play in addition to capturing your 3 target entities!
-
-
-
                                 </p>
-
-
-
                             </div>
 
-
-
-
-
-
-
-                            <div class="callout-box" style="display: flex; gap: 12px; align-items: center; padding: 8px; margin-top: 8px;">
-
-
-
+                            <div class="callout-box" style="display: flex; gap: 14px; align-items: center; padding: 10px 14px; margin: 10px 0 0 0;">
                                 <img src="assets/hazard_asteroid_mini.png" alt="Example Hazard Card" style="width: 72px; height: 108px; border-radius: 4px; border: 1.5px solid var(--ink-dark); flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
-
-
-
-                                <div class="body-xs" style="line-height: 1.25;">
-
-
-
-                                    <div style="font-weight: 700; font-size: 16.5px; margin-bottom: 2px;">Hazard Card Anatomy</div>
-
-
-
+                                <div class="body-xs" style="line-height: 1.3; font-size: 19.5px;">
+                                    <div style="font-weight: 700; font-size: 20.5px; margin-bottom: 3px;">Hazard Card Anatomy</div>
                                     <div><b>Top / Mid:</b> Challenge condition to satisfy during play.</div>
-
-
-
-                                    <div style="margin-top: 3px;"><b>Bottom Banner:</b> One-time reward unlocked upon completion.</div>
-
-
-
+                                    <div style="margin-top: 4px;"><b>Bottom Banner:</b> One-time reward unlocked upon completion.</div>
                                 </div>
-
-
-
                             </div>
 
 
@@ -3465,25 +2605,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 7 — FACE B: Hazard Guide          -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3500,62 +2622,60 @@
 
 
                         <div>
-                            <div style="border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 8px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Hazard Gameplay &amp; Rewards</h2>
-                            </div>
+    <h2 class="section-title" style="margin-bottom: 8px;">Hazard Gameplay &amp; Rewards</h2>
 
-                            <p class="body-sm" style="margin-bottom: 8px; font-size: 18px; line-height: 1.32;">
-                                Check your Hazard after any action. When met, unlock its one-time reward to use anytime!
-                            </p>
+    <p class="body-sm" style="margin-bottom: 10px; font-size: 22px;">
+        When met, turn your Hazard sideways to unlock its one-time reward (flip face-down once spent)!
+    </p>
 
-                            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px;">
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/hazard_asteroid_mini.png" alt="Asteroid Field" style="width: 38px; height: 57px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 18px;">Asteroid Field</div>
-                                        <div style="font-size: 16.5px; line-height: 1.25;"><b>Condition:</b> 3+ movement actions in a row.</div>
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 1px;">Reward: Free Rotate</div>
-                                    </div>
-                                </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+            <img src="assets/hazard_asteroid_mini.png" alt="Asteroid Field" style="width: 50px; height: 75px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; font-size: 22.5px;">Asteroid Field</div>
+                <div style="font-size: 20.5px; line-height: 1.32;"><b>Condition:</b> 3+ Rotate actions in a row (1 round).</div>
+                <div style="font-weight: 700; font-size: 21px; margin-top: 2px;">Reward: Free Rotate (Any Direction)</div>
+            </div>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/hazard_solarwinds_mini.png" alt="Solar Winds" style="width: 38px; height: 57px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 18px;">Solar Winds</div>
-                                        <div style="font-size: 16.5px; line-height: 1.25;"><b>Condition:</b> Telescope &amp; Hook same entity in 1 round.</div>
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 1px;">Reward: Free Fuel OR Rotate</div>
-                                    </div>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+            <img src="assets/hazard_solarwinds_mini.png" alt="Solar Winds" style="width: 50px; height: 75px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; font-size: 22.5px;">Solar Winds</div>
+                <div style="font-size: 20.5px; line-height: 1.32;"><b>Condition:</b> Observe &amp; Capture same entity in 1 round.</div>
+                <div style="font-weight: 700; font-size: 21px; margin-top: 2px;">Reward: Free Fuel OR Rotate (Any)</div>
+            </div>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/hazard_parasite_mini.png" alt="Boat Parasite" style="width: 38px; height: 57px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 18px;">Boat Parasite</div>
-                                        <div style="font-size: 16.5px; line-height: 1.25;"><b>Condition:</b> 3+ swap actions in a row.</div>
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 1px;">Reward: Free Swap Adjacent</div>
-                                    </div>
-                                </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+            <img src="assets/hazard_parasite_mini.png" alt="Boat Parasite" style="width: 50px; height: 75px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; font-size: 22.5px;">Boat Parasite</div>
+                <div style="font-size: 20.5px; line-height: 1.32;"><b>Condition:</b> 3+ Swap actions in a row (1 round).</div>
+                <div style="font-weight: 700; font-size: 21px; margin-top: 2px;">Reward: Free Swap</div>
+            </div>
+        </div>
 
-                                <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 10px;">
-                                    <img src="assets/hazard_meteor_mini.png" alt="Meteor" style="width: 38px; height: 57px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 700; font-size: 18px;">Meteor</div>
-                                        <div style="font-size: 16.5px; line-height: 1.25;"><b>Condition:</b> Use 4+ Fuel in a single action.</div>
-                                        <div style="font-weight: 700; font-size: 17px; margin-top: 1px;">Reward: Free Fuel</div>
-                                    </div>
-                                </div>
-                            </div>
+        <div style="background: #dfc092; border: 2px solid var(--ink-dark); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 14px;">
+            <img src="assets/hazard_meteor_mini.png" alt="Meteor" style="width: 50px; height: 75px; border-radius: 4px; border: 1.5px solid var(--ink-dark); object-fit: cover; flex-shrink: 0;">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; font-size: 22.5px;">Meteor</div>
+                <div style="font-size: 20.5px; line-height: 1.32;"><b>Condition:</b> Spend 4+ combined Fuel on 1 action.</div>
+                <div style="font-weight: 700; font-size: 21px; margin-top: 2px;">Reward: Free Fuel</div>
+            </div>
+        </div>
+    </div>
 
-                            <div class="callout-box" style="margin-top: 6px; padding: 6px 10px; display: flex; gap: 10px; align-items: center;">
-                                <img src="assets/pelican_circle.png" alt="Captain Pelican" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--ink-dark); background: #fff; flex-shrink: 0;">
-                                <div>
-                                    <div style="font-weight: 700; font-size: 16.5px; margin-bottom: 2px;">Expedition Tip: Hazard Timing</div>
-                                    <p class="body-sm" style="line-height: 1.26; font-size: 17.5px;">
-                                        Clear your Hazard early! Unlocking its one-time reward gives you extra momentum heading into your win round.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+    <div class="callout-box" style="margin-top: 10px; padding: 12px 16px; display: flex; gap: 16px; align-items: center;">
+        <img src="assets/pelican_circle.png" alt="Captain Pelican" style="width: 62px; height: 62px; border-radius: 50%; border: 2px solid var(--ink-dark); background: #fff; flex-shrink: 0;">
+        <div>
+            <div style="font-weight: 700; font-size: 21.5px; margin-bottom: 3px;">Expedition Tip: Hazard Timing</div>
+            <p class="body-sm" style="line-height: 1.34; font-size: 21px;">
+                Clear your Hazard early! Unlocking its one-time reward gives you extra momentum heading into your win round.
+            </p>
+        </div>
+    </div>
+</div>
 
 
 
@@ -3573,25 +2693,7 @@
 
             </div>
 
-
-
-        
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 8 — FACE A: Clarifications & FAQ   -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3608,54 +2710,52 @@
 
 
                         <div>
-                            <div style="border-bottom: 2.5px solid var(--ink-dark); padding-bottom: 3px; margin-bottom: 12px;">
-                                <h2 class="section-title" style="margin: 0; padding: 0; border: none;">Rules Clarifications</h2>
-                            </div>
+    <h2 class="section-title" style="margin-bottom: 12px;">Rules Clarifications</h2>
 
-                            <div style="display: flex; flex-direction: column; gap: 11px;">
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">1. Skipping Impossible Actions</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        If an action cannot be performed (e.g. no adjacent card to swap, or hook aiming at nothing), <b>skip it with no penalty</b>.
-                                    </p>
-                                </div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">1. Skipping Impossible Actions</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                If an action cannot be performed (e.g. no adjacent card to swap, or hook aiming at nothing), <b>skip it with no penalty</b>.
+            </p>
+        </div>
 
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">2. Deciding Fuel in Advance</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        Decide Fuel spent before flipping a face-down Space Card. If your Fuel falls short of both costs, it remains unobserved.
-                                    </p>
-                                </div>
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">2. Deciding Fuel in Advance</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                Decide Fuel spent before flipping a face-down Space Card. If your Fuel falls short of both costs, it remains unobserved.
+            </p>
+        </div>
 
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">3. Combining Fuel</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        Bonus Fuel from caught rewards <b>combines freely</b> with Action Card Fuel to meet higher power costs!
-                                    </p>
-                                </div>
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">3. Combining Fuel</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                Consecutive Fuel from caught rewards and Action Cards <b>combines freely</b> to meet higher power costs!
+            </p>
+        </div>
 
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">4. Multi-Action Rewards</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        If a reward grants two actions (with a <b>+</b>), resolve both in either order, one after the other.
-                                    </p>
-                                </div>
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">4. Multi-Action Rewards</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                If a reward grants two actions (with a <b>+</b>), resolve both in either order, one after the other.
+            </p>
+        </div>
 
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">5. Mandatory Fuel &amp; Rotation</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        If 1 Fuel powers a Telescope facing an observed 2-cost entity, you must rotate to observe the 1-cost entity if able.
-                                    </p>
-                                </div>
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">5. Mandatory Observation</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                If 1 Fuel powers a Telescope facing an observed 2-cost entity, you must turn the Space Card to observe its 1-cost entity.
+            </p>
+        </div>
 
-                                <div>
-                                    <div style="font-weight: 700; font-size: 21px; margin-bottom: 2px;">6. The 3-Hook Limit</div>
-                                    <p class="body-sm" style="line-height: 1.34; font-size: 20px;">
-                                        Each Hook holds 1 catch. Winning requires holding all 3 of your target entities across all 3 Hooks in that round.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+        <div>
+            <div style="font-weight: 700; font-size: 24.5px; margin-bottom: 4px;">6. The 3-Hook Limit</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 22.5px;">
+                Each Hook holds 1 catch. Winning requires holding all 3 of your target entities across all 3 Hooks in that round.
+            </p>
+        </div>
+    </div>
+</div>
 
 
 
@@ -3673,25 +2773,7 @@
 
             </div>
 
-
-
-
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <!-- CARD 8 — FACE B: The 18-Card Origin     -->
-
-
-
-            <!-- ======================================= -->
-
-
-
-            <div class="card-wrapper">
+<div class="card-wrapper">
 
 
 
@@ -3708,154 +2790,43 @@
 
 
                         <div>
-
-
-
-                            <div style="text-align: center; margin-bottom: 12px;">
-
-
-
-                                <span class="body-sm" style="font-weight:700; text-transform:uppercase; letter-spacing:1.5px; opacity:0.8; font-size: 16px;">Behind the Scenes</span>
-
-
-
-                                <h1 class="card-title" style="font-size: 46px; margin-top:2px;">The 18-Card Origin</h1>
-
-
-
-                                <div class="divider"></div>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <div style="margin-top: 14px; margin-bottom: 14px;">
-
-
-
-                                <h3 style="font-weight: 700; font-size: 22px; color: var(--ink-dark); margin-bottom: 4px;">The 18-Card Limit</h3>
-
-
-
-                                <p class="body-sm" style="line-height: 1.36; font-size: 19.5px;">
-
-
-
-                                    Card game manufacturers print cards on press sheets of exactly <b>18 cards</b>. This constraint inspired the beloved "18-card microgame" challenge: designing a complete, deep tabletop experience using only a single sheet of paper.
-
-
-
-                                </p>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <div style="margin-bottom: 16px;">
-
-
-
-                                <h3 style="font-weight: 700; font-size: 22px; color: var(--ink-dark); margin-bottom: 4px;">The Birth of GalaxSea</h3>
-
-
-
-                                <p class="body-sm" style="line-height: 1.36; font-size: 19.5px;">
-
-
-
-                                    <i>GalaxSea</i> was designed around this challenge. To fit an entire modular ship, an outer galaxy ring, and programmable actions into a pocket mint tin, every card had to work double duty.
-
-
-
-                                </p>
-
-
-
-                                <p class="body-sm" style="line-height: 1.36; font-size: 19.5px; margin-top: 6px;">
-
-
-
-                                    Double-sided ship cards and dual-ended space cards made it all possible with zero wasted space!
-
-
-
-                                </p>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-                            <!-- Thank You Callout Box with Captain Pelican -->
-
-
-
-                            <div class="callout-box" style="margin-top: 14px; padding: 14px 16px; display: flex; gap: 16px; align-items: center;">
-
-
-
-                                <img src="assets/pelican_circle.png" alt="Captain Pelican" style="width: 64px; height: 64px; border-radius: 50%; border: 2.5px solid var(--ink-dark); background: #fff; flex-shrink: 0;">
-
-
-
-                                <div>
-
-
-
-                                    <div style="font-weight: 700; font-size: 20px; margin-bottom: 4px;">Thank You for Playing!</div>
-
-
-
-                                    <p class="body-sm" style="line-height: 1.32; font-size: 17.5px;">
-
-
-
-                                        <i>"Thank you so much for bringing GalaxSea to your table. I hope this little tin brings a lot of fun to your game nights!"</i>
-
-
-
-                                    </p>
-
-
-
-                                    <div style="font-weight: 700; font-size: 18px; margin-top: 8px; text-align: right;">
-
-
-
-                                        — Thanks, Diego
-
-
-
-                                    </div>
-
-
-
-                                </div>
-
-
-
-                            </div>
-
-
-
-                        </div>
+    <div style="text-align: center; margin-bottom: 12px;">
+        <span class="body-sm" style="font-weight:700; text-transform:uppercase; letter-spacing:1.5px; opacity:0.8; font-size: 19px;">Behind the Scenes</span>
+        <h1 class="card-title" style="font-size: 54px; margin-top:2px;">The 18-Card Origin</h1>
+        <div class="divider"></div>
+    </div>
+
+    <div style="margin-top: 18px; margin-bottom: 14px;">
+        <h3 style="font-weight: 700; font-size: 26px; color: var(--ink-dark); margin-bottom: 6px;">The 18-Card Limit</h3>
+        <p class="body-sm" style="line-height: 1.42; font-size: 23px;">
+            Card game manufacturers print cards on press sheets of exactly <b>18 cards</b>. This constraint inspired the beloved "18-card microgame" challenge: designing a complete, deep tabletop experience using only a single sheet of paper.
+        </p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <h3 style="font-weight: 700; font-size: 26px; color: var(--ink-dark); margin-bottom: 6px;">The Birth of GalaxSea</h3>
+        <p class="body-sm" style="line-height: 1.42; font-size: 23px;">
+            <i>GalaxSea</i> was designed around this challenge. To fit an entire modular ship, an outer galaxy ring, and programmable actions into a pocket mint tin, every card had to work double duty.
+        </p>
+        <p class="body-sm" style="line-height: 1.42; font-size: 23px; margin-top: 8px;">
+            Double-sided ship cards and dual-ended space cards made it all possible with zero wasted space!
+        </p>
+    </div>
+
+    <!-- Thank You Callout Box with Captain Pelican -->
+    <div class="callout-box" style="margin-top: 20px; padding: 18px 20px; display: flex; gap: 20px; align-items: center;">
+        <img src="assets/pelican_circle.png" alt="Captain Pelican" style="width: 84px; height: 84px; border-radius: 50%; border: 2.5px solid var(--ink-dark); background: #fff; flex-shrink: 0;">
+        <div>
+            <div style="font-weight: 700; font-size: 24px; margin-bottom: 6px;">Thank You for Playing!</div>
+            <p class="body-sm" style="line-height: 1.38; font-size: 21.5px;">
+                <i>"Thank you so much for bringing GalaxSea to your table. I hope this little tin brings a lot of fun to your game nights!"</i>
+            </p>
+            <div style="font-weight: 700; font-size: 21.5px; margin-top: 10px; text-align: right;">
+                &mdash; Thanks, Diego
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -3872,14 +2843,7 @@
 
 
             </div>
-
-
-
-
-
-
-
-        </div><!-- /card-grid -->
+</div><!-- /card-grid -->
 
 
 
@@ -3931,46 +2895,20 @@
 
 
 
-        const zoomSteps = [0.25, 0.33, 0.5, 0.66, 0.75, 1.0];
-
-
-
-        let zoomIndex = 1; // start at 33%
-
-
-
+        const zoomSteps = [0.25, 0.33, 0.38, 0.5, 0.66, 0.75, 1.0];
+        let zoomIndex = 2; // start at 38% for ideal 4-card desktop layout
         const grid = document.getElementById('cardGrid');
-
-
-
         const zoomLabel = document.getElementById('zoomLabel');
 
-
-
-
-
-
-
         function applyZoom() {
-
-
-
             const s = zoomSteps[zoomIndex];
-
-
-
-            grid.style.transform = `scale(${s})`;
-
-
-
+            grid.style.zoom = s;
+            if (!grid.style.zoom) {
+                grid.style.transform = `scale(${s})`;
+                grid.style.transformOrigin = 'top center';
+            }
             zoomLabel.textContent = Math.round(s * 100) + '%';
-
-
-
         }
-
-
-
         applyZoom();
 
 
@@ -4916,10 +3854,6 @@ Please run 'export_cards.bat' or 'python export_all_cards.py' to export all 16 c
 
 
         });
-
-
-
-    
         // ── Reader / Booklet View Controller ──────
         const btnGridView = document.getElementById('btnGridView');
         const btnBookletView = document.getElementById('btnBookletView');

@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GalaxSea — Play Interactive Tabletop Edition | Diego Teran</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070b14;
+            --brass-gold: #d4a853;
+            --brass-bright: #f5d076;
+            --brass-dark: #8a6421;
+            --parchment: #f8f1e5;
+            --accent-cyan: #38bdf8;
+            --accent-purple: #a855f7;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --accent-amber: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background: radial-gradient(circle at 55% 50%, #162238 0%, #090d18 65%, #04060b 100%);
+            color: var(--parchment);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.65) 50%, transparent 100%),
+                radial-gradient(1px 1px at 28% 68%, rgba(255,255,255,0.45) 50%, transparent 100%),
+                radial-gradient(2px 2px at 46% 16%, rgba(245,208,118,0.5) 50%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 68% 82%, rgba(255,255,255,0.55) 50%, transparent 100%),
+                radial-gradient(1px 1px at 84% 34%, rgba(56,189,248,0.55) 50%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 91% 74%, rgba(255,255,255,0.45) 50%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Minimal Top Bar ──────────────────────────────────────────────── */
+        header.top-bar {
+            height: 52px;
+            background: rgba(8, 12, 22, 0.85);
+            border-bottom: 1px solid rgba(212, 168, 83, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 30;
+            backdrop-filter: blur(8px);
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .brand-logo {
+            height: 34px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
+        }
+
+        /* Stepper Pills in Top Bar */
+        .round-stepper-bar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            border-radius: 999px;
+            padding: 3px 8px;
+        }
+        .stepper-pill {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(248, 241, 229, 0.45);
+            transition: all 0.2s ease;
+        }
+        .stepper-pill.active {
+            background: linear-gradient(135deg, var(--brass-gold), var(--brass-dark));
+            color: #090d16;
+            box-shadow: 0 0 10px rgba(245, 208, 118, 0.45);
+        }
+        .stepper-pill.done {
+            color: var(--accent-green);
+        }
+
+        /* Minimal Status Counters */
+        .top-hud {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hud-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(212, 168, 83, 0.35);
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--brass-bright);
+        }
+        .hud-chip.fuel-chip.has-fuel {
+            border-color: var(--accent-amber);
+            background: rgba(120, 53, 15, 0.55);
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+            animation: pulseFuelChip 1.3s infinite alternate;
+        }
+        @keyframes pulseFuelChip {
+            from { transform: scale(1); }
+            to { transform: scale(1.06); }
+        }
+
+        .icon-btn {
+            background: rgba(25, 36, 58, 0.85);
+            color: var(--parchment);
+            border: 1px solid rgba(212, 168, 83, 0.45);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .icon-btn:hover {
+            background: rgba(212, 168, 83, 0.22);
+            border-color: var(--brass-bright);
+        }
+
+        /* ── Main Tabletop Layout (Left Card Stack + Center Galaxy Board) ── */
+        main.tabletop-workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* ── LEFT COLUMN: PURE PHYSICAL ACTION CARDS (NO TEXT BOXES!) ── */
+        aside.card-stack-zone {
+            width: 230px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            z-index: 20;
+            position: relative;
+        }
+
+        .physical-card-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+             justify-content: center;
+            position: relative;
+            width: 100%;
+            padding-top: 4px;
+            padding-bottom: 10px;
+        }
+
+        /* Each Action Card in the Left Stack is literally JUST the card! */
+        .physical-action-card {
+            position: relative;
+            width: 132px;
+            height: 198px;
+            border-radius: 11px;
+            background: #1a120b;
+            border: 2.5px solid rgba(212, 168, 83, 0.75);
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.85), 0 8px 20px rgba(0, 0, 0, 0.85);
+            transition: margin-bottom 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.25s ease,
+                        border-color 0.25s ease,
+                        filter 0.25s ease;
+            cursor: pointer;
+            overflow: visible;
+            flex-shrink: 0;
+        }
+
+        /* Overlapping geometry:
+           Card height = 198px (Top half = 99px, Bottom half = 99px).
+           - When TUCKED (Card 2 covers bottom half of Card 1): margin-bottom = -100px!
+             So ONLY the top half (98px) of Cards 1-4 is visible, and Card 5 at the bottom shows all 198px!
+           - In Step 2 (Swap): slightly fanned overlap (-82px), and hovering slides the card out so you can inspect both halves!
+        */
+        .physical-action-card.overlap-swap {
+            margin-bottom: -82px;
+        }
+        .physical-action-card.overlap-swap:hover {
+            margin-bottom: -12px;
+            transform: translateX(10px) scale(1.05);
+            z-index: 40 !important;
+            border-color: var(--brass-bright);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.95), 0 0 16px rgba(245, 208, 118, 0.45);
+        }
+
+        .physical-action-card.overlap-tucked {
+            margin-bottom: -100px;
+        }
+        /* Hovering a tucked card in Step 3 or 4 peeks it slightly without breaking the stack */
+        .physical-action-card.overlap-tucked:hover {
+            border-color: var(--brass-bright);
+        }
+
+        /* When a card is expanded in Step 3 so you can click its Top or Bottom half */
+        .physical-action-card.overlap-expanded {
+            width: 148px;
+            height: 222px;
+            margin-top: 6px;
+            margin-bottom: 8px;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 24px rgba(56, 189, 248, 0.65), 0 14px 32px rgba(0, 0, 0, 0.95);
+            z-index: 35 !important;
+        }
+
+        /* Bottom card in the stack NEVER has negative margin-bottom */
+        .physical-action-card.is-last-card {
+            margin-bottom: 0 !important;
+        }
+
+        /* Card artwork wrapper that rotates 180deg smoothly when bottom half is chosen */
+        .card-art-rotator {
+            width: 100%;
+            height: 100%;
+            border-radius: 9px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .card-art-rotator.rotated-180 {
+            transform: rotate(180deg);
+        }
+        .card-art-rotator img.action-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* Deal & Swap Animations */
+        @keyframes dealCardFlyIn {
+            0% {
+                opacity: 0;
+                transform: translate(-90px, -60px) rotate(-14deg) scale(0.75);
+            }
+            70% {
+                opacity: 1;
+                transform: translate(6px, 3px) rotate(2deg) scale(1.03);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+        }
+        .physical-action-card.deal-anim {
+            animation: dealCardFlyIn 0.46s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+        }
+
+        @keyframes swapCardBounce {
+            0% { transform: scale(1); }
+            45% { transform: translateX(18px) scale(1.09); border-color: var(--accent-green); box-shadow: 0 0 22px rgba(74, 222, 128, 0.8); }
+            100% { transform: scale(1); }
+        }
+        .physical-action-card.swap-bounce {
+            animation: swapCardBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Selected for Swap in Step 2 */
+        .physical-action-card.selected-for-swap {
+            transform: translateX(14px) scale(1.05);
+            border-color: var(--brass-bright);
+            box-shadow: 0 0 22px rgba(245, 208, 118, 0.85), 0 10px 24px rgba(0,0,0,0.9);
+        }
+
+        /* Dim already-executed cards in Step 4 */
+        .physical-action-card.executed-card {
+            filter: brightness(0.55) saturate(0.75);
+        }
+
+        /* Currently executing card in Step 4 */
+        .physical-action-card.executing-card {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 22px rgba(168, 85, 247, 0.8), 0 8px 20px rgba(0,0,0,0.9);
+        }
+
+        /* Step 6 Level Up selectable highlight */
+        .physical-action-card.upgrade-candidate {
+            border-color: var(--brass-bright);
+            box-shadow: 0 0 18px rgba(245, 208, 118, 0.6);
+        }
+        .physical-action-card.upgrade-candidate:hover {
+            transform: translateX(10px) scale(1.05);
+            box-shadow: 0 0 26px rgba(245, 208, 118, 0.95);
+        }
+
+        /* Direct Clickable Top / Bottom Half Zones on the Card in Step 3 (and flip-on-click in Step 2) */
+        .card-click-half {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50%;
+            z-index: 8;
+            border-radius: 8px;
+            transition: background 0.16s ease, box-shadow 0.16s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-click-half.top-half-zone {
+            top: 0;
+        }
+        .card-click-half.bottom-half-zone {
+            bottom: 0;
+        }
+        .card-click-half:hover {
+            background: rgba(56, 189, 248, 0.18);
+            box-shadow: inset 0 0 0 3px #38bdf8, inset 0 0 18px rgba(56, 189, 248, 0.55);
+        }
+        .card-click-half .half-hover-pip {
+            opacity: 0;
+            position: absolute;
+            right: 6px;
+            bottom: 6px;
+            background: rgba(9, 13, 24, 0.9);
+            border: 1.5px solid #38bdf8;
+            color: #38bdf8;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 999px;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.85);
+        }
+        .card-click-half:hover .half-hover-pip {
+            opacity: 1;
+            transform: scale(1.04);
+        }
+
+        /* Physical Purple Star Token sitting directly on the active card half! */
+        .purple-star-token {
+            position: absolute;
+            left: -16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #e879f9, #9333ea 65%, #581c87 100%);
+            border: 2px solid #fff;
+            box-shadow: 0 0 16px rgba(192, 132, 252, 0.95), 0 4px 10px rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: #fff;
+            z-index: 45;
+            pointer-events: none;
+            animation: starTokenPulse 1.1s infinite alternate ease-in-out;
+        }
+        .purple-star-token.on-top-half {
+            top: 31px;
+        }
+        .purple-star-token.on-bottom-half {
+            top: 130px;
+        }
+        @keyframes starTokenPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.13); }
+        }
+
+        /* Subtle corner badge only if needed (e.g. ✓ placed in Step 3, or Swap tag) */
+        .card-corner-pip {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(9, 13, 24, 0.88);
+            border: 1px solid rgba(212, 168, 83, 0.65);
+            color: var(--brass-bright);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 999px;
+            z-index: 12;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+        .card-corner-pip.placed-pip {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* Floating Pill Controls under the Left Card Stack */
+        .stack-action-bar {
+            margin-top: 10px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            z-index: 35;
+        }
+
+        .pill-btn {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+            border: 1.5px solid var(--brass-gold);
+            color: var(--brass-bright);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75);
+            transition: all 0.18s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .pill-btn:hover {
+            transform: translateY(-1px);
+            border-color: #fff;
+            box-shadow: 0 8px 22px rgba(212, 168, 83, 0.4);
+        }
+        .pill-btn.primary {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            border-color: #86efac;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.5);
+        }
+        .pill-btn.primary:hover {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.7);
+        }
+        .pill-btn.amber {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border-color: #fde68a;
+            color: #fff;
+        }
+
+        /* ── CENTER ZONE: GALAXY BOARD CANVAS ────────────────────────────── */
+        section.board-stage {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .galaxy-board {
+            position: relative;
+            width: 760px;
+            height: 760px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .orbit-ring-outer {
+            position: absolute;
+            inset: 42px;
+            border-radius: 50%;
+            border: 1px dashed rgba(212, 168, 83, 0.18);
+            pointer-events: none;
+        }
+        .orbit-ring-inner {
+            position: absolute;
+            inset: 190px;
+            border-radius: 50%;
+            border: 1px solid rgba(56, 189, 248, 0.14);
+            pointer-events: none;
+        }
+
+        /* Center Direction Pointer Card */
+        .direction-pointer-card {
+            position: absolute;
+            width: 86px;
+            height: 129px;
+            border-radius: 9px;
+            overflow: hidden;
+            border: 2.5px solid var(--brass-bright);
+            box-shadow: 0 0 24px rgba(245, 208, 118, 0.45), 0 8px 20px rgba(0,0,0,0.85);
+            transform: rotate(var(--pointer-rot, 180deg));
+            transition: transform 0.52s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+            background: #1a130c;
+        }
+        .direction-pointer-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Ship Card Node (Inner Ring) */
+        .ship-card-node {
+            position: absolute;
+            width: 82px;
+            height: 123px;
+            border-radius: 8px;
+            transform: rotate(var(--card-rot, 0deg));
+            transition: all 0.42s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            z-index: 6;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+            border: 2px solid rgba(212, 168, 83, 0.45);
+            background: #121a2d;
+        }
+        .ship-card-node:hover {
+            border-color: var(--brass-bright);
+            box-shadow: 0 0 16px rgba(245, 208, 118, 0.55);
+            z-index: 14;
+        }
+        .ship-card-node.active-target {
+            border-color: var(--brass-bright);
+            box-shadow: 0 0 22px rgba(245, 208, 118, 0.85);
+        }
+        .ship-card-node.swap-selectable {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.75);
+        }
+        .ship-card-node.swap-selected {
+            border-color: #fde047;
+            box-shadow: 0 0 26px rgba(253, 224, 71, 0.95);
+            z-index: 15;
+        }
+        .ship-card-node.swap-target {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 22px rgba(74, 222, 128, 0.95);
+        }
+        .ship-card-node.swap-dimmed,
+        .ship-card-node.anchored-disabled {
+            opacity: 1;
+            filter: brightness(0.65) grayscale(0.35);
+        }
+        .ship-card-node.rotate-target-cw,
+        .ship-card-node.rotate-target-ccw {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 24px rgba(56, 189, 248, 0.95);
+        }
+
+        .ship-card-img, .space-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* Space Card Node (Outer Ring) */
+        .space-card-node {
+            position: absolute;
+            width: 86px;
+            height: 129px;
+            border-radius: 8px;
+            transform: rotate(var(--space-rot, 0deg));
+            transition: all 0.48s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            z-index: 4;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.85);
+            border: 2px solid rgba(56, 189, 248, 0.35);
+            background: #0b1324;
+        }
+        .space-card-node:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.65);
+            z-index: 14;
+        }
+        .space-card-node.observed {
+            border-color: var(--accent-green);
+        }
+        .space-card-node.observe-target-card {
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 26px rgba(251, 191, 36, 0.95);
+        }
+        .space-card-node.capture-target-card {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 28px rgba(74, 222, 128, 0.95);
+        }
+        /* Caught Space Card States:
+           1. Hooked ON TOP OF the Hook Card (before reward is used): z-index 12 (> ship-card-node z-index 6)
+           2. Tucked BEHIND the Hook Card (after reward is used): z-index 3 (< ship-card-node z-index 6)
+        */
+        .space-card-node.caught.hooked-on-top {
+            z-index: 12;
+            border: 2.5px solid var(--accent-green);
+            box-shadow: 0 0 24px rgba(74, 222, 128, 0.9), 0 10px 24px rgba(0,0,0,0.95);
+        }
+        .space-card-node.caught.tucked-behind {
+            z-index: 3;
+            filter: brightness(0.72) saturate(0.85);
+            border: 2px solid rgba(212, 168, 83, 0.55);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.85);
+        }
+
+        @keyframes cardFlipPop {
+            0% { transform: rotate(var(--card-rot, 0deg)) scale(0.8) rotateY(90deg); }
+            60% { transform: rotate(var(--card-rot, 0deg)) scale(1.1) rotateY(-10deg); }
+            100% { transform: rotate(var(--card-rot, 0deg)) scale(1) rotateY(0deg); }
+        }
+        .ship-card-node.flip-anim {
+            animation: cardFlipPop 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes spaceFlipPop {
+            0% { transform: rotate(var(--space-rot, 0deg)) scale(0.8) rotateY(90deg); }
+            60% { transform: rotate(var(--space-rot, 0deg)) scale(1.1) rotateY(-10deg); }
+            100% { transform: rotate(var(--space-rot, 0deg)) scale(1) rotateY(0deg); }
+        }
+        .space-card-node.flip-anim {
+            animation: spaceFlipPop 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Compact Counter-Rotated Action Badges on Board Cards (Always Upright!) */
+        .ship-card-node .board-card-pill {
+            transform: translate(-50%, -50%) rotate(calc(-1 * var(--card-rot, 0deg)));
+        }
+        .space-card-node .board-card-pill {
+            transform: translate(-50%, -50%) rotate(calc(-1 * var(--space-rot, 0deg)));
+        }
+        .board-card-pill {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(9, 13, 24, 0.92);
+            border: 1.5px solid var(--brass-bright);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 999px;
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.9);
+            z-index: 20;
+        }
+        .board-card-pill.green {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .board-card-pill.cyan {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        .board-card-pill.amber {
+            border-color: var(--accent-amber);
+            color: var(--accent-amber);
+        }
+
+        /* Direct Top/Bottom Click Halves on Space Card when choosing observed entity */
+        .entity-choice-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50%;
+            z-index: 18;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .entity-choice-overlay.top-half {
+            top: 0;
+            border-bottom: 1.5px dashed rgba(255,255,255,0.45);
+        }
+        .entity-choice-overlay.bottom-half {
+            bottom: 0;
+        }
+        .entity-choice-overlay:hover {
+            background: rgba(74, 222, 128, 0.28);
+            box-shadow: inset 0 0 14px rgba(74, 222, 128, 0.8);
+        }
+
+        /* ── FLOATING TABLETOP HUD BAR (Bottom Center of Board) ───────────── */
+        .floating-tabletop-hud {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 15, 28, 0.92);
+            border: 1.5px solid rgba(212, 168, 83, 0.65);
+            border-radius: 999px;
+            padding: 8px 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+            z-index: 40;
+            backdrop-filter: blur(8px);
+            max-width: 90%;
+        }
+        .hud-prompt-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--parchment);
+            white-space: nowrap;
+        }
+        .hud-prompt-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── UPRIGHT CARD LOUPE (Bottom-Right Corner on Hover — Card Art Only!) ── */
+        .upright-card-loupe {
+            position: absolute;
+            bottom: 18px;
+            right: 20px;
+            width: 150px;
+            height: 225px;
+            border-radius: 12px;
+            border: 2.5px solid var(--brass-bright);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.92);
+            overflow: hidden;
+            background: #0d1322;
+            z-index: 35;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+        .upright-card-loupe.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .upright-card-loupe img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ── CAUGHT REWARD CARDS DOCK (Right Next to the Action Card Stack!) ── */
+        .floating-rewards-strip {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 34;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            padding: 4px;
+        }
+        .reward-card-widget {
+            width: 158px;
+            background: linear-gradient(155deg, rgba(16, 28, 48, 0.96), rgba(9, 15, 28, 0.98));
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.9), 0 0 18px rgba(74, 222, 128, 0.35);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            animation: rewardPopIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes rewardPopIn {
+            from { opacity: 0; transform: translateX(-16px) scale(0.88); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        .reward-card-widget:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.95), 0 0 24px rgba(74, 222, 128, 0.65);
+        }
+        .reward-card-widget.is-tucked-widget {
+            border-color: rgba(212, 168, 83, 0.45);
+            background: rgba(12, 18, 32, 0.82);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.7);
+            opacity: 0.82;
+        }
+        .reward-widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--accent-green);
+        }
+        .reward-card-widget.is-tucked-widget .reward-widget-header {
+            color: var(--brass-bright);
+        }
+        .reward-card-art-window {
+            width: 100%;
+            height: 78px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1.5px solid rgba(255,255,255,0.22);
+            background: #080d1a;
+        }
+        .reward-card-art-window img {
+            width: 100%;
+            height: 200%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+        /* Show the caught entity half upright so its reward icon at the edge is clearly visible */
+        .reward-card-art-window img.show-top-entity {
+            object-position: top center;
+            transform: none;
+        }
+        .reward-card-art-window img.show-bottom-entity {
+            object-position: bottom center;
+            transform: rotate(180deg);
+        }
+        .reward-entity-title {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--parchment);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .reward-action-box {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(74, 222, 128, 0.14);
+            border: 1px solid rgba(74, 222, 128, 0.45);
+            border-radius: 8px;
+            padding: 5px 8px;
+        }
+        .reward-action-box img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .reward-action-box span {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .reward-use-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            border: 1.5px solid #86efac;
+            color: #fff;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.16s ease;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.45);
+        }
+        .reward-use-btn:hover {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.65);
+        }
+        .reward-choice-row {
+            display: flex;
+            gap: 5px;
+            width: 100%;
+        }
+        .reward-choice-row .reward-use-btn {
+            flex: 1;
+            padding: 5px 4px;
+            font-size: 10.5px;
+        }
+
+        /* ── STEP 6: CLEAN 3D CARD FLIP UPGRADE OVERLAY (Pure Card!) ──────── */
+        .card-upgrade-overlay {
+            position: fixed;
+            inset: 52px 0 0 230px;
+            background: rgba(6, 9, 18, 0.78);
+            backdrop-filter: blur(5px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 50;
+        }
+        .card-upgrade-overlay.active {
+            display: flex;
+        }
+        .upgrade-3d-scene {
+            width: 210px;
+            height: 315px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .upgrade-3d-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .upgrade-3d-inner.is-flipped-lvl2 {
+            transform: rotateY(180deg);
+        }
+        .upgrade-3d-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 3px solid var(--brass-bright);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+            background: #1a120b;
+        }
+        .upgrade-3d-face.back-lvl2 {
+            transform: rotateY(180deg);
+            border-color: var(--accent-green);
+            box-shadow: 0 0 32px rgba(74, 222, 128, 0.55), 0 16px 40px rgba(0,0,0,0.9);
+        }
+        .upgrade-3d-face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .upgrade-face-tag {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(9, 13, 24, 0.9);
+            border: 1.5px solid var(--brass-bright);
+            color: var(--brass-bright);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+        .upgrade-3d-face.back-lvl2 .upgrade-face-tag {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .upgrade-controls-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ── Modals (New Game / Rules / Victory) ──────────────────────────── */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 7, 14, 0.82);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .modal-backdrop.active {
+            display: flex;
+        }
+        .modal-card {
+            background: linear-gradient(145deg, #151f34, #0b101d);
+            border: 2px solid var(--brass-gold);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 92%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            color: var(--parchment);
+        }
+        .modal-card h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--brass-bright);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .tier-option {
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(212, 168, 83, 0.35);
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .tier-option.selected {
+            border-color: var(--brass-bright);
+            background: rgba(212, 168, 83, 0.18);
+        }
+
+        /* Subtle Toast */
+        .toast-banner {
+            position: fixed;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: rgba(10, 15, 28, 0.92);
+            border: 1.5px solid var(--brass-bright);
+            color: var(--brass-bright);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.22s ease;
+            z-index: 90;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.75);
+        }
+        .toast-banner.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Minimal Top Bar ──────────────────────────────────────────────── -->
+    <header class="top-bar">
+        <div class="brand-group">
+            <span style="font-family:'Cinzel',serif; font-weight:800; font-size:22px; color:var(--brass-bright); letter-spacing:1px;">GalaxSea</span>
+            <div class="round-stepper-bar" id="roundStepperBar">
+                <div class="stepper-pill" data-step="1">① Deal</div>
+                <div class="stepper-pill" data-step="2">② Swap</div>
+                <div class="stepper-pill" data-step="3">③ Stack</div>
+                <div class="stepper-pill" data-step="4">④ Play</div>
+                <div class="stepper-pill" data-step="6">⑤ Upgrade</div>
+            </div>
+        </div>
+
+        <div class="top-hud">
+            <div class="hud-chip" id="chipRound" title="Current Round">Round 1/6</div>
+            <div class="hud-chip" id="chipCatches" title="Captured Target Entities">🎯 0/3 Planets</div>
+            <div class="hud-chip fuel-chip" id="chipFuel" title="Active Fuel Pool">🔥 0</div>
+            <button class="icon-btn" id="btnOpenRules">📖 Rules</button>
+            <button class="icon-btn" id="btnOpenNewGame">↺ New</button>
+        </div>
+    </header>
+
+    <!-- ── Main Tabletop Workspace ──────────────────────────────────────── -->
+    <main class="tabletop-workspace">
+
+        <!-- LEFT: Pure Physical Action Card Column (No Text!) -->
+        <aside class="card-stack-zone">
+            <div class="physical-card-column" id="actionColumn"></div>
+            <div class="stack-action-bar" id="stackActionBar"></div>
+        </aside>
+
+        <!-- CENTER: Galaxy Board + Floating Tabletop Controls -->
+        <section class="board-stage">
+            <div class="galaxy-board" id="galaxyBoard">
+                <div class="orbit-ring-outer"></div>
+                <div class="orbit-ring-inner"></div>
+                <div class="direction-pointer-card" id="directionPointer">
+                    <img src="cards/Card_Design_Pointer.png" alt="Direction Pointer">
+                </div>
+            </div>
+
+            <!-- Floating Caught Reward Mini Pills (Top-Right of Board, only when unlocked) -->
+            <div class="floating-rewards-strip" id="floatingRewardsStrip"></div>
+
+            <!-- Floating Tabletop Action / Confirmation Pill (Bottom-Center of Board) -->
+            <div class="floating-tabletop-hud" id="floatingTabletopHud">
+                <span class="hud-prompt-label" id="hudPromptLabel">Swap 2 cards or keep order</span>
+                <div class="hud-prompt-buttons" id="hudPromptButtons"></div>
+            </div>
+
+            <!-- Upright Card Image Loupe on Hover (Bottom-Right of Board) -->
+            <div class="upright-card-loupe" id="uprightCardLoupe">
+                <img id="loupeImg" src="cards/Card_Design_Entity_BACK.png" alt="Card Preview">
+            </div>
+        </section>
+
+        <!-- STEP 6: Clean 3D Card Flip Upgrade Overlay -->
+        <div class="card-upgrade-overlay" id="cardUpgradeOverlay">
+            <div class="upgrade-3d-scene" id="upgradeFlipScene" title="Click card to flip between Level 1 and Level 2">
+                <div class="upgrade-3d-inner is-flipped-lvl2" id="upgradeFlipInner">
+                    <div class="upgrade-3d-face front-lvl1">
+                        <img id="flipFrontImg" src="cards/Card_Design_Action1A.png" alt="Level 1">
+                        <div class="upgrade-face-tag">Level 1 (Front)</div>
+                    </div>
+                    <div class="upgrade-3d-face back-lvl2">
+                        <img id="flipBackImg" src="cards/Card_Design_Action1B.png" alt="Level 2">
+                        <div class="upgrade-face-tag">★ Level 2 (Upgraded)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="upgrade-controls-row">
+                <button class="pill-btn" id="btnToggle3DFlip">🔄 Flip Side (Level 2 ★)</button>
+                <button class="pill-btn primary" id="btnConfirmCardUpgrade">✓ Upgrade This Card</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ── New Game Modal ───────────────────────────────────────────────── -->
+    <div class="modal-backdrop" id="newGameModal">
+        <div class="modal-card">
+            <h2>New Expedition</h2>
+            <div class="tier-grid" id="tierSelectorGrid">
+                <div class="tier-option" data-tier="moon">
+                    <div style="font-size:20px;">🌙</div>
+                    <div style="font-weight:800; margin-top:4px;">3 Moons</div>
+                    <div style="font-size:11px; opacity:0.75;">Standard</div>
+                </div>
+                <div class="tier-option selected" data-tier="planet">
+                    <div style="font-size:20px;">🪐</div>
+                    <div style="font-weight:800; margin-top:4px;">3 Planets</div>
+                    <div style="font-size:11px; opacity:0.75;">Challenging</div>
+                </div>
+                <div class="tier-option" data-tier="star">
+                    <div style="font-size:20px;">☀️</div>
+                    <div style="font-weight:800; margin-top:4px;">2 Stars</div>
+                    <div style="font-size:11px; opacity:0.75;">Expert</div>
+                </div>
+            </div>
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
+                <input type="checkbox" id="chkExp1"> Include Expansion 1 (6th Action Card + 8 Sectors)
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin:12px 0; cursor:pointer;">
+                <input type="checkbox" id="chkExp2"> Include Expansion 2 (Hazards &amp; Space Pirates)
+            </label>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:18px;">
+                <button class="pill-btn" id="btnCancelNewGame">Cancel</button>
+                <button class="pill-btn primary" id="btnStartNewGame">▶ Deal Cards</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Compact Rules Modal ──────────────────────────────────────────── -->
+    <div class="modal-backdrop" id="rulesModal">
+        <div class="modal-card">
+            <h2>How to Play With the Cards</h2>
+            <div style="font-size:13px; line-height:1.55; display:flex; flex-direction:column; gap:8px;">
+                <p><b>1. Swap (Optional):</b> Click any 2 Action Cards in the left column to swap their order.</p>
+                <p><b>2. Build Overlapping Stack:</b> Click the <b>Top</b> or <b>Bottom</b> half directly on each card to rotate that action to the top and tuck it into the stack. Cards #1–#4 execute only their visible top half; the bottom card executes <b>both</b> halves!</p>
+                <p><b>3. Play Stack:</b> The Purple Star Token (⭐) steps down your stack. Spend 🔥 Fuel at a <b>Telescope</b> to flip &amp; observe Space Cards, or at a <b>Hook</b> to catch observed entities.</p>
+                <p><b>4. Upgrade:</b> At the end of each round, click any Level 1 Action Card, flip it in 3D to inspect its Level 2 side, and confirm its upgrade.</p>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                <a href="rules.html" target="_blank" class="pill-btn secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:#d4af37;">📖 Full 16-Page Rulebook ↗</a>
+                <button class="pill-btn primary" id="btnCloseRules">Got It</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Game Over / Victory Modal ────────────────────────────────────── -->
+    <div class="modal-backdrop" id="gameOverModal">
+        <div class="modal-card" style="text-align:center;">
+            <h2 id="gameOverTitle">Expedition Complete!</h2>
+            <p id="gameOverMessage" style="font-size:14px; margin:12px 0 20px;"></p>
+            <button class="pill-btn primary" id="btnPlayAgain">▶ Play Again</button>
+        </div>
+    </div>
+
+    <div class="toast-banner" id="toastBanner"></div>
+
+    <script>
+    // ── Audio Synthesizer (Subtle Tabletop Card Sounds) ──────────────────
+    let audioCtx = null;
+    function playSound(type) {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(520, now);
+                osc.frequency.exponentialRampToValueAtTime(680, now + 0.05);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                osc.start(now);
+                osc.stop(now + 0.06);
+            } else if (type === 'rotate' || type === 'swap') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(340, now);
+                osc.frequency.exponentialRampToValueAtTime(580, now + 0.09);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'catch' || type === 'victory') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+        } catch (e) {}
+    }
+
+    // ── Action Card Definitions (Verified Artwork Orientation) ───────────
+    // Card 1A: Top = Rotate CCW (⟲), Bottom (when rotated 180° to top) = Rotate CW (⟳)
+    // Card 2A: Top = Rotate CW (⟳), Bottom (when rotated 180° to top) = Rotate CCW (⟲)
+    const BASE_ACTION_CARDS = [
+        {
+            id: 1,
+            lvl1: {
+                top:    { type: 'rotate_ccw', name: 'Rotate CCW (⟲)', icon: 'assets/dial_turn_ccw.png' },
+                bottom: { type: 'rotate_cw',  name: 'Rotate CW (⟳)',  icon: 'assets/dial_turn_cw.png' }
+            },
+            lvl2: {
+                top:    { type: 'rotate_any', name: 'Rotate Any (⟲/⟳)', icon: 'assets/dial_turn_general.png' },
+                bottom: { type: 'swap',       name: 'Swap Ship Cards',  icon: 'assets/dial_swap.png' }
+            }
+        },
+        {
+            id: 2,
+            lvl1: {
+                top:    { type: 'rotate_cw',  name: 'Rotate CW (⟳)',  icon: 'assets/dial_turn_cw.png' },
+                bottom: { type: 'rotate_ccw', name: 'Rotate CCW (⟲)', icon: 'assets/dial_turn_ccw.png' }
+            },
+            lvl2: {
+                top:    { type: 'rotate_any', name: 'Rotate Any (⟲/⟳)', icon: 'assets/dial_turn_general.png' },
+                bottom: { type: 'fuel',       name: 'Spend 1 Fuel 🔥',  icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+            }
+        },
+        {
+            id: 3,
+            lvl1: {
+                top:    { type: 'rotate_any', name: 'Rotate Any (⟲/⟳)', icon: 'assets/dial_turn_general.png' },
+                bottom: { type: 'fuel',       name: 'Spend 1 Fuel 🔥',  icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+            },
+            lvl2: {
+                top:    { type: 'rotate_any', name: 'Rotate Any (⟲/⟳)', icon: 'assets/dial_turn_general.png' },
+                bottom: { type: 'fuel',       name: 'Spend 2 Fuel 🔥🔥', icon: 'assets/dial_fuel.png', fuelAmount: 2 }
+            }
+        },
+        {
+            id: 4,
+            lvl1: {
+                top:    { type: 'swap', name: 'Swap Ship Cards', icon: 'assets/dial_swap.png' },
+                bottom: { type: 'fuel', name: 'Spend 1 Fuel 🔥', icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+            },
+            lvl2: {
+                top:    { type: 'swap', name: 'Swap Ship Cards',  icon: 'assets/dial_swap.png' },
+                bottom: { type: 'fuel', name: 'Spend 2 Fuel 🔥🔥', icon: 'assets/dial_fuel.png', fuelAmount: 2 }
+            }
+        },
+        {
+            id: 5,
+            lvl1: {
+                top:    { type: 'swap', name: 'Swap Ship Cards', icon: 'assets/dial_swap.png' },
+                bottom: { type: 'fuel', name: 'Spend 1 Fuel 🔥', icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+            },
+            lvl2: {
+                top:    { type: 'swap',               name: 'Swap Ship Cards',  icon: 'assets/dial_swap.png' },
+                bottom: { type: 'choice_rotate_fuel', name: 'Rotate OR 1 Fuel', icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+            }
+        }
+    ];
+
+    const EXP1_ACTION_CARD = {
+        id: 6,
+        lvl1: {
+            top:    { type: 'rotate_any', name: 'Rotate Any (⟲/⟳)', icon: 'assets/dial_turn_general.png' },
+            bottom: { type: 'fuel',       name: 'Spend 1 Fuel 🔥',  icon: 'assets/dial_fuel.png', fuelAmount: 1 }
+        },
+        lvl2: {
+            top:    { type: 'rotate_any_2x', name: '2x Rotate Any',    icon: 'assets/dial_turn_general.png' },
+            bottom: { type: 'fuel',          name: 'Spend 2 Fuel 🔥🔥', icon: 'assets/dial_fuel.png', fuelAmount: 2 }
+        }
+    };
+
+    // ── Space / Entity Cards (Exact Artwork Rewards) ─────────────────────
+    const BASE_SPACE_CARDS = [
+        {
+            id: 1, image: 'cards/Card_Design_Entity1.png',
+            top:    { name: 'Planet Turtle', type: 'planet', telCost: 2, hookCost: 1, rewardType: 'rotate_2x',          rewardDesc: '2× Rotate Any (⟲/⟳)',      rewardIcon: 'assets/dial_turn_general.png' },
+            bottom: { name: 'Moon Fish',     type: 'moon',   telCost: 1, hookCost: 1, rewardType: 'rotate_any',         rewardDesc: 'Rotate Any (⟲/⟳)',         rewardIcon: 'assets/dial_turn_general.png' }
+        },
+        {
+            id: 2, image: 'cards/Card_Design_Entity2.png',
+            top:    { name: 'Star Ray',      type: 'star',   telCost: 2, hookCost: 2, rewardType: 'fuel_2',             rewardDesc: '+2 Fuel 🔥🔥',             rewardIcon: 'assets/dial_fuel.png' },
+            bottom: { name: 'Moon Fish',     type: 'moon',   telCost: 1, hookCost: 1, rewardType: 'swap',               rewardDesc: 'Swap Ship Cards (⇄)',      rewardIcon: 'assets/dial_swap.png' }
+        },
+        {
+            id: 3, image: 'cards/Card_Design_Entity3.png',
+            top:    { name: 'Moon Fish',     type: 'moon',   telCost: 2, hookCost: 1, rewardType: 'rotate_plus_swap',   rewardDesc: 'Rotate Any + Swap (⟲+⇄)',  rewardIcon: 'assets/dial_turn_general.png' },
+            bottom: { name: 'Galaxy School', type: 'galaxy', telCost: 1, hookCost: 2, rewardType: 'fuel_1',             rewardDesc: '+1 Fuel 🔥',               rewardIcon: 'assets/dial_fuel.png' }
+        },
+        {
+            id: 4, image: 'cards/Card_Design_Entity4.png',
+            top:    { name: 'Star Ray',      type: 'star',   telCost: 2, hookCost: 2, rewardType: 'rotate_plus_fuel',   rewardDesc: 'Rotate Any + 1 Fuel 🔥',   rewardIcon: 'assets/dial_turn_general.png' },
+            bottom: { name: 'Planet Turtle', type: 'planet', telCost: 1, hookCost: 1, rewardType: 'choice_fuel_rotate', rewardDesc: '1 Fuel 🔥 OR Rotate Any',  rewardIcon: 'assets/dial_fuel.png' }
+        },
+        {
+            id: 5, image: 'cards/Card_Design_Entity5.png',
+            top:    { name: 'Galaxy School', type: 'galaxy', telCost: 2, hookCost: 2, rewardType: 'swap_plus_fuel',     rewardDesc: 'Swap + 1 Fuel 🔥',         rewardIcon: 'assets/dial_swap.png' },
+            bottom: { name: 'Planet Turtle', type: 'planet', telCost: 1, hookCost: 2, rewardType: 'choice_fuel_swap',   rewardDesc: '1 Fuel 🔥 OR Swap (⇄)',    rewardIcon: 'assets/dial_fuel.png' }
+        },
+        {
+            id: 6, image: 'cards/Card_Design_Entity6.png',
+            top:    { name: 'Galaxy School', type: 'galaxy', telCost: 2, hookCost: 3, rewardType: 'rotate_plus_fuel',   rewardDesc: 'Rotate Any + 1 Fuel 🔥',   rewardIcon: 'assets/dial_turn_general.png' },
+            bottom: { name: 'Star Ray',      type: 'star',   telCost: 1, hookCost: 2, rewardType: 'choice_rotate_swap', rewardDesc: 'Rotate Any OR Swap (⇄)',   rewardIcon: 'assets/dial_turn_general.png' }
+        }
+    ];
+
+    const EXP1_SPACE_CARDS = [
+        {
+            id: 7, image: 'cards/Card_Design_Entity7.png',
+            top:    { name: 'Black Hole Whale', type: 'blackhole', telCost: 4, hookCost: 5, rewardType: 'fuel_2',    rewardDesc: '+2 Fuel 🔥🔥',  rewardIcon: 'assets/dial_fuel.png' },
+            bottom: { name: 'Supernova Squid',  type: 'supernova', telCost: 3, hookCost: 3, rewardType: 'rotate_2x', rewardDesc: '2x Rotate Any', rewardIcon: 'assets/dial_turn_general.png' }
+        },
+        {
+            id: 8, image: 'cards/Card_Design_Entity8.png',
+            top:    { name: 'Supernova Squid',  type: 'supernova', telCost: 4, hookCost: 3, rewardType: 'fuel_2',    rewardDesc: '+2 Fuel 🔥🔥',  rewardIcon: 'assets/dial_fuel.png' },
+            bottom: { name: 'Black Hole Whale', type: 'blackhole', telCost: 3, hookCost: 4, rewardType: 'fuel_2',    rewardDesc: '+2 Fuel 🔥🔥',  rewardIcon: 'assets/dial_fuel.png' }
+        }
+    ];
+
+    const BASE_SHIP_CARDS = [
+        { id: 1, type: 'hook',      image: 'cards/ShipCards_Hook1.png' },
+        { id: 2, type: 'telescope', image: 'cards/ShipCards_Telescope1.png' },
+        { id: 3, type: 'hook',      image: 'cards/ShipCards_Hook2.png' },
+        { id: 4, type: 'telescope', image: 'cards/ShipCards_Telescope2.png' },
+        { id: 5, type: 'hook',      image: 'cards/ShipCards_Hook3.png' },
+        { id: 6, type: 'telescope', image: 'cards/ShipCards_Telescope3.png' }
+    ];
+
+    const EXP1_SHIP_CARDS = [
+        { id: 7, type: 'hook',      image: 'cards/ShipCards_Hook4.png' },
+        { id: 8, type: 'telescope', image: 'cards/ShipCards_Telescope4.png' }
+    ];
+
+    // ── Game State ───────────────────────────────────────────────────────
+    const G = {
+        tier: 'planet',
+        useExp1: false,
+        useExp2: false,
+        round: 1,
+        maxRounds: 6,
+        phase: 'swap', // 'swap' | 'program' | 'execute' | 'round_end'
+        pointerSector: 0,
+        shipCards: [],
+        spaceCards: [],
+        actionCards: [],
+
+        // Step 2 Swap
+        firstSelectedSlot: null,
+        lastSwapPair: null,
+        playDealAnimation: false,
+
+        // Step 3 Choose Side & Tuck into Stack
+        programmingIndex: 0,
+        placedSlots: [],
+
+        // Step 4 Execute
+        executionIndex: 0,
+        subActionIndex: 0,
+        activeFuelPool: 0,
+        bonusFuel: 0,
+        autoStepping: false,
+        awaitingChoiceAction: false,
+
+        // Interactive Board Modes
+        isSwappingShip: false,
+        shipSwapFirstSector: null,
+        shipSwapSecondSector: null,
+        shipSwapCallback: null,
+
+        isSelectingRotateAny: false,
+        rotateAnyRemaining: 0,
+        rotateAnyCallback: null,
+
+        isTelescopePending: false,
+        telescopeCallback: null,
+        isChoosingEntityHalf: false,
+
+        isHookPending: false,
+        hookCallback: null,
+
+        // Step 6 Upgrade
+        selectedUpgradeCardId: null,
+        showingLvl2Side: true,
+
+        lastFlippedShipSector: null,
+        lastFlippedSpaceSector: null
+    };
+
+    function shuffleArray(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function getSectorAngles() {
+        return G.useExp1
+            ? [0, 45, 90, 135, 180, 225, 270, 315]
+            : [0, 60, 120, 180, 240, 300];
+    }
+
+    function getSectorNames() {
+        return G.useExp1
+            ? ['North', 'North-East', 'East', 'South-East', 'South', 'South-West', 'West', 'North-West']
+            : ['North', 'North-East', 'South-East', 'South', 'South-West', 'North-West'];
+    }
+
+    function getRequiredCatchCount(tier) {
+        return tier === 'star' ? 2 : 3;
+    }
+
+    function getTierPlural(tier) {
+        if (tier === 'moon') return 'Moons';
+        if (tier === 'planet') return 'Planets';
+        return 'Stars';
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+        const b = document.getElementById('toastBanner');
+        b.textContent = msg;
+        b.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => b.classList.remove('show'), 2100);
+    }
+
+    // ── Initialize & Start Expedition ────────────────────────────────────
+    function initExpedition() {
+        G.round = 1;
+        G.maxRounds = 6;
+        G.pointerSector = 0;
+
+        const rawShips = shuffleArray(G.useExp1 ? [...BASE_SHIP_CARDS, ...EXP1_SHIP_CARDS] : [...BASE_SHIP_CARDS]);
+        G.shipCards = rawShips.map((s, idx) => ({
+            ...s,
+            revealed: idx === 0,
+            anchored: false,
+            holdingCatch: null
+        }));
+
+        const rawSpaces = shuffleArray(G.useExp1 ? [...BASE_SPACE_CARDS, ...EXP1_SPACE_CARDS] : [...BASE_SPACE_CARDS]);
+        G.spaceCards = rawSpaces.map(sp => ({
+            ...sp,
+            revealed: false,
+            observedEnd: null,
+            observedThisRound: false,
+            isCaught: false,
+            rewardTucked: false
+        }));
+
+        const rawActions = G.useExp1 ? [...BASE_ACTION_CARDS, EXP1_ACTION_CARD] : [...BASE_ACTION_CARDS];
+        G.actionCards = rawActions.map(ac => ({
+            ...ac,
+            level: 1,
+            chosenHalf: 'top'
+        }));
+
+        startNewRound();
+    }
+
+    function startNewRound() {
+        resetBoardInteractiveModes();
+        document.getElementById('cardUpgradeOverlay').classList.remove('active');
+
+        G.actionCards = shuffleArray(G.actionCards).map(c => ({
+            ...c,
+            chosenHalf: Math.random() < 0.5 ? 'top' : 'bottom'
+        }));
+
+        G.phase = 'swap';
+        G.firstSelectedSlot = null;
+        G.lastSwapPair = null;
+        G.programmingIndex = 0;
+        G.placedSlots = G.actionCards.map(() => false);
+        G.executionIndex = 0;
+        G.subActionIndex = 0;
+        G.activeFuelPool = 0;
+        G.bonusFuel = 0;
+        G.autoStepping = false;
+        G.playDealAnimation = true;
+
+        updateHeaderStats();
+        updateRoundStepper(2);
+        renderGalaxyBoard();
+        renderActionColumn();
+        renderRewardsTray();
+        updateTabletopHud();
+        G.playDealAnimation = false;
+    }
+
+    function resetBoardInteractiveModes() {
+        G.isSwappingShip = false;
+        G.shipSwapFirstSector = null;
+        G.shipSwapSecondSector = null;
+        G.shipSwapCallback = null;
+        G.isSelectingRotateAny = false;
+        G.rotateAnyRemaining = 0;
+        G.rotateAnyCallback = null;
+        G.isTelescopePending = false;
+        G.telescopeCallback = null;
+        G.isChoosingEntityHalf = false;
+        G.isHookPending = false;
+        G.hookCallback = null;
+        G.awaitingChoiceAction = false;
+    }
+
+    function updateHeaderStats() {
+        const reqCount = getRequiredCatchCount(G.tier);
+        const catches = G.shipCards.filter(s => s.holdingCatch && s.holdingCatch.type === G.tier).length;
+        const totalFuel = G.activeFuelPool + G.bonusFuel;
+
+        document.getElementById('chipRound').textContent = `Round ${G.round}/${G.maxRounds}`;
+        document.getElementById('chipCatches').textContent = `🎯 ${catches}/${reqCount} ${getTierPlural(G.tier)}`;
+
+        const fuelEl = document.getElementById('chipFuel');
+        fuelEl.textContent = `🔥 ${totalFuel}`;
+        fuelEl.classList.toggle('has-fuel', totalFuel > 0);
+    }
+
+    function updateRoundStepper(stepNum) {
+        document.querySelectorAll('#roundStepperBar .stepper-pill').forEach(pill => {
+            const s = parseInt(pill.getAttribute('data-step'), 10);
+            pill.classList.remove('active', 'done');
+            if (s < stepNum) pill.classList.add('done');
+            else if (s === stepNum) pill.classList.add('active');
+        });
+    }
+
+    // ── Floating Tabletop Prompt Bar (Single Minimal Bar at Bottom of Board) ──
+    function setTabletopPrompt(labelHtml, buttons = []) {
+        const bar = document.getElementById('floatingTabletopHud');
+        const lbl = document.getElementById('hudPromptLabel');
+        const btnBox = document.getElementById('hudPromptButtons');
+
+        lbl.innerHTML = labelHtml;
+        btnBox.innerHTML = '';
+
+        buttons.forEach(b => {
+            const btn = document.createElement('button');
+            btn.className = `pill-btn ${b.primary ? 'primary' : ''} ${b.amber ? 'amber' : ''}`;
+            btn.innerHTML = b.label;
+            btn.onclick = () => b.action();
+            btnBox.appendChild(btn);
+        });
+        bar.style.display = (labelHtml || buttons.length > 0) ? 'flex' : 'none';
+    }
+
+    function updateTabletopHud() {
+        const stackBar = document.getElementById('stackActionBar');
+        stackBar.innerHTML = '';
+
+        if (G.phase === 'swap') {
+            updateRoundStepper(2);
+            if (G.lastSwapPair) {
+                const undoBtn = document.createElement('button');
+                undoBtn.className = 'pill-btn';
+                undoBtn.innerHTML = '↩';
+                undoBtn.title = 'Undo Swap';
+                undoBtn.onclick = () => undoCardSwap();
+                stackBar.appendChild(undoBtn);
+            }
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'pill-btn primary';
+            confirmBtn.innerHTML = G.lastSwapPair ? '✓ Confirm Swap &rarr;' : '✓ Stack Cards &rarr;';
+            confirmBtn.onclick = () => proceedFromSwapToStack();
+            stackBar.appendChild(confirmBtn);
+
+            setTabletopPrompt('', []);
+        } else if (G.phase === 'program') {
+            updateRoundStepper(3);
+            const runBtn = document.createElement('button');
+            runBtn.className = 'pill-btn primary';
+            runBtn.innerHTML = '▶ Play Stack';
+            runBtn.onclick = () => proceedFromStackToExecute();
+            stackBar.appendChild(runBtn);
+
+            setTabletopPrompt('', []);
+        } else if (G.phase === 'execute') {
+            updateRoundStepper(4);
+            const totalFuel = G.activeFuelPool + G.bonusFuel;
+            if (totalFuel > 0 && canChainNextAction()) {
+                const chainBtn = document.createElement('button');
+                chainBtn.className = 'pill-btn amber';
+                chainBtn.innerHTML = '🔗+🔥';
+                chainBtn.title = 'Chain with next Fuel card';
+                chainBtn.onclick = () => chainNextFuelAction();
+                stackBar.appendChild(chainBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pill-btn primary';
+            nextBtn.id = 'btnStepAction';
+            nextBtn.innerHTML = '▶ Next';
+            nextBtn.onclick = () => executeNextStackStep();
+            stackBar.appendChild(nextBtn);
+
+            if (!G.isSwappingShip && !G.isSelectingRotateAny && !G.isTelescopePending && !G.isHookPending && !G.awaitingChoiceAction) {
+                setTabletopPrompt('', []);
+            }
+        } else if (G.phase === 'round_end') {
+            updateRoundStepper(6);
+            setTabletopPrompt('', []);
+        }
+    }
+
+    // ── LEFT COLUMN: RENDER PURE PHYSICAL ACTION CARDS (NO TEXT!) ────────
+    function renderActionColumn() {
+        const col = document.getElementById('actionColumn');
+        col.innerHTML = '';
+        const lastIdx = G.actionCards.length - 1;
+
+        G.actionCards.forEach((card, idx) => {
+            const isLast = (idx === lastIdx);
+            const def = card.level === 1 ? card.lvl1 : card.lvl2;
+            const imgPath = `cards/Card_Design_Action${card.id}${card.level === 1 ? 'A' : 'B'}.png`;
+
+            const cardEl = document.createElement('div');
+            cardEl.style.zIndex = idx + 1;
+
+            let classes = ['physical-action-card'];
+            if (isLast && G.phase !== 'program') classes.push('is-last-card');
+
+            // Overlapping behavior per phase
+            if (G.phase === 'swap') {
+                classes.push('overlap-swap');
+                if (G.firstSelectedSlot === idx) classes.push('selected-for-swap');
+                if (G.lastSwapPair && (G.lastSwapPair[0] === idx || G.lastSwapPair[1] === idx)) {
+                    classes.push('swap-bounce');
+                }
+                if (G.playDealAnimation) {
+                    classes.push('deal-anim');
+                    cardEl.style.animationDelay = `${idx * 75}ms`;
+                }
+            } else if (G.phase === 'program') {
+                if (G.programmingIndex === idx) {
+                    classes.push('overlap-expanded');
+                } else {
+                    classes.push('overlap-tucked');
+                    if (isLast) classes.push('is-last-card');
+                }
+            } else if (G.phase === 'execute') {
+                classes.push('overlap-tucked');
+                if (isLast) classes.push('is-last-card');
+                if (idx < G.executionIndex) classes.push('executed-card');
+                else if (idx === G.executionIndex) classes.push('executing-card');
+            } else if (G.phase === 'round_end') {
+                classes.push('overlap-swap');
+                if (card.level === 1) classes.push('upgrade-candidate');
+                if (G.selectedUpgradeCardId === card.id) classes.push('selected-for-swap');
+            }
+
+            cardEl.className = classes.join(' ');
+            cardEl.setAttribute('data-slot', idx);
+
+            // Card Artwork Rotator (rotates 180deg when bottom half is chosen)
+            const rotator = document.createElement('div');
+            rotator.className = `card-art-rotator ${card.chosenHalf === 'bottom' ? 'rotated-180' : ''}`;
+            const img = document.createElement('img');
+            img.className = 'action-card-img';
+            img.src = imgPath;
+            img.alt = `Action Card ${card.id}`;
+            rotator.appendChild(img);
+            cardEl.appendChild(rotator);
+
+            // Subtle corner pip ONLY when helpful (e.g., ✓ when placed in Step 3, or ★2)
+            if (G.phase === 'program' && G.placedSlots[idx] && G.programmingIndex !== idx) {
+                const pip = document.createElement('div');
+                pip.className = 'card-corner-pip placed-pip';
+                pip.textContent = '✓';
+                cardEl.appendChild(pip);
+            } else if (card.level === 2) {
+                const pip = document.createElement('div');
+                pip.className = 'card-corner-pip';
+                pip.textContent = '★2';
+                cardEl.appendChild(pip);
+            }
+
+            // In Step 3 (Program): Direct clickable Top Half & Bottom Half on the expanded card!
+            if (G.phase === 'program' && G.programmingIndex === idx) {
+                // Visual Top Half on screen (corresponds to card's current top or bottom depending on rotation)
+                // Even simpler and more tactile:
+                // Clicking the TOP half of the card on screen keeps the currently visible top action at the top & tucks it!
+                // Clicking the BOTTOM half of the card on screen rotates that bottom half 180° to the top & tucks it!
+                const topScreenAct = card.chosenHalf === 'top' ? def.top : def.bottom;
+                const botScreenAct = card.chosenHalf === 'top' ? def.bottom : def.top;
+
+                const topZone = document.createElement('div');
+                topZone.className = 'card-click-half top-half-zone';
+                topZone.innerHTML = `<span class="half-hover-pip">▲ Top</span>`;
+                topZone.onclick = (e) => {
+                    e.stopPropagation();
+                    selectCardHalfOnCard(idx, card.chosenHalf);
+                };
+
+                const botZone = document.createElement('div');
+                botZone.className = 'card-click-half bottom-half-zone';
+                botZone.innerHTML = `<span class="half-hover-pip">⟲ Flip</span>`;
+                botZone.onclick = (e) => {
+                    e.stopPropagation();
+                    const flippedHalf = card.chosenHalf === 'top' ? 'bottom' : 'top';
+                    selectCardHalfOnCard(idx, flippedHalf);
+                };
+
+                cardEl.appendChild(topZone);
+                cardEl.appendChild(botZone);
+            }
+
+            // In Step 4 (Execute): Physical Purple Star Token sitting on the active card half!
+            if (G.phase === 'execute' && idx === G.executionIndex) {
+                const star = document.createElement('div');
+                const onBottom = (isLast && G.subActionIndex === 1);
+                star.className = `purple-star-token ${onBottom ? 'on-bottom-half' : 'on-top-half'}`;
+                star.textContent = '⭐';
+                cardEl.appendChild(star);
+            }
+
+            cardEl.onclick = () => handlePhysicalCardClick(idx);
+            col.appendChild(cardEl);
+        });
+    }
+
+    function handlePhysicalCardClick(idx) {
+        if (G.phase === 'swap') {
+            playSound('click');
+            if (G.firstSelectedSlot === null) {
+                G.firstSelectedSlot = idx;
+                setTabletopPrompt(`Selected Card #${idx + 1} — click another card to swap`, [
+                    { label: '✕ Cancel', action: () => { G.firstSelectedSlot = null; renderActionColumn(); updateTabletopHud(); } }
+                ]);
+                renderActionColumn();
+            } else {
+                const first = G.firstSelectedSlot;
+                const second = idx;
+                G.firstSelectedSlot = null;
+                if (first !== second) {
+                    const tmp = G.actionCards[first];
+                    G.actionCards[first] = G.actionCards[second];
+                    G.actionCards[second] = tmp;
+                    G.lastSwapPair = [first, second];
+                    playSound('swap');
+                    showToast(`Swapped #${first + 1} ⇄ #${second + 1}`);
+                }
+                renderActionColumn();
+                updateTabletopHud();
+            }
+        } else if (G.phase === 'program') {
+            // Clicking any tucked card expands it so you can pick its Top or Bottom half
+            G.programmingIndex = idx;
+            playSound('click');
+            renderActionColumn();
+            updateTabletopHud();
+        } else if (G.phase === 'round_end') {
+            const card = G.actionCards[idx];
+            playSound('click');
+            openCardUpgrade3DOverlay(card.id);
+        }
+    }
+
+    function undoCardSwap() {
+        if (G.phase !== 'swap' || !G.lastSwapPair) return;
+        const [a, b] = G.lastSwapPair;
+        const tmp = G.actionCards[a];
+        G.actionCards[a] = G.actionCards[b];
+        G.actionCards[b] = tmp;
+        G.lastSwapPair = null;
+        G.firstSelectedSlot = null;
+        playSound('swap');
+        showToast('Swap Undone');
+        renderActionColumn();
+        updateTabletopHud();
+    }
+
+    function proceedFromSwapToStack() {
+        playSound('click');
+        G.firstSelectedSlot = null;
+        G.lastSwapPair = null;
+        G.phase = 'program';
+        G.programmingIndex = 0;
+        G.placedSlots = G.actionCards.map(() => false);
+        renderActionColumn();
+        updateTabletopHud();
+    }
+
+    function selectCardHalfOnCard(slotIdx, newChosenHalf) {
+        if (G.phase !== 'program') return;
+        const card = G.actionCards[slotIdx];
+        const rotated = (card.chosenHalf !== newChosenHalf);
+        card.chosenHalf = newChosenHalf;
+        G.placedSlots[slotIdx] = true;
+        playSound(rotated ? 'rotate' : 'click');
+
+        // Re-render immediately so the 180° rotation is visible on the card
+        renderActionColumn();
+
+        setTimeout(() => {
+            if (G.phase !== 'program') return;
+            const nextUnplaced = G.placedSlots.findIndex((p, i) => !p && i > slotIdx);
+            if (nextUnplaced !== -1) {
+                G.programmingIndex = nextUnplaced;
+            } else {
+                const anyUnplaced = G.placedSlots.findIndex(p => !p);
+                G.programmingIndex = anyUnplaced !== -1 ? anyUnplaced : -1;
+            }
+            renderActionColumn();
+            updateTabletopHud();
+        }, rotated ? 340 : 120);
+    }
+
+    function proceedFromStackToExecute() {
+        playSound('click');
+        G.phase = 'execute';
+        G.executionIndex = 0;
+        G.subActionIndex = 0;
+        G.activeFuelPool = 0;
+        G.bonusFuel = 0;
+        renderActionColumn();
+        updateTabletopHud();
+    }
+
+    // ── Step 6: Clean 3D Card Flip Upgrade Overlay ───────────────────────
+    function openCardUpgrade3DOverlay(cardId) {
+        const card = G.actionCards.find(c => c.id === cardId);
+        if (!card) return;
+
+        G.selectedUpgradeCardId = cardId;
+        G.showingLvl2Side = true;
+
+        document.getElementById('flipFrontImg').src = `cards/Card_Design_Action${cardId}A.png`;
+        document.getElementById('flipBackImg').src = `cards/Card_Design_Action${cardId}B.png`;
+        document.getElementById('upgradeFlipInner').classList.add('is-flipped-lvl2');
+        document.getElementById('btnToggle3DFlip').textContent = '🔄 Flip Side (Level 2 ★)';
+
+        const confirmBtn = document.getElementById('btnConfirmCardUpgrade');
+        if (card.level === 1) {
+            confirmBtn.style.display = 'inline-flex';
+            confirmBtn.textContent = `✓ Confirm Upgrade Card #${cardId}`;
+        } else {
+            confirmBtn.style.display = 'none';
+        }
+
+        document.getElementById('cardUpgradeOverlay').classList.add('active');
+        renderActionColumn();
+    }
+
+    function toggleUpgrade3DFlip() {
+        G.showingLvl2Side = !G.showingLvl2Side;
+        const inner = document.getElementById('upgradeFlipInner');
+        const btn = document.getElementById('btnToggle3DFlip');
+        playSound('rotate');
+        if (G.showingLvl2Side) {
+            inner.classList.add('is-flipped-lvl2');
+            btn.textContent = '🔄 Flip Side (Level 2 ★)';
+        } else {
+            inner.classList.remove('is-flipped-lvl2');
+            btn.textContent = '🔄 Flip Side (Level 1)';
+        }
+    }
+
+    document.getElementById('upgradeFlipScene').onclick = () => toggleUpgrade3DFlip();
+    document.getElementById('btnToggle3DFlip').onclick = () => toggleUpgrade3DFlip();
+
+    document.getElementById('btnConfirmCardUpgrade').onclick = () => {
+        if (G.phase !== 'round_end' || !G.selectedUpgradeCardId) return;
+        const card = G.actionCards.find(c => c.id === G.selectedUpgradeCardId);
+        if (!card || card.level !== 1) return;
+
+        card.level = 2;
+        playSound('victory');
+        showToast(`Card #${card.id} Upgraded to Level 2!`);
+        document.getElementById('cardUpgradeOverlay').classList.remove('active');
+
+        if (G.round >= G.maxRounds) {
+            endExpedition(false, 'All 6 rounds completed before capturing all required targets.');
+        } else {
+            G.round++;
+            startNewRound();
+        }
+    };
+
+    // ── Upright Card Image Loupe (Card Art Only on Hover!) ───────────────
+    function showCardLoupe(imgSrc) {
+        const loupe = document.getElementById('uprightCardLoupe');
+        document.getElementById('loupeImg').src = imgSrc;
+        loupe.classList.add('active');
+    }
+    function hideCardLoupe() {
+        document.getElementById('uprightCardLoupe').classList.remove('active');
+    }
+
+    // ── Galaxy Board Rendering ───────────────────────────────────────────
+    function renderGalaxyBoard() {
+        const board = document.getElementById('galaxyBoard');
+        board.querySelectorAll('.ship-card-node, .space-card-node').forEach(el => el.remove());
+
+        const sectorAngles = getSectorAngles();
+        const sectorNames = getSectorNames();
+        const numSectors = sectorAngles.length;
+
+        const centerX = 380, centerY = 380;
+        const R_ship = G.useExp1 ? 168 : 146;
+        const R_space = G.useExp1 ? 298 : 285;
+
+        const pointer = document.getElementById('directionPointer');
+        pointer.style.left = `${centerX - 43}px`;
+        pointer.style.top = `${centerY - 64.5}px`;
+        pointer.style.setProperty('--pointer-rot', `${sectorAngles[G.pointerSector] + 180}deg`);
+
+        const cwSector = (G.pointerSector + 1) % numSectors;
+        const ccwSector = (G.pointerSector + numSectors - 1) % numSectors;
+
+        for (let i = 0; i < numSectors; i++) {
+            const s_deg = sectorAngles[i];
+            const rad = (s_deg - 90) * Math.PI / 180;
+
+            // 1. Ship Card Node
+            const ship = G.shipCards[i];
+            const sx = centerX + R_ship * Math.cos(rad);
+            const sy = centerY + R_ship * Math.sin(rad);
+
+            let shipClasses = ['ship-card-node'];
+            if (i === G.pointerSector) shipClasses.push('active-target');
+            if (G.lastFlippedShipSector === i) shipClasses.push('flip-anim');
+
+            let shipPill = null;
+            if (G.isSwappingShip) {
+                if (ship.anchored) {
+                    shipClasses.push('anchored-disabled');
+                } else if (G.shipSwapFirstSector === null) {
+                    shipClasses.push('swap-selectable');
+                } else if (G.shipSwapFirstSector === i || G.shipSwapSecondSector === i) {
+                    shipClasses.push('swap-selected');
+                    shipPill = { text: '✓', cls: 'green' };
+                } else {
+                    const diff = Math.abs(G.shipSwapFirstSector - i);
+                    if (diff === 1 || diff === numSectors - 1) {
+                        shipClasses.push('swap-target');
+                        shipPill = { text: '⇄', cls: 'cyan' };
+                    } else {
+                        shipClasses.push('swap-dimmed');
+                    }
+                }
+            } else if (G.isSelectingRotateAny) {
+                if (i === cwSector) {
+                    shipClasses.push('rotate-target-cw');
+                    shipPill = { text: '⟳ CW', cls: 'cyan' };
+                } else if (i === ccwSector) {
+                    shipClasses.push('rotate-target-ccw');
+                    shipPill = { text: '⟲ CCW', cls: 'cyan' };
+                }
+            } else if (G.isHookPending && i === G.pointerSector) {
+                shipPill = { text: '🎣', cls: 'green' };
+            } else if (ship.anchored && G.spaceCards[i].rewardTucked) {
+                shipPill = { text: '⚓ Tucked', cls: 'amber' };
+            }
+
+            const shipEl = document.createElement('div');
+            shipEl.className = shipClasses.join(' ');
+            shipEl.style.left = `${sx - 41}px`;
+            shipEl.style.top = `${sy - 61.5}px`;
+            shipEl.setAttribute('data-sector', i);
+
+            const cardRot = ship.revealed ? (s_deg + 90) : (s_deg - 90);
+            shipEl.style.setProperty('--card-rot', `${cardRot}deg`);
+
+            const shipImg = document.createElement('img');
+            shipImg.className = 'ship-card-img';
+            shipImg.src = ship.revealed ? ship.image : 'cards/ShipCards_Back.png';
+            shipEl.appendChild(shipImg);
+
+            if (shipPill) {
+                const p = document.createElement('div');
+                p.className = `board-card-pill ${shipPill.cls}`;
+                p.textContent = shipPill.text;
+                shipEl.appendChild(p);
+            }
+
+            shipEl.onmouseenter = () => {
+                if (ship.revealed) showCardLoupe(ship.image);
+            };
+            shipEl.onmouseleave = () => hideCardLoupe();
+            shipEl.onclick = () => handleShipCardClick(i);
+            board.appendChild(shipEl);
+
+            // 2. Space Card Node
+            const space = G.spaceCards[i];
+            const px = centerX + R_space * Math.cos(rad);
+            const py = centerY + R_space * Math.sin(rad);
+
+            let spaceClasses = ['space-card-node'];
+            if (space.observedEnd) spaceClasses.push('observed');
+            if (G.lastFlippedSpaceSector === i) spaceClasses.push('flip-anim');
+            if (space.isCaught) {
+                spaceClasses.push('caught');
+                // When first caught (reward not yet used): sits ON TOP OF the Hook Card (z-index 12 > 6).
+                // Once reward is used: TUCKS BEHIND the Hook Card (z-index 3 < 6).
+                if (space.rewardTucked) {
+                    spaceClasses.push('tucked-behind');
+                } else {
+                    spaceClasses.push('hooked-on-top');
+                }
+            }
+
+            let spacePill = null;
+            if (i === G.pointerSector && !space.isCaught) {
+                if (G.isTelescopePending) {
+                    spaceClasses.push('observe-target-card');
+                    spacePill = { text: '🔭 Flip', cls: 'amber' };
+                } else if (G.isHookPending) {
+                    spaceClasses.push('capture-target-card');
+                    spacePill = { text: '🎣 Catch', cls: 'green' };
+                }
+            } else if (space.isCaught && !space.rewardTucked) {
+                spacePill = { text: '🎁 Use Reward', cls: 'green' };
+            }
+
+            const spaceEl = document.createElement('div');
+            spaceEl.className = spaceClasses.join(' ');
+
+            if (space.isCaught) {
+                // Hooked ON TOP OF the Hook Card (rCaught = R_ship + 26)
+                // Tucked BEHIND the Hook Card (rCaught = R_ship + 46, underneath Hook Card)
+                const rCaught = space.rewardTucked ? (R_ship + 46) : (R_ship + 26);
+                const cx = centerX + rCaught * Math.cos(rad);
+                const cy = centerY + rCaught * Math.sin(rad);
+                spaceEl.style.left = `${cx - 43}px`;
+                spaceEl.style.top = `${cy - 64.5}px`;
+            } else {
+                spaceEl.style.left = `${px - 43}px`;
+                spaceEl.style.top = `${py - 64.5}px`;
+            }
+            spaceEl.setAttribute('data-sector', i);
+
+            let spaceRot = s_deg + 90;
+            if (space.revealed && space.observedEnd === 'top') spaceRot = s_deg + 180;
+            else if (space.revealed && space.observedEnd === 'bottom') spaceRot = s_deg;
+            spaceEl.style.setProperty('--space-rot', `${spaceRot}deg`);
+
+            const spaceImg = document.createElement('img');
+            spaceImg.className = 'space-card-img';
+            spaceImg.src = space.revealed ? space.image : 'cards/Card_Design_Entity_BACK.png';
+            spaceEl.appendChild(spaceImg);
+
+            if (spacePill && !G.isChoosingEntityHalf) {
+                const sp = document.createElement('div');
+                sp.className = `board-card-pill ${spacePill.cls}`;
+                sp.textContent = spacePill.text;
+                spaceEl.appendChild(sp);
+            }
+
+            if (i === G.pointerSector && G.isChoosingEntityHalf) {
+                const topChoice = document.createElement('div');
+                topChoice.className = 'entity-choice-overlay top-half';
+                topChoice.onclick = (e) => { e.stopPropagation(); selectObservedEntityHalf('top'); };
+                spaceEl.appendChild(topChoice);
+
+                const botChoice = document.createElement('div');
+                botChoice.className = 'entity-choice-overlay bottom-half';
+                botChoice.onclick = (e) => { e.stopPropagation(); selectObservedEntityHalf('bottom'); };
+                spaceEl.appendChild(botChoice);
+            }
+
+            spaceEl.onmouseenter = () => {
+                if (space.revealed) showCardLoupe(space.image);
+            };
+            spaceEl.onmouseleave = () => hideCardLoupe();
+            spaceEl.onclick = () => handleSpaceCardClick(i);
+            board.appendChild(spaceEl);
+        }
+    }
+
+    // ── Execution Engine (Step 4) ────────────────────────────────────────
+    function getOrderedActionsOnCard(card, isLastCard) {
+        const def = card.level === 1 ? card.lvl1 : card.lvl2;
+        const first = card.chosenHalf === 'top' ? def.top : def.bottom;
+        const second = card.chosenHalf === 'top' ? def.bottom : def.top;
+        return isLastCard ? [first, second] : [first];
+    }
+
+    function canChainNextAction() {
+        if (G.phase !== 'execute') return false;
+        const lastIdx = G.actionCards.length - 1;
+        if (G.executionIndex < lastIdx) {
+            const nextCard = G.actionCards[G.executionIndex + 1];
+            const firstAct = getOrderedActionsOnCard(nextCard, G.executionIndex + 1 === lastIdx)[0];
+            return firstAct && (firstAct.type === 'fuel' || firstAct.type === 'choice_rotate_fuel');
+        } else if (G.executionIndex === lastIdx && G.subActionIndex === 0) {
+            const secondAct = getOrderedActionsOnCard(G.actionCards[lastIdx], true)[1];
+            return secondAct && (secondAct.type === 'fuel' || secondAct.type === 'choice_rotate_fuel');
+        }
+        return false;
+    }
+
+    function chainNextFuelAction() {
+        if (!canChainNextAction()) return;
+        const lastIdx = G.actionCards.length - 1;
+        if (G.executionIndex < lastIdx) {
+            G.executionIndex++;
+            G.subActionIndex = 0;
+        } else {
+            G.subActionIndex = 1;
+        }
+        const card = G.actionCards[G.executionIndex];
+        const act = getOrderedActionsOnCard(card, G.executionIndex === lastIdx)[G.subActionIndex];
+        const added = act.fuelAmount || 1;
+        G.activeFuelPool += added;
+        playSound('click');
+        showToast(`Chained +${added} 🔥 (Total: ${G.activeFuelPool + G.bonusFuel} 🔥)`);
+        syncBoardFuelTargets();
+        renderActionColumn();
+        renderGalaxyBoard();
+        updateTabletopHud();
+    }
+
+    function executeNextStackStep() {
+        if (G.phase !== 'execute') return;
+
+        // Clear any unspent fuel from previous step before advancing
+        if (G.activeFuelPool > 0 || G.isTelescopePending || G.isHookPending) {
+            G.activeFuelPool = 0;
+            G.isTelescopePending = false;
+            G.isHookPending = false;
+            updateHeaderStats();
+            renderGalaxyBoard();
+        }
+
+        const lastIdx = G.actionCards.length - 1;
+        if (G.executionIndex > lastIdx) {
+            finishRoundExecution();
+            return;
+        }
+
+        const card = G.actionCards[G.executionIndex];
+        const isLast = (G.executionIndex === lastIdx);
+        const actions = getOrderedActionsOnCard(card, isLast);
+        const action = actions[G.subActionIndex];
+
+        renderActionColumn();
+
+        const advancePointerInStack = () => {
+            if (isLast && G.subActionIndex === 0) {
+                G.subActionIndex = 1;
+            } else {
+                G.executionIndex++;
+                G.subActionIndex = 0;
+            }
+            renderActionColumn();
+            updateTabletopHud();
+            if (G.executionIndex > lastIdx && G.activeFuelPool === 0 && !G.isTelescopePending && !G.isHookPending) {
+                setTabletopPrompt(`Stack complete! Finish round to release catches &amp; upgrade a card`, [
+                    { label: '✓ Finish Round &rarr;', primary: true, action: () => finishRoundExecution() }
+                ]);
+            }
+        };
+
+        executeSingleAction(action, advancePointerInStack);
+    }
+
+    function executeSingleAction(action, doneCallback) {
+        resetBoardInteractiveModes();
+
+        if (action.type === 'rotate_cw') {
+            rotatePointer(1);
+            doneCallback();
+        } else if (action.type === 'rotate_ccw') {
+            rotatePointer(-1);
+            doneCallback();
+        } else if (action.type === 'rotate_any') {
+            promptRotateAnyDirection(1, doneCallback);
+        } else if (action.type === 'rotate_any_2x') {
+            promptRotateAnyDirection(2, doneCallback);
+        } else if (action.type === 'swap') {
+            startShipSwapMode(doneCallback);
+        } else if (action.type === 'fuel') {
+            G.activeFuelPool += (action.fuelAmount || 1);
+            playSound('click');
+            syncBoardFuelTargets(doneCallback);
+            renderGalaxyBoard();
+            if (!G.isTelescopePending && !G.isHookPending) {
+                doneCallback();
+            }
+        } else if (action.type === 'choice_rotate_fuel') {
+            G.awaitingChoiceAction = true;
+            setTabletopPrompt(`Choose action for this card half:`, [
+                {
+                    label: '🔄 Rotate Any',
+                    primary: true,
+                    action: () => {
+                        G.awaitingChoiceAction = false;
+                        promptRotateAnyDirection(1, doneCallback);
+                    }
+                },
+                {
+                    label: '🔥 +1 Fuel',
+                    amber: true,
+                    action: () => {
+                        G.awaitingChoiceAction = false;
+                        G.activeFuelPool += 1;
+                        syncBoardFuelTargets(doneCallback);
+                        renderGalaxyBoard();
+                        if (!G.isTelescopePending && !G.isHookPending) doneCallback();
+                    }
+                }
+            ]);
+        }
+    }
+
+    function rotatePointer(delta) {
+        const n = G.shipCards.length;
+        G.pointerSector = (G.pointerSector + delta + n) % n;
+        playSound('rotate');
+
+        const targetShip = G.shipCards[G.pointerSector];
+        if (!targetShip.revealed) {
+            targetShip.revealed = true;
+            G.lastFlippedShipSector = G.pointerSector;
+        }
+        renderGalaxyBoard();
+        G.lastFlippedShipSector = null;
+    }
+
+    function promptRotateAnyDirection(count, callback) {
+        G.isSelectingRotateAny = true;
+        G.rotateAnyRemaining = count;
+        G.rotateAnyCallback = callback;
+        renderGalaxyBoard();
+
+        const stepRotate = (dir) => {
+            rotatePointer(dir);
+            G.rotateAnyRemaining--;
+            if (G.rotateAnyRemaining > 0) {
+                promptRotateAnyDirection(G.rotateAnyRemaining, callback);
+            } else {
+                G.isSelectingRotateAny = false;
+                G.rotateAnyCallback = null;
+                renderGalaxyBoard();
+                if (callback) callback();
+            }
+        };
+
+        setTabletopPrompt(
+            `Rotate Pointer (${count}x): Click sector or choose direction`,
+            [
+                { label: '⟲ Rotate CCW', primary: true, action: () => stepRotate(-1) },
+                { label: '⟳ Rotate CW', primary: true, action: () => stepRotate(1) }
+            ]
+        );
+    }
+
+    // ── Ship Swap (With On-Board Selection & Confirmation Pill) ──────────
+    function startShipSwapMode(callback) {
+        const n = G.shipCards.length;
+        let hasPair = false;
+        for (let i = 0; i < n; i++) {
+            if (!G.shipCards[i].anchored && !G.shipCards[(i + 1) % n].anchored) {
+                hasPair = true;
+                break;
+            }
+        }
+        if (!hasPair) {
+            showToast('No unanchored adjacent Ship Cards to swap');
+            callback();
+            return;
+        }
+
+        G.isSwappingShip = true;
+        G.shipSwapFirstSector = null;
+        G.shipSwapSecondSector = null;
+        G.shipSwapCallback = callback;
+        renderGalaxyBoard();
+        setTabletopPrompt(`Swap: Click 2 adjacent unanchored Ship Cards on the board`, [
+            {
+                label: 'Skip Swap',
+                action: () => {
+                    G.isSwappingShip = false;
+                    renderGalaxyBoard();
+                    callback();
+                }
+            }
+        ]);
+    }
+
+    function handleShipCardClick(sector) {
+        const n = G.shipCards.length;
+        const cwSector = (G.pointerSector + 1) % n;
+        const ccwSector = (G.pointerSector + n - 1) % n;
+
+        if (G.isSelectingRotateAny) {
+            if (sector === cwSector || sector === ccwSector) {
+                const dir = (sector === cwSector) ? 1 : -1;
+                const label = (dir === 1) ? '⟳ Rotate CW' : '⟲ Rotate CCW';
+                setTabletopPrompt(`Confirm rotation to ${getSectorNames()[sector]}?`, [
+                    {
+                        label: `✓ ${label}`,
+                        primary: true,
+                        action: () => {
+                            const cb = G.rotateAnyCallback;
+                            rotatePointer(dir);
+                            G.rotateAnyRemaining--;
+                            if (G.rotateAnyRemaining > 0) {
+                                promptRotateAnyDirection(G.rotateAnyRemaining, cb);
+                            } else {
+                                G.isSelectingRotateAny = false;
+                                G.rotateAnyCallback = null;
+                                renderGalaxyBoard();
+                                if (cb) cb();
+                            }
+                        }
+                    }
+                ]);
+            }
+            return;
+        }
+
+        if (G.isSwappingShip) {
+            const ship = G.shipCards[sector];
+            if (ship.anchored) {
+                showToast('Anchored Hook cannot be swapped');
+                return;
+            }
+            if (G.shipSwapFirstSector === null) {
+                G.shipSwapFirstSector = sector;
+                playSound('click');
+                renderGalaxyBoard();
+                setTabletopPrompt(`Selected ${getSectorNames()[sector]} — click an adjacent Ship Card`, [
+                    {
+                        label: '✕ Clear',
+                        action: () => {
+                            G.shipSwapFirstSector = null;
+                            renderGalaxyBoard();
+                        }
+                    }
+                ]);
+            } else {
+                const first = G.shipSwapFirstSector;
+                if (first === sector) {
+                    G.shipSwapFirstSector = null;
+                    G.shipSwapSecondSector = null;
+                    renderGalaxyBoard();
+                    return;
+                }
+                const diff = Math.abs(first - sector);
+                if (diff !== 1 && diff !== n - 1) {
+                    G.shipSwapFirstSector = sector;
+                    G.shipSwapSecondSector = null;
+                    renderGalaxyBoard();
+                    return;
+                }
+                G.shipSwapSecondSector = sector;
+                playSound('click');
+                renderGalaxyBoard();
+                const names = getSectorNames();
+                setTabletopPrompt(`Swap ${names[first]} ⇄ ${names[sector]}?`, [
+                    {
+                        label: `✓ Confirm Swap`,
+                        primary: true,
+                        action: () => {
+                            const cb = G.shipSwapCallback;
+                            G.isSwappingShip = false;
+                            G.shipSwapFirstSector = null;
+                            G.shipSwapSecondSector = null;
+                            G.shipSwapCallback = null;
+                            const tmp = G.shipCards[first];
+                            G.shipCards[first] = G.shipCards[sector];
+                            G.shipCards[sector] = tmp;
+                            if (!G.shipCards[G.pointerSector].revealed) {
+                                G.shipCards[G.pointerSector].revealed = true;
+                                G.lastFlippedShipSector = G.pointerSector;
+                            }
+                            playSound('swap');
+                            renderGalaxyBoard();
+                            G.lastFlippedShipSector = null;
+                            if (cb) cb();
+                        }
+                    },
+                    {
+                        label: '✕ Reselect',
+                        action: () => {
+                            G.shipSwapFirstSector = null;
+                            G.shipSwapSecondSector = null;
+                            renderGalaxyBoard();
+                        }
+                    }
+                ]);
+            }
+            return;
+        }
+
+        if (G.isHookPending && sector === G.pointerSector) {
+            promptHookCaptureConfirmation();
+            return;
+        }
+    }
+
+    // ── Fuel Sync: Telescope Observe & Hook Capture ──────────────────────
+    function syncBoardFuelTargets(doneCallback = null) {
+        updateHeaderStats();
+        const totalFuel = G.activeFuelPool + G.bonusFuel;
+        if (totalFuel <= 0) {
+            G.isTelescopePending = false;
+            G.isHookPending = false;
+            return;
+        }
+
+        const ship = G.shipCards[G.pointerSector];
+        const space = G.spaceCards[G.pointerSector];
+
+        if (ship.type === 'telescope' && !space.isCaught) {
+            G.isTelescopePending = true;
+            G.isHookPending = false;
+            if (doneCallback) G.telescopeCallback = doneCallback;
+
+            const btns = [
+                { label: `🔭 Observe (${totalFuel} 🔥)`, primary: true, action: () => triggerTelescopeObserve() },
+                { label: 'Pass', action: () => { if (G.telescopeCallback) G.telescopeCallback(); } }
+            ];
+            if (canChainNextAction()) {
+                btns.unshift({ label: '🔗 Chain +🔥', amber: true, action: () => chainNextFuelAction() });
+            }
+            setTabletopPrompt(`Telescope ready at ${getSectorNames()[G.pointerSector]}`, btns);
+        } else if (ship.type === 'hook' && !ship.anchored && !space.isCaught && space.revealed && space.observedEnd !== null) {
+            const ent = space.observedEnd === 'top' ? space.top : space.bottom;
+            if (totalFuel >= ent.hookCost) {
+                G.isHookPending = true;
+                G.isTelescopePending = false;
+                if (doneCallback) G.hookCallback = doneCallback;
+                promptHookCaptureConfirmation();
+            }
+        }
+    }
+
+    function consumeAllFuel() {
+        const f = G.activeFuelPool + G.bonusFuel;
+        G.activeFuelPool = 0;
+        G.bonusFuel = 0;
+        updateHeaderStats();
+        return f;
+    }
+
+    function triggerTelescopeObserve() {
+        if (!G.isTelescopePending) return;
+        const fuel = consumeAllFuel();
+        const space = G.spaceCards[G.pointerSector];
+
+        if (!space.revealed) {
+            space.revealed = true;
+            G.lastFlippedSpaceSector = G.pointerSector;
+        }
+        playSound('rotate');
+
+        const canTop = fuel >= space.top.telCost;
+        const canBot = fuel >= space.bottom.telCost;
+
+        if (canTop && canBot) {
+            G.isChoosingEntityHalf = true;
+            renderGalaxyBoard();
+            G.lastFlippedSpaceSector = null;
+            setTabletopPrompt(`Click half on Space Card or choose entity to face ship:`, [
+                { label: `🔭 ${space.top.name}`, primary: space.top.type === G.tier, action: () => selectObservedEntityHalf('top') },
+                { label: `🔭 ${space.bottom.name}`, primary: space.bottom.type === G.tier, action: () => selectObservedEntityHalf('bottom') }
+            ]);
+            return;
+        }
+
+        const cb = G.telescopeCallback;
+        G.isTelescopePending = false;
+        G.telescopeCallback = null;
+
+        if (canTop) {
+            space.observedEnd = 'top';
+            space.observedThisRound = true;
+            showToast(`Observed ${space.top.name}!`);
+        } else if (canBot) {
+            space.observedEnd = 'bottom';
+            space.observedThisRound = true;
+            showToast(`Observed ${space.bottom.name}!`);
+        } else {
+            showToast(`Need ${Math.min(space.top.telCost, space.bottom.telCost)} 🔥 to observe`);
+        }
+        renderGalaxyBoard();
+        G.lastFlippedSpaceSector = null;
+        if (cb) cb();
+    }
+
+    function selectObservedEntityHalf(half) {
+        const space = G.spaceCards[G.pointerSector];
+        space.observedEnd = half;
+        space.observedThisRound = true;
+        G.isChoosingEntityHalf = false;
+        G.isTelescopePending = false;
+        const cb = G.telescopeCallback;
+        G.telescopeCallback = null;
+        playSound('rotate');
+        const ent = half === 'top' ? space.top : space.bottom;
+        showToast(`Observed ${ent.name}!`);
+        renderGalaxyBoard();
+        if (cb) cb();
+    }
+
+    function promptHookCaptureConfirmation() {
+        if (!G.isHookPending) return;
+        const space = G.spaceCards[G.pointerSector];
+        const ent = space.observedEnd === 'top' ? space.top : space.bottom;
+        setTabletopPrompt(`Catch <b>${ent.name}</b> (${ent.hookCost} 🔥)?`, [
+            { label: `🎣 Confirm Catch ${ent.name}`, primary: true, action: () => triggerHookCapture() },
+            {
+                label: 'Pass',
+                action: () => {
+                    const cb = G.hookCallback;
+                    G.isHookPending = false;
+                    G.hookCallback = null;
+                    renderGalaxyBoard();
+                    if (cb) cb();
+                }
+            }
+        ]);
+    }
+
+    function triggerHookCapture() {
+        if (!G.isHookPending) return;
+        consumeAllFuel();
+        const ship = G.shipCards[G.pointerSector];
+        const space = G.spaceCards[G.pointerSector];
+        const ent = space.observedEnd === 'top' ? space.top : space.bottom;
+
+        space.isCaught = true;
+        space.rewardTucked = false;
+        ship.anchored = true;
+        ship.holdingCatch = ent;
+
+        const cb = G.hookCallback;
+        G.isHookPending = false;
+        G.hookCallback = null;
+
+        playSound('catch');
+        showToast(`Caught ${ent.name}!`);
+        updateHeaderStats();
+        renderGalaxyBoard();
+        renderRewardsTray();
+
+        // Check immediate victory
+        const req = getRequiredCatchCount(G.tier);
+        const catches = G.shipCards.filter(s => s.holdingCatch && s.holdingCatch.type === G.tier).length;
+        if (catches >= req) {
+            endExpedition(true, `You captured all ${req} ${getTierPlural(G.tier)} in Round ${G.round}!`);
+            return;
+        }
+        if (cb) cb();
+    }
+
+    function handleSpaceCardClick(sector) {
+        const space = G.spaceCards[sector];
+        if (sector === G.pointerSector && !space.isCaught) {
+            if (G.isTelescopePending) {
+                triggerTelescopeObserve();
+                return;
+            }
+            if (G.isHookPending) {
+                promptHookCaptureConfirmation();
+                return;
+            }
+        }
+        if (space.isCaught && !space.rewardTucked && G.phase === 'execute') {
+            promptUseCaughtReward(sector);
+        }
+    }
+
+    // ── Caught Entity Rewards Dock (Right Next to the Action Card Stack!) ──
+    function renderRewardsTray() {
+        const strip = document.getElementById('floatingRewardsStrip');
+        strip.innerHTML = '';
+        const names = getSectorNames();
+
+        G.spaceCards.forEach((sp, sector) => {
+            if (!sp.isCaught) return;
+            const isTop = (sp.observedEnd === 'top');
+            const ent = isTop ? sp.top : sp.bottom;
+
+            const widget = document.createElement('div');
+            widget.className = `reward-card-widget ${sp.rewardTucked ? 'is-tucked-widget' : ''}`;
+            widget.setAttribute('data-reward-sector', sector);
+
+            // 1. Header status
+            const hdr = document.createElement('div');
+            hdr.className = 'reward-widget-header';
+            hdr.innerHTML = sp.rewardTucked
+                ? `<span>✓ Tucked Behind</span><span>${names[sector]}</span>`
+                : `<span>🎁 On Hook</span><span>${names[sector]}</span>`;
+            widget.appendChild(hdr);
+
+            // 2. Cropped Entity + Reward Art Window
+            const artWin = document.createElement('div');
+            artWin.className = 'reward-card-art-window';
+            const artImg = document.createElement('img');
+            artImg.src = sp.image;
+            artImg.className = isTop ? 'show-top-entity' : 'show-bottom-entity';
+            artWin.appendChild(artImg);
+            widget.appendChild(artWin);
+
+            // 3. Entity Name
+            const titleRow = document.createElement('div');
+            titleRow.className = 'reward-entity-title';
+            titleRow.innerHTML = `<span>${ent.name}</span><span style="font-size:10px; opacity:0.8; text-transform:uppercase;">${ent.type}</span>`;
+            widget.appendChild(titleRow);
+
+            // 4. Clear Reward Action Box
+            const actBox = document.createElement('div');
+            actBox.className = 'reward-action-box';
+            actBox.innerHTML = `<img src="${ent.rewardIcon}" alt=""><span>${ent.rewardDesc}</span>`;
+            widget.appendChild(actBox);
+
+            // 5. Direct Action Button(s) when untucked (or Tucked status)
+            if (!sp.rewardTucked) {
+                if (ent.rewardType === 'choice_fuel_rotate') {
+                    const row = document.createElement('div');
+                    row.className = 'reward-choice-row';
+                    const b1 = document.createElement('button');
+                    b1.className = 'reward-use-btn';
+                    b1.textContent = '🔥 +1 Fuel';
+                    b1.onclick = () => executeCaughtReward(sector, 'fuel_1');
+                    const b2 = document.createElement('button');
+                    b2.className = 'reward-use-btn';
+                    b2.textContent = '🔄 Rotate';
+                    b2.onclick = () => executeCaughtReward(sector, 'rotate_any');
+                    row.appendChild(b1);
+                    row.appendChild(b2);
+                    widget.appendChild(row);
+                } else if (ent.rewardType === 'choice_fuel_swap') {
+                    const row = document.createElement('div');
+                    row.className = 'reward-choice-row';
+                    const b1 = document.createElement('button');
+                    b1.className = 'reward-use-btn';
+                    b1.textContent = '🔥 +1 Fuel';
+                    b1.onclick = () => executeCaughtReward(sector, 'fuel_1');
+                    const b2 = document.createElement('button');
+                    b2.className = 'reward-use-btn';
+                    b2.textContent = '⇄ Swap';
+                    b2.onclick = () => executeCaughtReward(sector, 'swap');
+                    row.appendChild(b1);
+                    row.appendChild(b2);
+                    widget.appendChild(row);
+                } else if (ent.rewardType === 'choice_rotate_swap') {
+                    const row = document.createElement('div');
+                    row.className = 'reward-choice-row';
+                    const b1 = document.createElement('button');
+                    b1.className = 'reward-use-btn';
+                    b1.textContent = '🔄 Rotate';
+                    b1.onclick = () => executeCaughtReward(sector, 'rotate_any');
+                    const b2 = document.createElement('button');
+                    b2.className = 'reward-use-btn';
+                    b2.textContent = '⇄ Swap';
+                    b2.onclick = () => executeCaughtReward(sector, 'swap');
+                    row.appendChild(b1);
+                    row.appendChild(b2);
+                    widget.appendChild(row);
+                } else {
+                    const btn = document.createElement('button');
+                    btn.className = 'reward-use-btn';
+                    btn.innerHTML = '▶ Use Reward &amp; Tuck';
+                    btn.onclick = () => executeCaughtReward(sector, ent.rewardType);
+                    widget.appendChild(btn);
+                }
+            }
+
+            strip.appendChild(widget);
+        });
+    }
+
+    function promptUseCaughtReward(sector) {
+        const sp = G.spaceCards[sector];
+        if (!sp || !sp.isCaught || sp.rewardTucked) return;
+        const ent = sp.observedEnd === 'top' ? sp.top : sp.bottom;
+
+        if (ent.rewardType === 'choice_fuel_rotate') {
+            setTabletopPrompt(`Use <b>${ent.name}</b> Reward (tucks card behind Hook):`, [
+                { label: '🔥 +1 Fuel', primary: true, action: () => executeCaughtReward(sector, 'fuel_1') },
+                { label: '🔄 Rotate Any', primary: true, action: () => executeCaughtReward(sector, 'rotate_any') },
+                { label: 'Cancel', action: () => updateTabletopHud() }
+            ]);
+        } else if (ent.rewardType === 'choice_fuel_swap') {
+            setTabletopPrompt(`Use <b>${ent.name}</b> Reward (tucks card behind Hook):`, [
+                { label: '🔥 +1 Fuel', primary: true, action: () => executeCaughtReward(sector, 'fuel_1') },
+                { label: '⇄ Swap Cards', primary: true, action: () => executeCaughtReward(sector, 'swap') },
+                { label: 'Cancel', action: () => updateTabletopHud() }
+            ]);
+        } else if (ent.rewardType === 'choice_rotate_swap') {
+            setTabletopPrompt(`Use <b>${ent.name}</b> Reward (tucks card behind Hook):`, [
+                { label: '🔄 Rotate Any', primary: true, action: () => executeCaughtReward(sector, 'rotate_any') },
+                { label: '⇄ Swap Cards', primary: true, action: () => executeCaughtReward(sector, 'swap') },
+                { label: 'Cancel', action: () => updateTabletopHud() }
+            ]);
+        } else {
+            setTabletopPrompt(`Use <b>${ent.name}</b> Reward (${ent.rewardDesc}) &amp; tuck behind Hook?`, [
+                { label: `✓ Use ${ent.rewardDesc}`, primary: true, action: () => executeCaughtReward(sector, ent.rewardType) },
+                { label: 'Cancel', action: () => updateTabletopHud() }
+            ]);
+        }
+    }
+
+    function executeCaughtReward(sector, chosenRewardType) {
+        const sp = G.spaceCards[sector];
+        if (!sp || !sp.isCaught || sp.rewardTucked) return;
+        const ent = sp.observedEnd === 'top' ? sp.top : sp.bottom;
+
+        // Tuck the Space Card BEHIND the Hook Card!
+        sp.rewardTucked = true;
+        playSound('rotate');
+        showToast(`${ent.name} reward activated — card tucked behind Hook!`);
+        renderGalaxyBoard();
+        renderRewardsTray();
+
+        if (chosenRewardType === 'fuel_1') {
+            G.bonusFuel += 1;
+            syncBoardFuelTargets();
+            renderGalaxyBoard();
+            updateTabletopHud();
+        } else if (chosenRewardType === 'fuel_2') {
+            G.bonusFuel += 2;
+            syncBoardFuelTargets();
+            renderGalaxyBoard();
+            updateTabletopHud();
+        } else if (chosenRewardType === 'rotate_any') {
+            promptRotateAnyDirection(1, () => updateTabletopHud());
+        } else if (chosenRewardType === 'rotate_2x') {
+            promptRotateAnyDirection(2, () => updateTabletopHud());
+        } else if (chosenRewardType === 'swap') {
+            startShipSwapMode(() => updateTabletopHud());
+        } else if (chosenRewardType === 'rotate_plus_fuel') {
+            G.bonusFuel += 1;
+            updateHeaderStats();
+            promptRotateAnyDirection(1, () => {
+                syncBoardFuelTargets();
+                renderGalaxyBoard();
+                updateTabletopHud();
+            });
+        } else if (chosenRewardType === 'swap_plus_fuel') {
+            G.bonusFuel += 1;
+            updateHeaderStats();
+            startShipSwapMode(() => {
+                syncBoardFuelTargets();
+                renderGalaxyBoard();
+                updateTabletopHud();
+            });
+        } else if (chosenRewardType === 'rotate_plus_swap') {
+            promptRotateAnyDirection(1, () => {
+                startShipSwapMode(() => updateTabletopHud());
+            });
+        }
+    }
+
+    // ── Finish Round Execution (Step 5 Release → Step 6 Upgrade) ─────────
+    function finishRoundExecution() {
+        resetBoardInteractiveModes();
+        G.activeFuelPool = 0;
+        G.bonusFuel = 0;
+
+        // Step 5: Release catches that do not match target tier
+        G.spaceCards.forEach((sp, idx) => {
+            if (sp.isCaught) {
+                const ent = sp.observedEnd === 'top' ? sp.top : sp.bottom;
+                if (ent.type !== G.tier) {
+                    sp.isCaught = false;
+                    sp.rewardTucked = false;
+                    G.shipCards[idx].anchored = false;
+                    G.shipCards[idx].holdingCatch = null;
+                }
+            }
+        });
+
+        updateHeaderStats();
+        renderGalaxyBoard();
+        renderRewardsTray();
+
+        const hasLvl1 = G.actionCards.some(c => c.level === 1);
+        if (!hasLvl1) {
+            if (G.round >= G.maxRounds) {
+                endExpedition(false, 'All 6 rounds completed.');
+            } else {
+                G.round++;
+                startNewRound();
+            }
+            return;
+        }
+
+        G.phase = 'round_end';
+        const firstLvl1 = G.actionCards.find(c => c.level === 1);
+        renderActionColumn();
+        updateTabletopHud();
+        if (firstLvl1) openCardUpgrade3DOverlay(firstLvl1.id);
+    }
+
+    function toggleAutoStep() {
+        if (G.phase !== 'execute') return;
+        executeNextStackStep();
+    }
+
+    function endExpedition(won, msg) {
+        const modal = document.getElementById('gameOverModal');
+        document.getElementById('gameOverTitle').textContent = won ? '🏆 Victory on the GalaxSea!' : 'Expedition Ended';
+        document.getElementById('gameOverMessage').textContent = msg;
+        modal.classList.add('active');
+    }
+
+    // ── Modal Wiring ─────────────────────────────────────────────────────
+    document.getElementById('btnOpenRules').onclick = () => document.getElementById('rulesModal').classList.add('active');
+    document.getElementById('btnCloseRules').onclick = () => document.getElementById('rulesModal').classList.remove('active');
+    document.getElementById('btnOpenNewGame').onclick = () => document.getElementById('newGameModal').classList.add('active');
+    document.getElementById('btnCancelNewGame').onclick = () => document.getElementById('newGameModal').classList.remove('active');
+
+    document.querySelectorAll('#tierSelectorGrid .tier-option').forEach(opt => {
+        opt.onclick = () => {
+            document.querySelectorAll('#tierSelectorGrid .tier-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            G.tier = opt.getAttribute('data-tier');
+        };
+    });
+
+    document.getElementById('btnStartNewGame').onclick = () => {
+        G.useExp1 = document.getElementById('chkExp1').checked;
+        G.useExp2 = document.getElementById('chkExp2').checked;
+        document.getElementById('newGameModal').classList.remove('active');
+        initExpedition();
+    };
+
+    document.getElementById('btnPlayAgain').onclick = () => {
+        document.getElementById('gameOverModal').classList.remove('active');
+        initExpedition();
+    };
+
+    // Start game on load
+    window.addEventListener('DOMContentLoaded', () => {
+        initExpedition();
+    });
+    </script>
+</body>
+</html>
