@@ -1383,109 +1383,6 @@
         </div>
     </header>
 
-
-
-
-
-
-
-    <!-- Export overlay -->
-
-
-
-    <div class="export-overlay" id="exportOverlay">
-
-
-
-        <div class="export-progress" id="exportBox">
-
-
-
-            <div id="exportText" style="margin-bottom: 6px;">Exporting cards...</div>
-
-
-
-            <div class="bar" id="exportBarContainer"><div class="bar-fill" id="exportBar" style="width:0%"></div></div>
-
-
-
-            <div id="exportErrorMsg" style="display:none; margin-top: 16px; text-align: left; max-width: 480px; font-weight: normal; font-size: 15px; line-height: 1.45;"></div>
-
-
-
-            <button class="btn btn-ink" id="exportCloseBtn" style="display:none; margin-top: 16px;">Close</button>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
-
-
-
-
-
-    <!-- Reusable Guide Template -->
-
-
-
-    <template id="guideSvgTemplate">
-
-
-
-        <svg class="guide-svg" viewBox="0 0 750 1125">
-
-
-
-            <!-- Red Trim Line: 52mm x 87mm, 11.5mm radius. Inset: 66px left/right, 47px top/bottom -->
-
-
-
-            <rect x="66" y="47" width="618" height="1031" rx="136" ry="136" fill="none" stroke="#e02828" stroke-width="3" />
-
-
-
-            <text x="375" y="38" font-size="13" font-weight="700" fill="#e02828" text-anchor="middle">TRIM LINE (Cut Edge — 52 × 87 mm)</text>
-
-
-
-
-
-
-
-            <!-- Blue Safe Zone: 37px (1/8") inside Trim Line. Inset: 103px left/right, 84px top/bottom -->
-
-
-
-            <rect x="103" y="84" width="544" height="957" rx="99" ry="99" fill="none" stroke="#2ba6de" stroke-width="3" stroke-dasharray="14 10" />
-
-
-
-            <text x="375" y="76" font-size="13" font-weight="700" fill="#2ba6de" text-anchor="middle">SAFE ZONE (Keep all text inside this dashed line)</text>
-
-
-
-        </svg>
-
-
-
-        <img class="template-img-overlay" src="mint-tin-card.png" alt="TGC Mint Tin Template Overlay">
-
-
-
-    </template>
-
-
-
-
-
-
-
-    
     <!-- ── Reader View Container (The Sole Interactive Display) ── -->
     <div id="bookletView" style="max-width: 1750px; margin: 0 auto; padding: 20px 12px; text-align: center;">
         <div class="booklet-nav">
@@ -1493,14 +1390,14 @@
             <span id="cardIndicator" style="font-weight: 700; font-size: 16px; color: var(--ink-dark); min-width: 130px;">Card 1 of 8</span>
             <button class="btn btn-parchment" id="nextCard" style="padding: 8px 16px; font-size: 13px;">Next Card →</button>
             <select id="cardSelect" class="btn btn-parchment" style="padding: 8px 14px; font-weight: 600; cursor: pointer; font-size: 13px;">
-                <option value="0">Card 1: Introduction & Setup (Base)</option>
-                <option value="1">Card 2: Round Overview & Action Stack (Base)</option>
-                <option value="2">Card 3: Action Sequences & Ship Movement (Base)</option>
-                <option value="3">Card 4: Observing & Capturing (Base)</option>
-                <option value="4">Card 5: End Game & Glossary (Base)</option>
+                <option value="0">Card 1: Introduction, Tiers &amp; Setup (Base)</option>
+                <option value="1">Card 2: Round Overview &amp; Steps 1–6 (Base)</option>
+                <option value="2">Card 3: Actions: Rotate, Swap &amp; Spend Fuel (Base)</option>
+                <option value="3">Card 4: Spend Fuel: Observing &amp; Capturing (Base)</option>
+                <option value="4">Card 5: Caught Rewards &amp; Icon Glossary (Base)</option>
                 <option value="5">Card 6: Edge of the Universe (Expansion 1)</option>
                 <option value="6">Card 7: Cosmic Hazards (Expansion 2)</option>
-                <option value="7">Card 8: Clarifications & The Origin of GalaxSea</option>
+                <option value="7">Card 8: Rules Clarifications &amp; Design Story</option>
             </select>
         </div>
         <div id="bookletCards" class="booklet-cards-container"></div>
@@ -1622,9 +1519,9 @@
     <h2 class="section-title">Setup</h2>
     <ol class="list-styled body-sm" style="margin-top: 4px; margin-bottom: 10px; font-size: 23px; line-height: 1.36; display: flex; flex-direction: column; gap: 8px;">
         <li><b>Choose Target Tier:</b> Pick your challenge tier from Page 1 <i>(3 Moons recommended for your first game)</i>.</li>
-        <li><b>Ship Hexagon:</b> Shuffle the 6 Ship Cards (3 Telescopes, 3 Hooks) face-down in a center hexagon.</li>
+        <li><b>Ship Hexagon:</b> Shuffle the 6 Ship Cards (3 Telescopes, 3 Hooks) and deal face-down into a center hexagon.</li>
         <li><b>Direction Pointer:</b> Place in center pointing North. <b>Flip North Ship Card face-up</b>.</li>
-        <li><b>Space Hexagon:</b> Shuffle the 6 Space Cards face-down (sideways/parallel) in an outer ring.</li>
+        <li><b>Space Hexagon:</b> Shuffle the 6 Space Cards and deal face-down (sideways, parallel to Ship Cards) into an outer ring.</li>
         <li><b>Action Cards:</b> Take the 5 Action Cards (all start at Level 1).</li>
     </ol>
 
@@ -2327,7 +2224,7 @@
 
                             <ol class="list-styled body-xs" style="margin-bottom: 8px; font-size: 21px; line-height: 1.32;">
                                 <li>Shuffle the 8 Ship Cards (4 Telescopes, 4 Hooks); arrange in an <b>Octagon</b>. Point Direction Pointer North; flip North card face-up.</li>
-                                <li>Shuffle 8 Space Cards; arrange in an outer matching Octagon.</li>
+                                <li>Shuffle the 8 Space Cards; deal face-down (parallel to Ship Cards) in an outer matching Octagon.</li>
                                 <li>Take all <b>6 Action Cards</b> (all start at Level 1).</li>
                             </ol>
 
